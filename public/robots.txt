@@ -16,4 +16,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://ahnwoonchan.vercel.app/sitemap.xml
+Sitemap: https://www.ahnwoonchan.com/sitemap.xml
