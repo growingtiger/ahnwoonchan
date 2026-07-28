@@ -210,7 +210,6 @@ td.em{font-weight:700;color:var(--brand)}
 }
 .note strong{color:var(--ink)}
 .note code{font-size:.92em;background:var(--bg-sunk);padding:1px 5px;border-radius:4px}
-.fixnote{background:var(--bg-soft);border-color:var(--line)}
 .btnrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
 .btn{
   font-family:inherit;font-size:.87rem;font-weight:600;cursor:pointer;padding:10px 18px;border-radius:9px;
@@ -455,19 +454,6 @@ footer a{color:var(--brand);font-weight:600}
       </div>
     </div>
 
-    <div class="note fixnote">
-      <strong>원본 산식에서 수정한 부분 — Filtration Fraction</strong><br>
-      원본 계산기의 FF 식은 <code>(Quf+Qr)×60 / (Qb×(1−HCT/100))</code> 형태로,
-      ① ml/hr 값을 60으로 <em>나누지 않고 곱했고</em>,
-      ② HCT를 분율(0.4)로 입력받으면서 다시 100으로 나눠 <code>1−0.004</code>가 되어 있었습니다.
-      그 결과 기본값에서 FF가 33.7%로 나왔습니다. 아래 식으로 다시 세웠습니다.<br><br>
-      혈장유량 <code>Qp = Qb(ml/hr) × (1 − HCT)</code><br>
-      전희석 <code>FF-Pre = (Quf + Qr-pre) / (Qp + Qr-pre) × 100</code><br>
-      후희석 <code>FF-Post = (Quf + Qr-post) / Qp × 100</code><br><br>
-      전희석액은 필터 앞에서 혈액을 희석해 분모를 늘리고, 후희석액은 필터를 통과한 뒤 합류하므로 분모에 들어가지 않습니다.
-      같은 유량이라면 전희석의 FF가 항상 낮게 나오는 것이 정상입니다.
-      FF 20% 이상이면 주황색, 25%를 넘으면 경고로 표시합니다.
-    </div>
 
     <div class="note">
       <strong>이 계산기는 수의사용 참고 도구입니다.</strong>
