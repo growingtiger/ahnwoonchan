@@ -1,0 +1,4 @@
+.env
+.env.*
+*.key
+KakaoTalk_Photo_*.jpeg
