@@ -1,0 +1,20 @@
+# 안운찬 수의사 홈페이지
+
+# 네이버 검색로봇
+User-agent: Yeti
+Allow: /
+
+# 구글
+User-agent: Googlebot
+Allow: /
+
+# 다음(카카오)
+User-agent: daum
+Allow: /
+
+# 그 외 전체 허용
+User-agent: *
+Allow: /
+
+# ⚠️ 배포 후 실제 주소로 수정하세요
+Sitemap: https://DOMAIN-여기수정.vercel.app/sitemap.xml
