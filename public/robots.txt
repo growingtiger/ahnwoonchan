@@ -16,5 +16,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-# ⚠️ 배포 후 실제 주소로 수정하세요
-Sitemap: https://DOMAIN-여기수정.vercel.app/sitemap.xml
+Sitemap: https://ahnwoonchan.vercel.app/sitemap.xml
