@@ -138,6 +138,9 @@ main{padding-bottom:64px}
   border:1px solid var(--line);background:transparent;color:var(--ink-2)}
 .btn:hover{border-color:var(--ink-3);color:var(--ink)}
 .btn.p{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.big{font-size:1rem;font-weight:800;padding:9px 20px;display:inline-flex;align-items:baseline;gap:8px}
+.btn.big span{font-size:.72rem;font-weight:600;opacity:.85}
+.btn.big span::before{content:"("} .btn.big span::after{content:")"}
 :root[data-theme="dark"] .btn.p{color:#06201d}
 @media (prefers-color-scheme: dark){.btn.p{color:#06201d}}
 :root[data-theme="light"] .btn.p{color:#fff}
@@ -242,7 +245,7 @@ footer a{color:var(--brand);font-weight:600}
     <div class="chead">
       <h2>① 환자 · 처방 목표</h2>
       <div class="btnrow">
-        <button class="btn p" id="autoBtn" type="button">목표에 맞춰 자동 채우기</button>
+        <button class="btn p big" id="autoBtn" type="button">계산!<span>목표에 맞춰 자동채우기</span></button>
         <button class="btn" id="resetBtn" type="button">초기화</button>
         <button class="btn" id="printBtn" type="button">인쇄 / PDF</button>
       </div>
@@ -250,25 +253,25 @@ footer a{color:var(--brand);font-weight:600}
 
     <div class="setgrid">
       <div class="f"><label for="species">Species</label>
-        <select id="species"><option>Canine</option><option>Feline</option></select></div>
+        <select id="species"><option value="">—</option><option>Canine</option><option>Feline</option></select></div>
       <div class="f"><label for="bw">Body weight <span class="un">kg</span></label>
-        <input id="bw" type="number" step="0.1" min="0.1" value="13.4"></div>
+        <input id="bw" type="number" step="0.1" min="0.1" placeholder="13.4"></div>
       <div class="f"><label for="hyd">Hydration <span class="un">%</span></label>
-        <select id="hyd"><option value="-10">-10</option><option value="-5">-5</option>
+        <select id="hyd"><option value="">—</option><option value="-10">-10</option><option value="-5">-5</option>
           <option value="0">0</option><option value="5">+5</option>
-          <option value="10" selected>+10</option><option value="15">+15</option></select></div>
+          <option value="10">+10</option><option value="15">+15</option></select></div>
       <div class="f"><label for="bun">Starting BUN <span class="un">mg/dL</span></label>
-        <input id="bun" type="number" step="1" min="1" value="126"></div>
+        <input id="bun" type="number" step="1" min="1" placeholder="126"></div>
       <div class="f"><label for="hct">HCT <span class="un">%</span></label>
-        <input id="hct" type="number" step="1" min="1" max="80" value="35"></div>
+        <input id="hct" type="number" step="1" min="1" max="80" placeholder="35"></div>
       <div class="f"><label for="urr">Target URR <span class="un">%</span></label>
-        <input id="urr" type="number" step="1" min="1" max="95" value="50"></div>
+        <input id="urr" type="number" step="1" min="1" max="95" placeholder="50"></div>
       <div class="f"><label for="hrs">Treatment time <span class="un">hr</span></label>
-        <input id="hrs" type="number" step="1" min="1" max="12" value="5"></div>
+        <input id="hrs" type="number" step="1" min="1" max="12" placeholder="5"></div>
       <div class="f"><label for="ufTot">UF target <span class="un">(제거 목표) ml</span></label>
-        <input id="ufTot" type="number" step="10" min="0" value="1340"></div>
+        <input id="ufTot" type="number" step="10" min="0" placeholder="1340"></div>
       <div class="f"><label for="txno">Treatment No. <span class="un">(투석 회차)</span></label>
-        <select id="txno"><option value="1">1st</option><option value="2">2nd</option><option value="3">3rd +</option></select></div>
+        <select id="txno"><option value="">—</option><option value="1">1st</option><option value="2">2nd</option><option value="3">3rd +</option></select></div>
     </div>
 
     <div class="chips">
@@ -291,7 +294,7 @@ footer a{color:var(--brand);font-weight:600}
       <div class="setgrid">
         <div class="f"><label for="filter">Filter set</label><select id="filter"></select></div>
         <div class="f"><label for="addv">Additional line <span class="un">ml</span></label>
-          <input id="addv" type="number" step="1" min="0" value="0"></div>
+          <input id="addv" type="number" step="1" min="0" placeholder="0"></div>
       </div>
       <div class="chips">
         <div class="chip"><div class="k">Extracorporeal volume</div><div class="v" id="c_ecv">—<small>ml</small></div></div>
@@ -305,13 +308,13 @@ footer a{color:var(--brand);font-weight:600}
       <div class="chead"><h2>③ 항응고</h2></div>
       <div class="setgrid">
         <div class="f"><label for="dil">Dilution N/S <span class="un">ml</span></label>
-          <input id="dil" type="number" step="10" min="1" value="100"></div>
+          <input id="dil" type="number" step="10" min="1" placeholder="100"></div>
         <div class="f"><label for="hep">Heparin <span class="un">IU</span></label>
-          <input id="hep" type="number" step="100" min="1" value="5000"></div>
+          <input id="hep" type="number" step="100" min="1" placeholder="5000"></div>
         <div class="f"><label for="bolus">Bolus <span class="un">IU/kg</span></label>
-          <input id="bolus" type="number" step="5" min="0" value="25"></div>
+          <input id="bolus" type="number" step="5" min="0" placeholder="25"></div>
         <div class="f"><label for="cri">CRI <span class="un">IU/kg/hr</span></label>
-          <input id="cri" type="number" step="5" min="0" value="25"></div>
+          <input id="cri" type="number" step="5" min="0" placeholder="25"></div>
       </div>
       <div class="chips">
         <div class="chip"><div class="k">Conc. of heparin</div><div class="v" id="c_hconc">—<small>IU/ml</small></div></div>
@@ -479,11 +482,11 @@ FILTERS.forEach(function(f){var o=document.createElement('option');o.value=f[0];
 
 /* 시간대별 처방 행 정의 : key, 라벨, 단위, 기본값 */
 var RX=[
-  {k:'qb',    lab:'Qb — Blood flow (혈류 속도)',        u:'mL/min', d:150, step:5},
-  {k:'qd',    lab:'Qd — Dialysate flow (투석액 속도)',   u:'mL/h',   d:1200,step:50},
-  {k:'qrPre', lab:'Qrep pre — Pre-dilution (전희석)',    u:'mL/h',   d:0,   step:10},
-  {k:'qrPost',lab:'Qrep post — Post-dilution (후희석)',  u:'mL/h',   d:0,   step:10},
-  {k:'qpfr',  lab:'Qpfr — Patient fluid removal (환자 제거량)', u:'mL/h', d:268, step:10}
+  {k:'qb',    lab:'Qb — Blood flow (혈류 속도)',        u:'mL/min', d:null, ph:'150', step:5},
+  {k:'qd',    lab:'Qd — Dialysate flow (투석액 속도)',   u:'mL/h',   d:null, ph:'1200',step:50},
+  {k:'qrPre', lab:'Qrep pre — Pre-dilution (전희석)',    u:'mL/h',   d:null, ph:'0',  step:10},
+  {k:'qrPost',lab:'Qrep post — Post-dilution (후희석)',  u:'mL/h',   d:null, ph:'0',  step:10},
+  {k:'qpfr',  lab:'Qpfr — Patient fluid removal (환자 제거량)', u:'mL/h', d:null, ph:'268', step:10}
 ];
 var HRS=5, rx=[];
 
@@ -509,17 +512,29 @@ function irisURR(tx,bun){
 function ufMax(sp){ return sp==='Feline'?5:10; }
 /* 여과분율 상한 : 20% 주의 / 25% 초과 금지 (후희석 기준) */
 var FF_CAUTION=20, FF_LIMIT=25;
+/* Qb/Qd 가 이 배수 이상이면 투석액이 완전히 포화된다고 본다 */
+var SR_RATIO=3;
 
 function num(id){var v=parseFloat(document.getElementById(id).value);return isFinite(v)?v:0;}
 function str(id){return document.getElementById(id).value;}
-function fmt(n,d){ if(!isFinite(n))return '—';
+var BLANK=false;
+function fmt(n,d){ if(BLANK) return '—';
+  if(!isFinite(n))return '—';
   return n.toLocaleString('ko-KR',{minimumFractionDigits:d,maximumFractionDigits:d}); }
-function setV(id,v,u){var e=document.getElementById(id); if(e) e.innerHTML=v+(u?'<small>'+u+'</small>':'');}
+function setV(id,v,u){var e=document.getElementById(id);
+  if(e) e.innerHTML = v + ((u && v!=='—')?'<small>'+u+'</small>':''); }
 
+function blankRow(){ var o={}; RX.forEach(function(r){o[r.k]=r.d;}); return o; }
 function seedRows(){
-  while(rx.length<HRS){ rx.push(rx.length? Object.assign({},rx[rx.length-1]) : (function(){
-      var o={}; RX.forEach(function(r){o[r.k]=r.d;}); return o; })()); }
+  while(rx.length<HRS){ rx.push(rx.length? Object.assign({},rx[rx.length-1]) : blankRow()); }
   rx.length=HRS;
+}
+function clearAll(){
+  ['bw','bun','hct','urr','ufTot','addv','dil','hep','bolus','cri','species','hyd','txno'].forEach(function(id){
+    var e=document.getElementById(id); if(e) e.value='';
+  });
+  document.getElementById('hrs').value='';
+  HRS=5; rx=[]; seedRows();
 }
 
 /* ── 표 뼈대 ── */
@@ -531,8 +546,10 @@ function buildTable(){
   var html='<tr class="sec"><td colspan="'+(HRS+1)+'">Prescription — 직접 입력</td></tr>';
   RX.forEach(function(r){
     html+='<tr class="in"><td class="rl">'+r.lab+' <span style="opacity:.7;font-weight:500">('+r.u+')</span></td>';
-    for(var h=0;h<HRS;h++)
-      html+='<td class="cell"><input type="number" step="'+r.step+'" min="0" data-k="'+r.k+'" data-h="'+h+'" value="'+rx[h][r.k]+'"></td>';
+    for(var h=0;h<HRS;h++){
+      var val=rx[h][r.k]; val=(val===null||val===undefined)?'':val;
+      html+='<td class="cell"><input type="number" step="'+r.step+'" min="0" placeholder="'+(r.ph||'')+'" data-k="'+r.k+'" data-h="'+h+'" value="'+val+'"></td>';
+    }
     html+='</tr>';
   });
 
@@ -559,7 +576,9 @@ function buildTable(){
 
   Array.prototype.forEach.call(tb.querySelectorAll('input'),function(inp){
     inp.addEventListener('input',function(){
-      rx[+inp.dataset.h][inp.dataset.k]=parseFloat(inp.value)||0; compute();
+      var v=inp.value.trim();
+      rx[+inp.dataset.h][inp.dataset.k] = v===''? null : (parseFloat(v)||0);
+      compute();
     });
   });
 }
@@ -568,6 +587,8 @@ function buildTable(){
 var model={hours:[],bun:[],k:[]};
 
 function compute(){
+  /* 환자 정보가 하나도 없으면 결과를 모두 비워 둔다 */
+  BLANK = !(num('bw')>0) && !(num('bun')>0) && !(num('urr')>0);
   var bw=num('bw'), hct=num('hct'); hct=hct>1?hct/100:hct;
   var bun0=num('bun'), urr=num('urr'); urr=urr>1?urr/100:urr;
   var vd0=(HYD[str('hyd')]||0.6)*bw*1000;                    // ml
@@ -589,32 +610,38 @@ function compute(){
   var C=bun0, V=vd0, bunArr=[bun0], kArr=[], ktvSum=0, ufSum=0, worstFF=0, lowRatio=false, ffOver=false, urrOver=false;
 
   for(var h=0;h<HRS;h++){
-    var r=rx[h];
-    var qeff=r.qd + r.qrPre + r.qrPost + r.qpfr;             // ml/h
-    var qbHr=r.qb*60;
-    /* Saturation ratio : 유출액이 혈장수 농도에 얼마나 근접하는가.
-       이상적 역류 투석기의 물질수지 상한 SR = min(1, 혈장수유량 / Qeff)      */
-    var qbw=qbHr*(1-hct);
-    var sr=qeff>0? Math.min(1, qbw/qeff) : 1;
-    var K=qeff*sr;                                           // ml/h — 전달 청소율
+    var r=rx[h], V_=function(x){return (x===null||x===undefined||!isFinite(x))?0:x;};
+    var qd=V_(r.qd), qrPre=V_(r.qrPre), qrPost=V_(r.qrPost), qpfr=V_(r.qpfr), qb=V_(r.qb);
+    var qeff=qd + qrPre + qrPost + qpfr;                     // ml/h
+    var qbHr=qb*60;
+    /* Saturation ratio (투석액 포화도)
+       임상 통용 기준 : Qb 가 Qd 의 3배 이상이면 유출액이 완전히 포화 → SR 100%.
+       그보다 낮으면 비율에 선형 비례해 감소한다.
+         R = Qb(mL/min) / Qd(mL/min) ,  SR = min(1, R/3)
+       추가로 물리적 상한을 둔다 : 청소율은 혈장수 유량을 넘을 수 없다.        */
+    var qdMin=qd/60;
+    var ratio = qdMin>0 ? qb/qdMin : Infinity;
+    var sr = qd>0 ? Math.min(1, ratio/SR_RATIO) : 1;
+    var qbw=qbHr*(1-hct);                                    // 혈장수 유량 ml/h
+    var K=Math.min(qeff*sr, qbw||Infinity);                  // ml/h — 전달 청소율
     var qp=qbHr*(1-hct);                                     // 혈장유량 ml/h
     /* 여과분율 : 막을 통과하는 총 여과량 ÷ 필터로 들어가는 혈장유량(전희석 포함) */
-    var ff=(qp+r.qrPre)>0 ? (r.qpfr+r.qrPre+r.qrPost)/(qp+r.qrPre)*100 : NaN;
-    var qbqd=r.qd>0 ? r.qb/(r.qd/60) : NaN;
+    var ff=(qp+qrPre)>0 ? (qpfr+qrPre+qrPost)/(qp+qrPre)*100 : NaN;
+    var qbqd=isFinite(ratio)?ratio:NaN;
     if(isFinite(qbqd)&&qbqd<3) lowRatio=true;
     if(isFinite(ff)&&ff>worstFF) worstFF=ff;
 
     /* 단일풀 가변용적 : dV/dt=-Qpfr, V dC/dt=-K·C
        Qpfr>0 → C1 = C0 (V1/V0)^(K/Qpfr) ;  Qpfr=0 → C1 = C0·exp(-K/V0)         */
-    var V1=Math.max(V-r.qpfr, 1);
-    var C1 = r.qpfr>0 ? C*Math.pow(V1/V, K/r.qpfr) : C*Math.exp(-K/V);
+    var V1=Math.max(V-qpfr, 1);
+    var C1 = qpfr>0 ? C*Math.pow(V1/V, K/qpfr) : C*Math.exp(-K/V);
     if(!isFinite(C1)||C1<0) C1=0;
 
     var ktvH=K/V, hurr=C>0?(1-C1/C)*100:0, ourr=bun0>0?(1-C1/bun0)*100:0;
-    ktvSum+=ktvH; ufSum+=r.qpfr;
+    ktvSum+=ktvH; ufSum+=qpfr;
 
-    var tt=r.qb>0? ecvNow/r.qb*60 : NaN;                     // 회로 통과 시간 sec
-    setV('o_qdmin'+h,fmt(r.qd/60,1));
+    var tt=qb>0? ecvNow/qb*60 : NaN;                     // 회로 통과 시간 sec
+    setV('o_qdmin'+h,fmt(qdMin,1));
     setV('o_qeff'+h,fmt(qeff,0));
     setV('o_qbqd'+h,fmt(qbqd,1));
     setV('o_sr'+h,fmt(sr*100,1));
@@ -622,7 +649,7 @@ function compute(){
     setV('o_kmin'+h,fmt(K/60,1));
     setV('o_ff'+h,fmt(ff,1));
     setV('o_tt'+h,fmt(tt,0));
-    setV('o_pfr'+h,bw>0?fmt(r.qpfr/bw,1):'—');
+    setV('o_pfr'+h,bw>0?fmt(qpfr/bw,1):'—');
     setV('o_vd'+h,fmt(V1,0));
     setV('o_ktv'+h,fmt(ktvH,3));
     setV('o_bun'+h,fmt(C1,1));
@@ -634,7 +661,7 @@ function compute(){
                 ffCell.classList.toggle('alarm',isFinite(ff)&&ff>=FF_LIMIT); }
     var qqCell=document.getElementById('o_qbqd'+h); if(qqCell) qqCell.classList.toggle('bad',isFinite(qbqd)&&qbqd<3);
     var srCell=document.getElementById('o_sr'+h);   if(srCell) srCell.classList.toggle('bad',sr<0.95);
-    var ptCell=document.getElementById('o_pfr'+h);  if(ptCell) ptCell.classList.toggle('alarm',bw>0&&r.qpfr/bw>ufLimit);
+    var ptCell=document.getElementById('o_pfr'+h);  if(ptCell) ptCell.classList.toggle('alarm',bw>0&&qpfr/bw>ufLimit);
     var huCell=document.getElementById('o_hurr'+h);
     if(huCell) huCell.classList.toggle('alarm', iris && hurr>iris.hi);
     if(isFinite(ff)&&ff>=FF_LIMIT) ffOver=true;
@@ -653,10 +680,10 @@ function compute(){
   document.getElementById('chipUf').classList.toggle('warn', bw>0 && (ufSum/HRS/bw)>ufLimit);
 
   /* 회로 */
-  var ecv=ecvNow, tbv=(TBV[str('species')]||90)*bw;
+  var ecv=ecvNow, fset0=fsetNow, tbv=(TBV[str('species')]||90)*bw;
   setV('c_ecv',fmt(ecv,0),'ml'); setV('c_tbv',fmt(tbv,0),'ml');
-  setV('c_kit',ecv<tbv*0.2?'Recommend':'Change Lower Kit');
-  setV('c_prime',ecv>tbv*0.15?'YES':'No');
+  setV('c_kit', BLANK||!fset0 ? '—' : (ecv<tbv*0.2?'Recommend':'Change Lower Kit'));
+  setV('c_prime',BLANK||!fset0 ? '—' : (ecv>tbv*0.15?'YES':'No'));
   document.getElementById('chipKit').classList.toggle('warn',!(ecv<tbv*0.2));
   document.getElementById('chipPrime').classList.toggle('warn',ecv>tbv*0.15);
 
@@ -675,7 +702,9 @@ function compute(){
   if(urrOver) msgs.push('<b>시간당 URR이 IRIS 권장치를 초과</b>합니다 (' + (parseInt(str('txno'),10)||1) + '회차 · BUN ' + fmt(num('bun'),0) + ' → 권장 ' + fmt(iris.lo,1) + '–' + fmt(iris.hi,1) + '%/h). 불균형증후군 위험이 올라갑니다. 치료 시간을 늘리거나 Qd를 낮추세요.');
   if(isFinite(ektv)&&ktvSum<ektv*0.9) msgs.push('전달 Kt/V가 목표에 <b>미달</b>합니다. Qd를 올리거나 치료 시간을 늘리세요.');
   if(isFinite(ektv)&&ktvSum>ektv*1.15) msgs.push('전달 Kt/V가 목표를 <b>초과</b>합니다. 첫 투석이라면 불균형증후군에 유의하세요.');
-  document.getElementById('hint').innerHTML = msgs.length? msgs.join('<br>') : '입력한 처방으로 목표 범위 안에서 전달됩니다.';
+  document.getElementById('hint').innerHTML = BLANK
+    ? '① 환자 정보와 목표를 입력한 뒤 <b style="color:var(--brand)">계산!</b> 을 누르면 아래 표가 채워집니다.'
+    : (msgs.length? msgs.join('<br>') : '입력한 처방으로 목표 범위 안에서 전달됩니다.');
 
   model={bun:bunArr,k:kArr,target:bun0*(1-urr),bun0:bun0};
   drawAll();
@@ -690,7 +719,7 @@ function flatPanel(vd0,ektv,bun0,urr,bw,hct,ecv){
   var quf=HRS>0? num('ufTot')/HRS : 0;
   var khr=ektv*vd0/HRS;                    // 시간당 필요 청소율 ml/h (SR 100%)
   var qeff=khr, qd=Math.max(0,qeff-quf);
-  var qbMin=qd*3/60;                       // 엑셀 규칙 Qb = 3 × Qd
+  var qbMin=Math.ceil(qd*SR_RATIO/60);     // SR 100% 를 위한 Qb = 3 × Qd
   var qp=qbMin*60*(1-hct);
   var ff=qp>0? quf/qp*100 : NaN;
   var tt=qbMin>0? ecv/qbMin*60 : NaN;
@@ -746,8 +775,9 @@ function applyQeff(list){
   rx.forEach(function(r,h){
     var qeff=list?list[h].qeff:null;
     if(qeff==null) return;
+    r.qrPre=r.qrPre||0; r.qrPost=r.qrPost||0;
     r.qd=Math.max(0,Math.round(qeff - r.qrPre - r.qrPost - r.qpfr));
-    if(r.qb*60 < r.qd*3) r.qb=Math.ceil(r.qd*3/60/5)*5;
+    r.qb=Math.max(1, Math.ceil(r.qd*SR_RATIO/60));
   });
   buildTable(); compute();
 }
@@ -851,24 +881,27 @@ document.getElementById('autoBtn').addEventListener('click',function(){
   var bw=num('bw'), urr=num('urr'); urr=urr>1?urr/100:urr;
   var vd0=(HYD[str('hyd')]||0.6)*bw*1000;
   if(!(urr>0&&urr<1)) return;
+  /* SR 100% 를 전제로 Qeff = 필요 청소율. Qd 를 역산한 뒤 Qb = 3 × Qd 로 제시한다. */
   var khr=(-Math.log(1-urr))*vd0/HRS;                 // 시간당 필요 청소율 ml/h
   var ufTot=num('ufTot'), ufHr=HRS>0?ufTot/HRS:0;
   rx.forEach(function(r){
     r.qpfr=Math.round(ufHr);
-    r.qd=Math.max(0,Math.round(khr-r.qrPre-r.qrPost-r.qpfr));
-    if(!r.qb || r.qb*60 < r.qd*3) r.qb=Math.max(r.qb, Math.ceil(r.qd*3/60/5)*5);   // Qb ≥ 3×Qd
+    r.qrPre=r.qrPre||0; r.qrPost=r.qrPost||0;
+    var qeff=khr;                                     // SR = 100%
+    r.qd=Math.max(0,Math.round(qeff-r.qrPre-r.qrPost-r.qpfr));
+    r.qb=Math.max(1, Math.ceil(r.qd*SR_RATIO/60));    // Qb = 3 × Qd  → SR 100%
   });
   buildTable(); compute();
 });
 
 document.getElementById('resetBtn').addEventListener('click',function(){
-  rx=[]; seedRows(); buildTable(); compute();
+  clearAll(); buildTable(); compute();
 });
 document.getElementById('printBtn').addEventListener('click',function(){window.print();});
 
 document.getElementById('hrs').addEventListener('input',function(){
-  var v=Math.max(1,Math.min(12,parseInt(this.value,10)||1));
-  HRS=v; seedRows(); buildTable(); compute();
+  var raw=parseInt(this.value,10);
+  HRS = isFinite(raw)? Math.max(1,Math.min(12,raw)) : 5; seedRows(); buildTable(); compute();
 });
 ['species','bw','hyd','bun','hct','urr','ufTot','txno','filter','addv','dil','hep','bolus','cri'].forEach(function(id){
   var e=document.getElementById(id); if(!e) return;
