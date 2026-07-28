@@ -22,6 +22,7 @@
   --calc:#fde8ec; --calc-line:#f3c7d0; --calc-ink:#8d3a4c;
   --sel:#e2f4e4; --sel-line:#bfe3c4; --sel-ink:#2b6136;
   --warn:#c4643c; --ok:#0f6b62;
+  --s1:#2a78d6; --s2:#eb6834;          /* 차트 계열색 (라이트) */
   --shadow:0 1px 2px rgba(16,40,36,.05),0 8px 24px -12px rgba(16,40,36,.18);
   --radius:14px; --max:1180px;
 }
@@ -33,6 +34,7 @@
     --calc:#3a1f27; --calc-line:#5c2f3c; --calc-ink:#f0b8c5;
     --sel:#17301c; --sel-line:#2c4d33; --sel-ink:#9fd9a8;
     --warn:#e08b62; --ok:#4dbfae;
+    --s1:#3987e5; --s2:#d95926;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
   }
 }
@@ -52,6 +54,7 @@
   --calc:#fde8ec; --calc-line:#f3c7d0; --calc-ink:#8d3a4c;
   --sel:#e2f4e4; --sel-line:#bfe3c4; --sel-ink:#2b6136;
   --warn:#c4643c; --ok:#0f6b62;
+  --s1:#2a78d6; --s2:#eb6834;
   --shadow:0 1px 2px rgba(16,40,36,.05),0 8px 24px -12px rgba(16,40,36,.18);
 }
 
@@ -142,6 +145,43 @@ main{padding:34px 0 70px}
 .badge{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:5px;margin-left:6px;vertical-align:middle}
 .badge.ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
 .badge.ng{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
+
+/* chart */
+.chart{position:relative;margin-bottom:20px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.grid{stroke:var(--line);stroke-width:1}
+.axis{stroke:var(--line);stroke-width:1}
+.tick{fill:var(--ink-3);font-size:11px;font-family:inherit}
+.alab{fill:var(--ink-3);font-size:10.5px;font-weight:600;letter-spacing:.06em;font-family:inherit}
+.tgt{stroke:var(--ink-3);stroke-width:1.5;stroke-dasharray:5 4;opacity:.7}
+.tgtx{fill:var(--ink-3);font-size:10.5px;font-weight:600;font-family:inherit}
+.ln{fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ln.m1{stroke:var(--s1)} .ln.m2{stroke:var(--s2)}
+.ln.dim{opacity:.42} .ln.act{stroke-width:3}
+.dot{stroke:var(--bg);stroke-width:2}
+.dot.m1{fill:var(--s1)} .dot.m2{fill:var(--s2)}
+.dot.dim{opacity:.42}
+.dlab{font-size:11px;font-weight:700;font-family:inherit;fill:var(--ink-2)}
+.cross{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+.chart.hov .cross{opacity:.8}
+.hitrect{fill:transparent;cursor:crosshair}
+.clegend{display:flex;flex-wrap:wrap;gap:16px;margin:0 0 12px 2px}
+.ci{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;font-weight:600;color:var(--ink-2)}
+.ci .k{width:16px;height:3px;border-radius:2px;flex:none}
+.ci.off{opacity:.5}
+.ci .k.m1{background:var(--s1)} .ci .k.m2{background:var(--s2)}
+.tip{
+  position:absolute;pointer-events:none;opacity:0;transform:translate(-50%,-108%);
+  background:var(--bg);border:1px solid var(--line);border-radius:9px;
+  padding:9px 12px;box-shadow:var(--shadow);font-size:.8rem;white-space:nowrap;z-index:5;
+  transition:opacity .12s;
+}
+.chart.hov .tip{opacity:1}
+.tip .th{font-weight:700;color:var(--ink);margin-bottom:5px;font-size:.83rem}
+.tip .tr{display:flex;align-items:center;gap:7px;color:var(--ink-2);line-height:1.6}
+.tip .tr b{margin-left:auto;padding-left:14px;color:var(--ink);font-variant-numeric:tabular-nums}
+.tip .sw2{width:9px;height:9px;border-radius:2px;flex:none}
+.tip .sw2.m1{background:var(--s1)} .tip .sw2.m2{background:var(--s2)}
 
 /* tables */
 .tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
@@ -386,6 +426,23 @@ footer a{color:var(--brand);font-weight:600}
         <button class="tab" data-m="2" type="button">Method 2 — 시간당 감소율 고정</button>
       </div>
       <p class="tnote" id="mnote"></p>
+
+      <div class="clegend">
+        <span class="ci" id="ci1"><span class="k m1"></span>Method 1 — 감소량 고정</span>
+        <span class="ci" id="ci2"><span class="k m2"></span>Method 2 — 감소율 고정</span>
+        <span class="ci"><span class="k" style="background:var(--ink-3);height:2px"></span>목표 BUN</span>
+      </div>
+      <figure class="chart" id="chart">
+        <svg id="svg" viewBox="0 0 720 300" role="img" aria-labelledby="chartTitle">
+          <title id="chartTitle">투석 시간에 따른 BUN 감소 곡선 — Method 1과 Method 2 비교</title>
+          <g id="gGrid"></g><g id="gTgt"></g><g id="gLines"></g><g id="gDots"></g>
+          <g id="gLabs"></g><g id="gAxis"></g>
+          <line class="cross" id="cross" y1="0" y2="0" x1="0" x2="0"></line>
+          <rect class="hitrect" id="hit" x="0" y="0" width="0" height="0"></rect>
+        </svg>
+        <div class="tip" id="tip"></div>
+      </figure>
+
       <div class="scroller">
         <table>
           <thead>
@@ -560,8 +617,135 @@ footer a{color:var(--brand);font-weight:600}
     setV('r_boluIU', fmt(num('bolus')*bw,0), 'IU');
     setV('r_criIU',  fmt(num('cri')*bw*td,0),'IU');
 
-    buildTable({bun0:bun0,urr:urr,td:td,vd:vd,quf:quf,qrPre:qrPre,qrPost:qrPost,sr:sr});
+    var p={bun0:bun0,urr:urr,td:td,vd:vd,quf:quf,qrPre:qrPre,qrPost:qrPost,sr:sr};
+    buildTable(p);
+    drawChart(p);
   }
+
+  /* ---------- BUN 감소 곡선 ---------- */
+  var NS='http://www.w3.org/2000/svg';
+  var CH={W:720,H:310,L:54,R:58,T:30,B:38};
+  var chartPts={m1:[],m2:[],n:0};
+
+  function el(tag,attrs,text){
+    var e=document.createElementNS(NS,tag);
+    for(var k in attrs) e.setAttribute(k,attrs[k]);
+    if(text!=null) e.textContent=text;
+    return e;
+  }
+  function series(p,m){
+    var out=[{h:0,bun:p.bun0}], prev=p.bun0;
+    var n=Math.max(1,Math.min(24,Math.ceil(p.td)));
+    var d=p.bun0*p.urr/p.td, f=p.urr/p.td;
+    for(var h=1;h<=n;h++){
+      var cur=(m===1)? prev-d : prev*(1-f);
+      if(cur<0) cur=0;
+      out.push({h:h,bun:cur});
+      prev=cur; if(cur<=0) break;
+    }
+    return out;
+  }
+
+  function drawChart(p){
+    ['gGrid','gTgt','gLines','gDots','gLabs','gAxis'].forEach(function(id){
+      document.getElementById(id).innerHTML='';
+    });
+    if(!(p.urr>0&&p.urr<1)||!(p.td>0)) return;
+
+    var m1=series(p,1), m2=series(p,2);
+    var n=Math.max(m1[m1.length-1].h, m2[m2.length-1].h);
+    var target=p.bun0*(1-p.urr);
+    var yMax=Math.ceil(p.bun0/20)*20 || 20;
+
+    var iw=CH.W-CH.L-CH.R, ih=CH.H-CH.T-CH.B;
+    var X=function(h){ return CH.L + (n?h/n:0)*iw; };
+    var Y=function(v){ return CH.T + (1-v/yMax)*ih; };
+
+    /* 가로 격자 + y축 눈금 */
+    var g=document.getElementById('gGrid'), ax=document.getElementById('gAxis');
+    for(var i=0;i<=4;i++){
+      var v=yMax*i/4, y=Y(v);
+      g.appendChild(el('line',{class:'grid',x1:CH.L,x2:CH.L+iw,y1:y,y2:y}));
+      ax.appendChild(el('text',{class:'tick',x:CH.L-9,y:y+4,'text-anchor':'end'},Math.round(v)));
+    }
+    /* x축 눈금 */
+    for(var h=0;h<=n;h++){
+      ax.appendChild(el('text',{class:'tick',x:X(h),y:CH.T+ih+19,'text-anchor':'middle'},h));
+    }
+    ax.appendChild(el('line',{class:'axis',x1:CH.L,x2:CH.L+iw,y1:CH.T+ih,y2:CH.T+ih}));
+    ax.appendChild(el('text',{class:'alab',x:CH.L-46,y:CH.T-14,'text-anchor':'start'},'BUN (mg/dL)'));
+    ax.appendChild(el('text',{class:'alab',x:CH.L+iw,y:CH.T+ih+34,'text-anchor':'end'},'투석 경과 시간 (hr)'));
+
+    /* 목표 BUN 기준선 */
+    var ty=Y(target), tg=document.getElementById('gTgt');
+    tg.appendChild(el('line',{class:'tgt',x1:CH.L,x2:CH.L+iw,y1:ty,y2:ty}));
+    tg.appendChild(el('text',{class:'tgtx',x:CH.L+7,y:ty-7,'text-anchor':'start'},'목표 BUN '+fmt(target,0)));
+
+    /* 곡선 + 끝점 직접 라벨 */
+    var gl=document.getElementById('gLines'), gd=document.getElementById('gDots'), gb=document.getElementById('gLabs');
+    var ends=[];
+    [[m2,'m2',2],[m1,'m1',1]].forEach(function(s){
+      var pts=s[0], cls=s[1], mno=s[2];
+      var d=pts.map(function(q,i){ return (i?'L':'M')+X(q.h).toFixed(1)+' '+Y(q.bun).toFixed(1); }).join(' ');
+      gl.appendChild(el('path',{class:'ln '+cls+(method===mno?' act':' dim'),d:d}));
+      pts.forEach(function(q){
+        gd.appendChild(el('circle',{class:'dot '+cls+(method===mno?'':' dim'),cx:X(q.h),cy:Y(q.bun),r:method===mno?4.5:3.5}));
+      });
+      var last=pts[pts.length-1];
+      ends.push({cls:cls,mno:mno,x:X(last.h)+9,y:Y(last.bun)+4,v:last.bun});
+    });
+    /* 끝점 라벨 — 겹치면 서로 밀어냄 */
+    ends.sort(function(a,b){ return a.y-b.y; });
+    var MIN=15;
+    if(ends.length===2 && (ends[1].y-ends[0].y)<MIN){
+      var mid=(ends[0].y+ends[1].y)/2;
+      ends[0].y=mid-MIN/2; ends[1].y=mid+MIN/2;
+    }
+    ends.forEach(function(e){
+      gb.appendChild(el('text',{
+        class:'dlab',x:e.x,y:e.y,style:'fill:var(--'+(e.mno===1?'s1':'s2')+')'
+      }, fmt(e.v,0)));
+    });
+
+    /* 호버 레이어 */
+    var cross=document.getElementById('cross');
+    cross.setAttribute('y1',CH.T); cross.setAttribute('y2',CH.T+ih);
+    var hit=document.getElementById('hit');
+    hit.setAttribute('x',CH.L); hit.setAttribute('y',CH.T);
+    hit.setAttribute('width',iw); hit.setAttribute('height',ih);
+    chartPts={m1:m1,m2:m2,n:n,X:X,Y:Y,iw:iw,ih:ih};
+  }
+
+  (function(){
+    var fig=document.getElementById('chart'), svg=document.getElementById('svg');
+    var tip=document.getElementById('tip'), cross=document.getElementById('cross');
+    var hit=document.getElementById('hit');
+
+    function at(list,h){ for(var i=0;i<list.length;i++) if(list[i].h===h) return list[i]; return null; }
+
+    function move(ev){
+      if(!chartPts.X) return;
+      var r=svg.getBoundingClientRect();
+      var cx=ev.touches? ev.touches[0].clientX : ev.clientX;
+      var sx=(cx-r.left)/r.width*CH.W;
+      var h=Math.round((sx-CH.L)/chartPts.iw*chartPts.n);
+      h=Math.max(0,Math.min(chartPts.n,h));
+      var px=chartPts.X(h);
+      cross.setAttribute('x1',px); cross.setAttribute('x2',px);
+
+      var a=at(chartPts.m1,h), b=at(chartPts.m2,h);
+      var html='<div class="th">'+h+'시간 경과</div>';
+      if(a) html+='<div class="tr"><span class="sw2 m1"></span>Method 1<b>'+fmt(a.bun,1)+'</b></div>';
+      if(b) html+='<div class="tr"><span class="sw2 m2"></span>Method 2<b>'+fmt(b.bun,1)+'</b></div>';
+      tip.innerHTML=html;
+      tip.style.left=(px/CH.W*100)+'%';
+      var topV=Math.min(a?chartPts.Y(a.bun):1e9, b?chartPts.Y(b.bun):1e9);
+      tip.style.top=(topV/CH.H*100)+'%';
+      fig.classList.add('hov');
+    }
+    ['mousemove','touchmove','touchstart'].forEach(function(e){ hit.addEventListener(e,move,{passive:true}); });
+    ['mouseleave','touchend'].forEach(function(e){ fig.addEventListener(e,function(){ fig.classList.remove('hov'); }); });
+  })();
 
   function buildTable(p){
     var tb=document.getElementById('tbody');
@@ -616,7 +800,10 @@ footer a{color:var(--brand);font-weight:600}
   Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(t){
     t.addEventListener('click',function(){
       Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(x){x.classList.remove('on')});
-      t.classList.add('on'); method=parseInt(t.getAttribute('data-m'),10); compute();
+      t.classList.add('on'); method=parseInt(t.getAttribute('data-m'),10);
+      document.getElementById('ci1').classList.toggle('off',method!==1);
+      document.getElementById('ci2').classList.toggle('off',method!==2);
+      compute();
     });
   });
   document.getElementById('resetBtn').addEventListener('click',function(){
@@ -625,6 +812,7 @@ footer a{color:var(--brand);font-weight:600}
   });
   document.getElementById('printBtn').addEventListener('click',function(){ window.print(); });
 
+  document.getElementById('ci2').classList.add('off');
   compute();
 })();
 </script>
