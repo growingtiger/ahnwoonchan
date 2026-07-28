@@ -356,56 +356,6 @@ header.stuck{border-bottom-color:var(--line)}
 .emergency ol{margin:14px 0 0 18px;font-size:.88rem;color:var(--ink-2)}
 .emergency li{margin-bottom:7px;padding-left:4px}
 
-/* ---------- inquiry form ---------- */
-.formwrap{
-  margin-top:22px;background:var(--bg);border:1px solid var(--line);
-  border-radius:var(--radius);padding:34px 32px;box-shadow:var(--shadow);
-}
-@media(max-width:640px){.formwrap{padding:26px 20px}}
-.form-head{margin-bottom:26px;padding-bottom:22px;border-bottom:1px solid var(--line)}
-.form-head h3{font-size:1.2rem;margin-bottom:8px}
-.form-head p{font-size:.9rem;color:var(--ink-3);max-width:62ch}
-.form-head strong{color:var(--ink-2);font-weight:600}
-.form-head a{color:var(--brand);font-weight:700;border-bottom:1px solid color-mix(in srgb,var(--brand) 40%,transparent)}
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px;margin-bottom:18px}
-@media(max-width:640px){.fgrid{grid-template-columns:1fr}}
-.field{display:flex;flex-direction:column;gap:7px;margin-bottom:2px}
-.field label{font-size:.85rem;font-weight:600;color:var(--ink-2);display:flex;align-items:center;gap:7px}
-.field .req{
-  font-size:.66rem;font-weight:700;letter-spacing:.03em;color:var(--accent);
-  background:color-mix(in srgb,var(--accent) 12%,transparent);padding:2px 6px;border-radius:4px;
-}
-.field input,.field select,.field textarea{
-  font-family:inherit;font-size:.94rem;color:var(--ink);
-  background:var(--bg-soft);border:1px solid var(--line);border-radius:9px;
-  padding:11px 13px;width:100%;transition:.18s;line-height:1.6;
-}
-.field textarea{resize:vertical;min-height:120px}
-.field input::placeholder,.field textarea::placeholder{color:var(--ink-3);opacity:.75}
-.field input:focus,.field select:focus,.field textarea:focus{
-  outline:none;border-color:var(--brand);background:var(--bg);
-  box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 15%,transparent);
-}
-.field input.err,.field textarea.err{border-color:var(--accent)}
-.counter{font-size:.75rem;color:var(--ink-3);text-align:right}
-.consent{
-  display:flex;gap:11px;align-items:flex-start;margin:18px 0 4px;
-  font-size:.86rem;color:var(--ink-2);line-height:1.65;cursor:pointer;
-}
-.consent input{width:17px;height:17px;flex:none;margin-top:3px;accent-color:var(--brand);cursor:pointer}
-.consent.err span{color:var(--accent)}
-.form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:22px}
-.form-actions button{cursor:pointer;font-family:inherit;border:none}
-.form-actions button[disabled]{opacity:.55;cursor:not-allowed}
-.form-msg{font-size:.88rem;font-weight:500;margin:0}
-.form-msg.ok{color:var(--brand)}
-.form-msg.ng{color:var(--accent)}
-.formwrap.done .form-head,.formwrap.done form{display:none}
-.done-panel{display:none;text-align:center;padding:24px 10px}
-.formwrap.done .done-panel{display:block}
-.done-panel h3{font-size:1.15rem;color:var(--brand);margin-bottom:10px}
-.done-panel p{font-size:.92rem;color:var(--ink-2);max-width:46ch;margin:0 auto}
-
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)}
 .foot{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:flex-start}
@@ -913,62 +863,6 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
         </div>
       </div>
 
-      <!-- 온라인 문의 폼 -->
-      <div class="formwrap rv">
-        <div class="form-head">
-          <h3>온라인 문의</h3>
-          <p>남겨 주시면 진료 시간 내에 순차적으로 연락드립니다.
-             <strong>응급 상황이라면 폼 대신 <a href="tel:0225490275">02-549-0275</a>로 바로 전화 주세요.</strong></p>
-        </div>
-
-        <form id="inquiryForm" novalidate>
-          <div class="fgrid">
-            <div class="field">
-              <label for="f-kind">문의 구분</label>
-              <select id="f-kind" name="kind" required>
-                <option value="guardian">보호자 문의</option>
-                <option value="vet">수의사 전원 의뢰</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="f-name">성함 <span class="req">필수</span></label>
-              <input id="f-name" name="name" type="text" maxlength="50" autocomplete="name" required placeholder="홍길동">
-            </div>
-            <div class="field">
-              <label for="f-contact">연락처 <span class="req">필수</span></label>
-              <input id="f-contact" name="contact" type="text" maxlength="100" autocomplete="tel" required placeholder="010-0000-0000 또는 이메일">
-            </div>
-            <div class="field">
-              <label for="f-patient">환자 정보</label>
-              <input id="f-patient" name="patient" type="text" maxlength="200" placeholder="예: 말티즈 12살 3.2kg / 고양이 5살">
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="f-message">문의 내용 <span class="req">필수</span></label>
-            <textarea id="f-message" name="message" rows="6" maxlength="2000" required
-              placeholder="증상이 시작된 시점, 최근 검사 결과, 현재 치료 중인 내용을 함께 적어 주시면 판단에 도움이 됩니다."></textarea>
-            <div class="counter"><span id="msgCount">0</span> / 2000자</div>
-          </div>
-
-          <label class="consent">
-            <input id="f-consent" name="consent" type="checkbox" required>
-            <span>문의 응대를 위해 성함과 연락처, 문의 내용을 수집·이용하는 데 동의합니다.
-              수집한 정보는 상담 목적으로만 사용하며, 응대 완료 후 파기합니다.</span>
-          </label>
-
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary" id="submitBtn">문의 보내기</button>
-            <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
-          </div>
-        </form>
-
-        <div class="done-panel">
-          <h3>문의가 접수되었습니다</h3>
-          <p>진료 시간 내에 남겨 주신 연락처로 회신드리겠습니다.
-             상태가 급하게 나빠지면 기다리지 마시고 02-549-0275로 전화 주세요.</p>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -1042,82 +936,6 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
   }
 
   document.getElementById('yr').textContent=new Date().getFullYear();
-})();
-
-/* ---------- 문의 폼 → Supabase ----------
-   여기 들어가는 키는 공개용(publishable) 키입니다. 노출되어도 안전하도록
-   inquiries 테이블에 "INSERT만 허용, SELECT 불가" RLS 정책이 걸려 있습니다.
-   secret key는 절대 이 파일에 넣지 마세요. (supabase-setup.sql 참고)      */
-(function(){
-  var SB_URL = 'https://zzgeorafbtudicqrqwhn.supabase.co';
-  var SB_KEY = 'sb_publishable_csFuZp2WYJnIV8HFUdLYqQ_Sg_uw-Vk';
-
-  var form = document.getElementById('inquiryForm');
-  if(!form) return;
-  var wrap   = document.querySelector('.formwrap');
-  var btn    = document.getElementById('submitBtn');
-  var msgEl  = document.getElementById('formMsg');
-  var msgBox = document.getElementById('f-message');
-  var count  = document.getElementById('msgCount');
-  var consentBox = document.getElementById('f-consent');
-
-  msgBox.addEventListener('input', function(){ count.textContent = msgBox.value.length; });
-
-  function say(text, kind){
-    msgEl.textContent = text;
-    msgEl.className = 'form-msg' + (kind ? ' ' + kind : '');
-  }
-  function markErr(el, bad){
-    el.classList.toggle('err', bad);
-  }
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-
-    var name    = document.getElementById('f-name');
-    var contact = document.getElementById('f-contact');
-    var bad = false;
-
-    [[name, !name.value.trim()], [contact, !contact.value.trim()], [msgBox, !msgBox.value.trim()]]
-      .forEach(function(pair){ markErr(pair[0], pair[1]); if(pair[1]) bad = true; });
-
-    document.querySelector('.consent').classList.toggle('err', !consentBox.checked);
-    if(!consentBox.checked) bad = true;
-
-    if(bad){ say('필수 항목과 개인정보 수집 동의를 확인해 주세요.', 'ng'); return; }
-
-    var payload = {
-      kind:    document.getElementById('f-kind').value,
-      name:    name.value.trim(),
-      contact: contact.value.trim(),
-      patient: document.getElementById('f-patient').value.trim() || null,
-      message: msgBox.value.trim(),
-      consent: true
-    };
-
-    btn.disabled = true;
-    say('보내는 중입니다…', '');
-
-    fetch(SB_URL + '/rest/v1/inquiries', {
-      method: 'POST',
-      headers: {
-        'apikey': SB_KEY,
-        'Authorization': 'Bearer ' + SB_KEY,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(payload)
-    })
-    .then(function(res){
-      if(res.ok) { wrap.classList.add('done'); return; }
-      return res.text().then(function(t){ throw new Error(t || ('HTTP ' + res.status)); });
-    })
-    .catch(function(err){
-      btn.disabled = false;
-      say('전송에 실패했습니다. 02-549-0275로 전화 주시거나 잠시 후 다시 시도해 주세요.', 'ng');
-      if(window.console) console.error('[inquiry]', err);
-    });
-  });
 })();
 </script>
 
