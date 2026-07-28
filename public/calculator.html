@@ -96,6 +96,9 @@ header{
 main{padding-bottom:64px}
 .card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
 .chead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.sub2{font-size:.85rem;color:var(--ink-3);line-height:1.65;max-width:96ch}
+.sub2 b{color:var(--ink-2)}
+.sub2 em{font-style:normal;color:var(--accent);font-weight:700}
 .chead h2{font-size:.75rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--brand);margin-right:auto}
 .legend{display:flex;flex-wrap:wrap;gap:7px}
 .lg{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;color:var(--ink-3)}
@@ -276,10 +279,86 @@ footer a{color:var(--brand);font-weight:600}
     </div>
   </div>
 
-  <!-- ② 시간대별 처방 -->
+  <!-- ② 회로 · 항응고 -->
+  <div class="two">
+    <div class="card">
+      <div class="chead"><h2>② 회로</h2></div>
+      <div class="setgrid">
+        <div class="f"><label for="filter">Filter set</label><select id="filter"></select></div>
+        <div class="f"><label for="addv">Additional line <span class="un">ml</span></label>
+          <input id="addv" type="number" step="1" min="0" value="0"></div>
+      </div>
+      <div class="chips">
+        <div class="chip"><div class="k">Extracorporeal volume</div><div class="v" id="c_ecv">—<small>ml</small></div></div>
+        <div class="chip"><div class="k">Total body volume</div><div class="v" id="c_tbv">—<small>ml</small></div></div>
+        <div class="chip" id="chipKit"><div class="k">Kit 적합성</div><div class="v" id="c_kit" style="font-size:.95rem">—</div></div>
+        <div class="chip" id="chipPrime"><div class="k">Blood priming</div><div class="v" id="c_prime" style="font-size:.95rem">—</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="chead"><h2>③ 항응고</h2></div>
+      <div class="setgrid">
+        <div class="f"><label for="dil">Dilution N/S <span class="un">ml</span></label>
+          <input id="dil" type="number" step="10" min="1" value="100"></div>
+        <div class="f"><label for="hep">Heparin <span class="un">IU</span></label>
+          <input id="hep" type="number" step="100" min="1" value="5000"></div>
+        <div class="f"><label for="bolus">Bolus <span class="un">IU/kg</span></label>
+          <input id="bolus" type="number" step="5" min="0" value="25"></div>
+        <div class="f"><label for="cri">CRI <span class="un">IU/kg/hr</span></label>
+          <input id="cri" type="number" step="5" min="0" value="25"></div>
+      </div>
+      <div class="chips">
+        <div class="chip"><div class="k">Conc. of heparin</div><div class="v" id="c_hconc">—<small>IU/ml</small></div></div>
+        <div class="chip"><div class="k">Bolus volume</div><div class="v" id="c_bolusv">—<small>ml</small></div></div>
+        <div class="chip"><div class="k">CRI volume</div><div class="v" id="c_criv">—<small>ml/hr</small></div></div>
+        <div class="chip"><div class="k">총 헤파린</div><div class="v" id="c_hepTot">—<small>IU</small></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ 균일 속도 처방 -->
   <div class="card">
     <div class="chead">
-      <h2>② 시간대별 처방</h2>
+      <h2>④ 균일 속도 처방 — 기준 제시값</h2>
+      <div class="btnrow"><button class="btn p" id="applyFlat" type="button">이 값으로 표 채우기</button></div>
+    </div>
+    <p class="sub2">치료 내내 같은 속도로 돌릴 때의 기준값입니다. 상단 목표(URR · 치료시간 · UF 총량)에서 역산했으며,
+       Saturation ratio 100%, 희석액 0, Qb = 3 × Qd를 가정합니다.</p>
+    <div class="chips" style="margin-top:14px">
+      <div class="chip"><div class="k">Qeff = Qd+Qr+Quf</div><div class="v" id="f_qeff">—<small>ml/h</small></div></div>
+      <div class="chip hi"><div class="k">Qd Dialysate</div><div class="v" id="f_qd">—<small>ml/h</small></div></div>
+      <div class="chip hi"><div class="k">Qb Blood flow</div><div class="v" id="f_qb">—<small>ml/min</small></div></div>
+      <div class="chip"><div class="k">Quf Ultrafiltration</div><div class="v" id="f_quf">—<small>ml/h</small></div></div>
+      <div class="chip"><div class="k">K 청소율</div><div class="v" id="f_k">—<small>ml/min</small></div></div>
+      <div class="chip"><div class="k">시간당 Kt/V</div><div class="v" id="f_ktv">—</div></div>
+      <div class="chip"><div class="k">Filtration fraction</div><div class="v" id="f_ff">—<small>%</small></div></div>
+      <div class="chip"><div class="k">Transit time</div><div class="v" id="f_tt">—<small>sec</small></div></div>
+    </div>
+  </div>
+
+  <!-- ④ Method 1 / 2 예시 -->
+  <div class="card">
+    <div class="chead">
+      <h2>⑤ 시간 배분 방식 예시 — Method 1 / 2</h2>
+      <div class="btnrow">
+        <button class="btn" id="applyM1" type="button">Method 1로 채우기</button>
+        <button class="btn" id="applyM2" type="button">Method 2로 채우기</button>
+      </div>
+    </div>
+    <p class="sub2">
+      <b>Method 1</b>은 시간당 BUN 감소<em>량</em>을 고정합니다. 남은 BUN이 줄수록 제거율을 올려야 해 Qeff가 시간마다 커지지만, 목표 URR에 정확히 도달합니다.<br>
+      <b>Method 2</b>는 시간당 감소<em>율</em>을 고정합니다. Qeff가 일정해 운용이 쉽지만 지수적으로 감소해 종료 시점 누적 URR이 목표보다 낮게 끝납니다.
+    </p>
+    <div class="scroller" style="margin-top:14px">
+      <table class="hx" id="mtable"><thead><tr id="mthead"></tr></thead><tbody id="mtbody"></tbody></table>
+    </div>
+  </div>
+
+  <!-- ⑤ 시간대별 처방 -->
+  <div class="card">
+    <div class="chead">
+      <h2>⑥ 시간대별 처방 — 직접 조절</h2>
       <div class="legend">
         <span class="lg"><span class="sw i"></span>직접 입력</span>
         <span class="lg"><span class="sw c"></span>자동 계산</span>
@@ -295,9 +374,9 @@ footer a{color:var(--brand);font-weight:600}
     <p class="hint" id="hint"></p>
   </div>
 
-  <!-- ③ 예측 프로파일 -->
+  <!-- ⑥ 예측 프로파일 -->
   <div class="card">
-    <div class="chead"><h2>③ 예측 프로파일</h2></div>
+    <div class="chead"><h2>⑦ 예측 프로파일</h2></div>
     <div class="charts">
       <div>
         <div class="ct">Predicted BUN (mg/dL)</div>
@@ -324,43 +403,6 @@ footer a{color:var(--brand);font-weight:600}
     </div>
   </div>
 
-  <!-- ④ 회로 · 항응고 -->
-  <div class="two">
-    <div class="card">
-      <div class="chead"><h2>④ 회로</h2></div>
-      <div class="setgrid">
-        <div class="f"><label for="filter">Filter set</label><select id="filter"></select></div>
-        <div class="f"><label for="addv">Additional line <span class="un">ml</span></label>
-          <input id="addv" type="number" step="1" min="0" value="0"></div>
-      </div>
-      <div class="chips">
-        <div class="chip"><div class="k">Extracorporeal volume</div><div class="v" id="c_ecv">—<small>ml</small></div></div>
-        <div class="chip"><div class="k">Total body volume</div><div class="v" id="c_tbv">—<small>ml</small></div></div>
-        <div class="chip" id="chipKit"><div class="k">Kit 적합성</div><div class="v" id="c_kit" style="font-size:.95rem">—</div></div>
-        <div class="chip" id="chipPrime"><div class="k">Blood priming</div><div class="v" id="c_prime" style="font-size:.95rem">—</div></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="chead"><h2>⑤ 항응고</h2></div>
-      <div class="setgrid">
-        <div class="f"><label for="dil">Dilution N/S <span class="un">ml</span></label>
-          <input id="dil" type="number" step="10" min="1" value="100"></div>
-        <div class="f"><label for="hep">Heparin <span class="un">IU</span></label>
-          <input id="hep" type="number" step="100" min="1" value="5000"></div>
-        <div class="f"><label for="bolus">Bolus <span class="un">IU/kg</span></label>
-          <input id="bolus" type="number" step="5" min="0" value="25"></div>
-        <div class="f"><label for="cri">CRI <span class="un">IU/kg/hr</span></label>
-          <input id="cri" type="number" step="5" min="0" value="25"></div>
-      </div>
-      <div class="chips">
-        <div class="chip"><div class="k">Conc. of heparin</div><div class="v" id="c_hconc">—<small>IU/ml</small></div></div>
-        <div class="chip"><div class="k">Bolus volume</div><div class="v" id="c_bolusv">—<small>ml</small></div></div>
-        <div class="chip"><div class="k">CRI volume</div><div class="v" id="c_criv">—<small>ml/hr</small></div></div>
-        <div class="chip"><div class="k">총 헤파린</div><div class="v" id="c_hepTot">—<small>IU</small></div></div>
-      </div>
-    </div>
-  </div>
 
   <div class="note">
     <strong>이 계산기는 수의사용 참고 도구입니다.</strong>
@@ -559,7 +601,92 @@ function compute(){
 
   model={bun:bunArr,k:kArr,target:bun0*(1-urr),bun0:bun0};
   drawAll();
+  flatPanel(vd0,ektv,bun0,urr,bw,hct,ecv);
+  methodTable(vd0,bun0,urr);
 }
+
+/* ── ④ 균일 속도 처방 : 치료 내내 같은 속도 ── */
+var flat={};
+function flatPanel(vd0,ektv,bun0,urr,bw,hct,ecv){
+  var quf=HRS>0? num('ufTot')/HRS : 0;
+  var khr=ektv*vd0/HRS;                    // 시간당 필요 청소율 ml/h (SR 100%)
+  var qeff=khr, qd=Math.max(0,qeff-quf);
+  var qbMin=qd*3/60;                       // 엑셀 규칙 Qb = 3 × Qd
+  var qp=qbMin*60*(1-hct);
+  var ff=qp>0? quf/qp*100 : NaN;
+  var tt=qbMin>0? ecv/qbMin*60 : NaN;
+
+  setV('f_qeff',fmt(qeff,0),'ml/h');
+  setV('f_qd',fmt(qd,0),'ml/h');
+  setV('f_qb',fmt(qbMin,1),'ml/min');
+  setV('f_quf',fmt(quf,0),'ml/h');
+  setV('f_k',fmt(khr/60,1),'ml/min');
+  setV('f_ktv',fmt(ektv/HRS,3),'');
+  setV('f_ff',fmt(ff,1),'%');
+  setV('f_tt',fmt(tt,0),'sec');
+  flat={qd:Math.round(qd),qb:Math.round(qbMin),quf:Math.round(quf)};
+}
+
+/* ── ⑤ Method 1 / 2 예시 ── */
+var methods={m1:[],m2:[]};
+function methodTable(vd0,bun0,urr){
+  var th=document.getElementById('mthead'), tb=document.getElementById('mtbody');
+  if(!(urr>0&&urr<1)||!(HRS>0)){ tb.innerHTML=''; return; }
+
+  var d=bun0*urr/HRS, f=urr/HRS;           // M1 감소량 고정 / M2 감소율 고정
+  var p1=bun0, p2=bun0, m1=[], m2=[];
+  for(var h=1;h<=HRS;h++){
+    var c1=Math.max(0,p1-d), g1=p1>0?(p1-c1)/p1:0;
+    var q1=(g1>0&&g1<1)? -Math.log(1-g1)*vd0 : 0;
+    var c2=p2*(1-f), g2=f;
+    var q2=(g2>0&&g2<1)? -Math.log(1-g2)*vd0 : 0;
+    m1.push({bun:c1,qeff:q1}); m2.push({bun:c2,qeff:q2});
+    p1=c1; p2=c2;
+  }
+  methods={m1:m1,m2:m2};
+
+  th.innerHTML='<th class="rl">Treatment Hour</th>';
+  for(var i=1;i<=HRS;i++) th.insertAdjacentHTML('beforeend','<th>'+i+'</th>');
+
+  function row(cls,lab,vals,dec){
+    var r='<tr class="'+cls+'"><td class="rl">'+lab+'</td>';
+    vals.forEach(function(v){ r+='<td class="out">'+fmt(v,dec)+'</td>'; });
+    return r+'</tr>';
+  }
+  tb.innerHTML =
+      '<tr class="sec"><td colspan="'+(HRS+1)+'">Method 1 — 시간당 BUN 감소량 고정</td></tr>'
+    + row('ca key','Predicted BUN (mg/dL)', m1.map(function(x){return x.bun;}),1)
+    + row('ca','필요 Qeff (mL/h)',          m1.map(function(x){return x.qeff;}),0)
+    + '<tr class="sec"><td colspan="'+(HRS+1)+'">Method 2 — 시간당 감소율 고정</td></tr>'
+    + row('ca key','Predicted BUN (mg/dL)', m2.map(function(x){return x.bun;}),1)
+    + row('ca','필요 Qeff (mL/h)',          m2.map(function(x){return x.qeff;}),0);
+}
+
+/* 적용 버튼 : Qeff에서 Qd를 역산해 시간대별 표에 반영 */
+function applyQeff(list){
+  rx.forEach(function(r,h){
+    var qeff=list?list[h].qeff:null;
+    if(qeff==null) return;
+    var sr=(r.sr>1?r.sr/100:r.sr)||1;
+    r.qd=Math.max(0,Math.round(qeff/sr - r.qrPre - r.qrPost - r.qpfr));
+    if(r.qb*60 < r.qd*3) r.qb=Math.ceil(r.qd*3/60/5)*5;
+  });
+  buildTable(); compute();
+}
+document.getElementById('applyFlat').addEventListener('click',function(){
+  rx.forEach(function(r){ r.qd=flat.qd; r.qb=Math.max(flat.qb,1); r.qpfr=flat.quf; r.qrPre=0; r.qrPost=0; });
+  buildTable(); compute();
+});
+document.getElementById('applyM1').addEventListener('click',function(){
+  var quf=HRS>0?Math.round(num('ufTot')/HRS):0;
+  rx.forEach(function(r){ r.qpfr=quf; });
+  applyQeff(methods.m1);
+});
+document.getElementById('applyM2').addEventListener('click',function(){
+  var quf=HRS>0?Math.round(num('ufTot')/HRS):0;
+  rx.forEach(function(r){ r.qpfr=quf; });
+  applyQeff(methods.m2);
+});
 
 /* ── 차트 ── */
 var NS='http://www.w3.org/2000/svg', G={W:600,H:300,L:50,R:46,T:28,B:36};
