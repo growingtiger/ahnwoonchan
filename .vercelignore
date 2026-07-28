@@ -1,0 +1,6 @@
+.env
+.env.*
+*.key
+KakaoTalk_Photo_*.jpeg
+supabase-setup.sql
+.git
