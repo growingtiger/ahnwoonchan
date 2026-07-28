@@ -172,7 +172,9 @@ table.hx td.cell input:focus{outline:2px solid var(--brand);outline-offset:-2px;
 table.hx td.out{font-size:.84rem;font-weight:600;color:var(--ink-2);padding:9px 6px;border-left:1px solid var(--line);background:var(--bg)}
 table.hx tr.ca td.out{background:color-mix(in srgb,var(--calc) 38%,var(--bg));color:var(--calc-ink);font-weight:700}
 table.hx tr.key td.out{font-size:.92rem;font-weight:700;color:var(--ink)}
-table.hx td.out.bad{color:var(--warn)}
+table.hx td.out.bad{color:var(--warn);font-weight:700}
+table.hx td.out.alarm{background:color-mix(in srgb,var(--warn) 22%,var(--bg));color:var(--warn);font-weight:700;
+  box-shadow:inset 0 0 0 1.5px var(--warn)}
 .hint{font-size:.8rem;color:var(--ink-3);margin-top:11px;line-height:1.6}
 .hint b{color:var(--warn)}
 
@@ -263,8 +265,10 @@ footer a{color:var(--brand);font-weight:600}
         <input id="urr" type="number" step="1" min="1" max="95" value="50"></div>
       <div class="f"><label for="hrs">Treatment time <span class="un">hr</span></label>
         <input id="hrs" type="number" step="1" min="1" max="12" value="5"></div>
-      <div class="f"><label for="ufTot">UF target <span class="un">ml 총량</span></label>
+      <div class="f"><label for="ufTot">UF target <span class="un">(제거 목표) ml</span></label>
         <input id="ufTot" type="number" step="10" min="0" value="1340"></div>
+      <div class="f"><label for="txno">Treatment No. <span class="un">(투석 회차)</span></label>
+        <select id="txno"><option value="1">1st</option><option value="2">2nd</option><option value="3">3rd +</option></select></div>
     </div>
 
     <div class="chips">
@@ -275,7 +279,8 @@ footer a{color:var(--brand);font-weight:600}
       <div class="chip hi"><div class="k">예측 최종 BUN</div><div class="v" id="c_bunEnd">—<small>mg/dL</small></div></div>
       <div class="chip hi"><div class="k">예측 달성 URR</div><div class="v" id="c_urrEnd">—<small>%</small></div></div>
       <div class="chip" id="chipKtv"><div class="k">실제 전달 Kt/V</div><div class="v" id="c_ktvDel">—</div></div>
-      <div class="chip" id="chipUf"><div class="k">UF rate</div><div class="v" id="c_ufr">—<small>ml/kg/h</small></div></div>
+      <div class="chip" id="chipUf"><div class="k">UF rate (제거 속도)</div><div class="v" id="c_ufr">—<small>ml/kg/h</small></div></div>
+      <div class="chip" id="chipIris"><div class="k">IRIS 권장 URR/h</div><div class="v" id="c_iris">—<small>%/h</small></div></div>
     </div>
   </div>
 
@@ -404,6 +409,33 @@ footer a{color:var(--brand);font-weight:600}
   </div>
 
 
+
+  <!-- ⑧ IRIS 참고치 -->
+  <div class="card">
+    <div class="chead"><h2>⑧ IRIS consensus reference (권장 URR 참고치)</h2></div>
+    <p class="sub2">
+      IRIS best practice consensus guidelines for intermittent hemodialysis in dogs and cats
+      (Segev et al., <em>The Veterinary Journal</em> 305:106092, 2024)에서 제시한 시간당 URR 권장치입니다.
+      체중이 10&nbsp;kg 미만이거나 BUN이 각 구간의 상단에 있으면 <b>낮은 쪽 값</b>을 쓰라고 권고합니다.
+    </p>
+    <div class="scroller" style="margin-top:14px">
+      <table class="hx" style="min-width:640px">
+        <thead><tr>
+          <th class="rl">Pre-dialysis BUN (투석 전 BUN)</th>
+          <th>1st (1회차)</th><th>2nd (2회차)</th><th>3rd + (3회차 이상)</th>
+        </tr></thead>
+        <tbody id="irisBody"></tbody>
+      </table>
+    </div>
+    <p class="sub2" style="margin-top:14px">
+      <b>Treatment URR goal (회차별 총 URR 목표)</b> — 1회차 ≥ 35%, 2회차 ≥ 40%, 3회차 이상은 투석 후 BUN이 정상 범위에 근접하도록.
+      유지 투석은 URR ≥ 80%, Kt/V ≥ 1.6, 최소 240분.<br>
+      <b>Ultrafiltration rate (제거 속도 상한)</b> — 개 8–10 mL/kg/h, 고양이 5 mL/kg/h.<br>
+      <b>Filtration fraction (여과분율)</b> — 20% 미만 유지 권장, 후희석 25% 초과 금지.<br>
+      <b>Treatment time (치료 시간)</b> — 180분 미만 금지.
+    </p>
+  </div>
+
   <div class="note">
     <strong>이 계산기는 수의사용 참고 도구입니다.</strong>
     예측 BUN은 요소 생성률과 잔여 신기능, 구획 간 재분포(rebound)를 무시한 단일풀 모델의 결과이며 8시간 이내 치료에만 적용됩니다.
@@ -447,14 +479,36 @@ FILTERS.forEach(function(f){var o=document.createElement('option');o.value=f[0];
 
 /* 시간대별 처방 행 정의 : key, 라벨, 단위, 기본값 */
 var RX=[
-  {k:'qb',    lab:'Qb — Blood flow',        u:'mL/min', d:150, step:5},
-  {k:'qd',    lab:'Qd — Dialysate',         u:'mL/h',   d:1200,step:50},
-  {k:'qrPre', lab:'Qrep pre — 전희석',       u:'mL/h',   d:0,   step:10},
-  {k:'qrPost',lab:'Qrep post — 후희석',      u:'mL/h',   d:0,   step:10},
-  {k:'qpfr',  lab:'Qpfr — 환자 제거량',      u:'mL/h',   d:268, step:10},
-  {k:'sr',    lab:'Saturation ratio',       u:'%',      d:100, step:1}
+  {k:'qb',    lab:'Qb — Blood flow (혈류 속도)',        u:'mL/min', d:150, step:5},
+  {k:'qd',    lab:'Qd — Dialysate flow (투석액 속도)',   u:'mL/h',   d:1200,step:50},
+  {k:'qrPre', lab:'Qrep pre — Pre-dilution (전희석)',    u:'mL/h',   d:0,   step:10},
+  {k:'qrPost',lab:'Qrep post — Post-dilution (후희석)',  u:'mL/h',   d:0,   step:10},
+  {k:'qpfr',  lab:'Qpfr — Patient fluid removal (환자 제거량)', u:'mL/h', d:268, step:10}
 ];
 var HRS=5, rx=[];
+
+/* IRIS 컨센서스(2024, IHD) — 투석 전 BUN과 회차에 따른 시간당 URR 권장치 */
+function irisURR(tx,bun){
+  if(tx===1){
+    if(bun<100) return {lo:10, hi:15, goal:35};
+    if(bun<200) return {lo:7.5,hi:10, goal:35};
+    if(bun<300) return {lo:5,  hi:7.5,goal:35};
+    return              {lo:0,  hi:5,  goal:35};
+  }
+  if(tx===2){
+    if(bun<100) return {lo:10, hi:20, goal:40};
+    if(bun<200) return {lo:10, hi:12, goal:40};
+    if(bun<300) return {lo:5,  hi:10, goal:40};
+    return              {lo:0,  hi:5,  goal:40};
+  }
+  if(bun<100)  return {lo:20, hi:25, goal:null};
+  if(bun<=150) return {lo:10, hi:15, goal:null};
+  return             {lo:10, hi:15, goal:null, uns:true};
+}
+/* IRIS UF 상한 : 개 8–10, 고양이 5 mL/kg/h */
+function ufMax(sp){ return sp==='Feline'?5:10; }
+/* 여과분율 상한 : 20% 주의 / 25% 초과 금지 (후희석 기준) */
+var FF_CAUTION=20, FF_LIMIT=25;
 
 function num(id){var v=parseFloat(document.getElementById(id).value);return isFinite(v)?v:0;}
 function str(id){return document.getElementById(id).value;}
@@ -483,14 +537,17 @@ function buildTable(){
   });
 
   var OUT=[
-    ['sec','Calculated values — 자동 계산'],
-    ['o_qdmin','Qd (mL/min)'],['o_qeff','Qeff = Qd+Qrep+Qpfr (mL/h)'],
-    ['o_kh','Calc. clearance (mL/h)','key'],['o_kmin','Calc. clearance (mL/min)','key'],
-    ['o_qbqd','Qb / Qd'],['o_ff','Filtration fraction (%)'],
-    ['o_pfr','PFR rate (mL/kg/h)'],['o_vd','Volume of distribution (mL)'],
-    ['sec','Predicted profile — 예측'],
-    ['o_ktv','Kt/V (시간당)'],['o_bun','Predicted BUN (mg/dL)','key'],
-    ['o_hurr','% Hourly URR'],['o_ourr','Overall URR (%)','key']
+    ['sec','Calculated values (자동 계산)'],
+    ['o_qdmin','Qd (mL/min)'],['o_qeff','Qeff — Effluent flow (유효 유량, mL/h)'],
+    ['o_qbqd','Qb / Qd ratio (혈류·투석액 비)'],
+    ['o_sr','Saturation ratio (투석액 포화도, %)'],
+    ['o_kh','Calc. clearance (계산 청소율, mL/h)','key'],['o_kmin','Calc. clearance (mL/min)','key'],
+    ['o_ff','Filtration fraction (여과분율, %)'],
+    ['o_tt','Transit time (회로 통과 시간, sec)'],
+    ['o_pfr','PFR rate (제거 속도, mL/kg/h)'],['o_vd','Volume of distribution (분포용적, mL)'],
+    ['sec','Predicted profile (예측 프로파일)'],
+    ['o_ktv','Kt/V per hour (시간당)'],['o_bun','Predicted BUN (예측 BUN, mg/dL)','key'],
+    ['o_hurr','Hourly URR (시간당 URR, %)','key'],['o_ourr','Overall URR (누적 URR, %)','key']
   ];
   OUT.forEach(function(o){
     if(o[0]==='sec'){ html+='<tr class="sec"><td colspan="'+(HRS+1)+'">'+o[1]+'</td></tr>'; return; }
@@ -522,14 +579,24 @@ function compute(){
   setV('c_kt',fmt(ktNeed,0),'ml');
   setV('c_khr',fmt(khrNeed,0),'ml/h');
 
-  var C=bun0, V=vd0, bunArr=[bun0], kArr=[], ktvSum=0, ufSum=0, worstFF=0, lowRatio=false;
+  var txno=parseInt(str('txno'),10)||1;
+  var iris=irisURR(txno,bun0), ufLimit=ufMax(str('species'));
+  var fnameNow=str('filter'), fsetNow=null;
+  FILTERS.forEach(function(f){if(f[0]===fnameNow)fsetNow=f;});
+  var ecvNow=(fsetNow?fsetNow[1]+fsetNow[2]:0)+num('addv');
+  setV('c_iris', iris.uns? '—' : fmt(iris.lo,1)+'–'+fmt(iris.hi,1), '%/h');
+
+  var C=bun0, V=vd0, bunArr=[bun0], kArr=[], ktvSum=0, ufSum=0, worstFF=0, lowRatio=false, ffOver=false, urrOver=false;
 
   for(var h=0;h<HRS;h++){
     var r=rx[h];
     var qeff=r.qd + r.qrPre + r.qrPost + r.qpfr;             // ml/h
-    var sr=(r.sr>1? r.sr/100 : r.sr);
-    var K=qeff*sr;                                           // ml/h — 전달 청소율
     var qbHr=r.qb*60;
+    /* Saturation ratio : 유출액이 혈장수 농도에 얼마나 근접하는가.
+       이상적 역류 투석기의 물질수지 상한 SR = min(1, 혈장수유량 / Qeff)      */
+    var qbw=qbHr*(1-hct);
+    var sr=qeff>0? Math.min(1, qbw/qeff) : 1;
+    var K=qeff*sr;                                           // ml/h — 전달 청소율
     var qp=qbHr*(1-hct);                                     // 혈장유량 ml/h
     /* 여과분율 : 막을 통과하는 총 여과량 ÷ 필터로 들어가는 혈장유량(전희석 포함) */
     var ff=(qp+r.qrPre)>0 ? (r.qpfr+r.qrPre+r.qrPost)/(qp+r.qrPre)*100 : NaN;
@@ -546,12 +613,15 @@ function compute(){
     var ktvH=K/V, hurr=C>0?(1-C1/C)*100:0, ourr=bun0>0?(1-C1/bun0)*100:0;
     ktvSum+=ktvH; ufSum+=r.qpfr;
 
+    var tt=r.qb>0? ecvNow/r.qb*60 : NaN;                     // 회로 통과 시간 sec
     setV('o_qdmin'+h,fmt(r.qd/60,1));
     setV('o_qeff'+h,fmt(qeff,0));
+    setV('o_qbqd'+h,fmt(qbqd,1));
+    setV('o_sr'+h,fmt(sr*100,1));
     setV('o_kh'+h,fmt(K,0));
     setV('o_kmin'+h,fmt(K/60,1));
-    setV('o_qbqd'+h,fmt(qbqd,1));
     setV('o_ff'+h,fmt(ff,1));
+    setV('o_tt'+h,fmt(tt,0));
     setV('o_pfr'+h,bw>0?fmt(r.qpfr/bw,1):'—');
     setV('o_vd'+h,fmt(V1,0));
     setV('o_ktv'+h,fmt(ktvH,3));
@@ -559,8 +629,16 @@ function compute(){
     setV('o_hurr'+h,fmt(hurr,1));
     setV('o_ourr'+h,fmt(ourr,1));
 
-    var ffCell=document.getElementById('o_ff'+h); if(ffCell) ffCell.classList.toggle('bad',isFinite(ff)&&ff>=20);
+    var ffCell=document.getElementById('o_ff'+h);
+    if(ffCell){ ffCell.classList.toggle('bad', isFinite(ff)&&ff>=FF_CAUTION&&ff<FF_LIMIT);
+                ffCell.classList.toggle('alarm',isFinite(ff)&&ff>=FF_LIMIT); }
     var qqCell=document.getElementById('o_qbqd'+h); if(qqCell) qqCell.classList.toggle('bad',isFinite(qbqd)&&qbqd<3);
+    var srCell=document.getElementById('o_sr'+h);   if(srCell) srCell.classList.toggle('bad',sr<0.95);
+    var ptCell=document.getElementById('o_pfr'+h);  if(ptCell) ptCell.classList.toggle('alarm',bw>0&&r.qpfr/bw>ufLimit);
+    var huCell=document.getElementById('o_hurr'+h);
+    if(huCell) huCell.classList.toggle('alarm', iris && hurr>iris.hi);
+    if(isFinite(ff)&&ff>=FF_LIMIT) ffOver=true;
+    if(iris && hurr>iris.hi) urrOver=true;
 
     bunArr.push(C1); kArr.push(K/60);
     C=C1; V=V1;
@@ -572,12 +650,10 @@ function compute(){
   setV('c_ktvDel',fmt(ktvSum,2),'');
   setV('c_ufr',bw>0?fmt(ufSum/HRS/bw,1):'—','ml/kg/h');
   document.getElementById('chipKtv').classList.toggle('warn', isFinite(ektv)&&ktvSum<ektv*0.9);
-  document.getElementById('chipUf').classList.toggle('warn', bw>0 && (ufSum/HRS/bw)>10);
+  document.getElementById('chipUf').classList.toggle('warn', bw>0 && (ufSum/HRS/bw)>ufLimit);
 
   /* 회로 */
-  var fname=str('filter'), fset=null;
-  FILTERS.forEach(function(f){if(f[0]===fname)fset=f;});
-  var ecv=(fset?fset[1]+fset[2]:0)+num('addv'), tbv=(TBV[str('species')]||90)*bw;
+  var ecv=ecvNow, tbv=(TBV[str('species')]||90)*bw;
   setV('c_ecv',fmt(ecv,0),'ml'); setV('c_tbv',fmt(tbv,0),'ml');
   setV('c_kit',ecv<tbv*0.2?'Recommend':'Change Lower Kit');
   setV('c_prime',ecv>tbv*0.15?'YES':'No');
@@ -594,7 +670,9 @@ function compute(){
   /* 안내 */
   var msgs=[];
   if(lowRatio) msgs.push('<b>Qb/Qd &lt; 3</b>인 시간대가 있습니다. 이 구간에서는 투석액이 완전히 포화되지 않아 Saturation ratio를 100% 미만으로 낮춰 잡는 것이 현실적입니다.');
-  if(worstFF>=20) msgs.push('<b>여과분율 20% 이상</b>인 시간대가 있습니다. 혈액 농축과 필터 응고 위험이 올라갑니다. Qb를 올리거나 희석액을 전희석으로 돌리는 편이 안전합니다.');
+  if(ffOver) msgs.push('<b>Filtration fraction &gt; 25%</b> — IRIS 권장 상한을 넘었습니다. 필터 응고 위험이 큽니다. Qb를 올리거나 희석액을 전희석으로 돌리세요.');
+  else if(worstFF>=FF_CAUTION) msgs.push('<b>Filtration fraction 20% 이상</b>인 시간대가 있습니다. 20% 아래로 유지하면 필터 수명이 길어집니다.');
+  if(urrOver) msgs.push('<b>시간당 URR이 IRIS 권장치를 초과</b>합니다 (' + (parseInt(str('txno'),10)||1) + '회차 · BUN ' + fmt(num('bun'),0) + ' → 권장 ' + fmt(iris.lo,1) + '–' + fmt(iris.hi,1) + '%/h). 불균형증후군 위험이 올라갑니다. 치료 시간을 늘리거나 Qd를 낮추세요.');
   if(isFinite(ektv)&&ktvSum<ektv*0.9) msgs.push('전달 Kt/V가 목표에 <b>미달</b>합니다. Qd를 올리거나 치료 시간을 늘리세요.');
   if(isFinite(ektv)&&ktvSum>ektv*1.15) msgs.push('전달 Kt/V가 목표를 <b>초과</b>합니다. 첫 투석이라면 불균형증후군에 유의하세요.');
   document.getElementById('hint').innerHTML = msgs.length? msgs.join('<br>') : '입력한 처방으로 목표 범위 안에서 전달됩니다.';
@@ -603,6 +681,7 @@ function compute(){
   drawAll();
   flatPanel(vd0,ektv,bun0,urr,bw,hct,ecv);
   methodTable(vd0,bun0,urr);
+  renderIris();
 }
 
 /* ── ④ 균일 속도 처방 : 치료 내내 같은 속도 ── */
@@ -667,8 +746,7 @@ function applyQeff(list){
   rx.forEach(function(r,h){
     var qeff=list?list[h].qeff:null;
     if(qeff==null) return;
-    var sr=(r.sr>1?r.sr/100:r.sr)||1;
-    r.qd=Math.max(0,Math.round(qeff/sr - r.qrPre - r.qrPost - r.qpfr));
+    r.qd=Math.max(0,Math.round(qeff - r.qrPre - r.qrPost - r.qpfr));
     if(r.qb*60 < r.qd*3) r.qb=Math.ceil(r.qd*3/60/5)*5;
   });
   buildTable(); compute();
@@ -777,9 +855,7 @@ document.getElementById('autoBtn').addEventListener('click',function(){
   var ufTot=num('ufTot'), ufHr=HRS>0?ufTot/HRS:0;
   rx.forEach(function(r){
     r.qpfr=Math.round(ufHr);
-    var sr=(r.sr>1?r.sr/100:r.sr)||1;
-    var qeff=khr/sr;
-    r.qd=Math.max(0,Math.round(qeff-r.qrPre-r.qrPost-r.qpfr));
+    r.qd=Math.max(0,Math.round(khr-r.qrPre-r.qrPost-r.qpfr));
     if(!r.qb || r.qb*60 < r.qd*3) r.qb=Math.max(r.qb, Math.ceil(r.qd*3/60/5)*5);   // Qb ≥ 3×Qd
   });
   buildTable(); compute();
@@ -794,11 +870,32 @@ document.getElementById('hrs').addEventListener('input',function(){
   var v=Math.max(1,Math.min(12,parseInt(this.value,10)||1));
   HRS=v; seedRows(); buildTable(); compute();
 });
-['species','bw','hyd','bun','hct','urr','ufTot','filter','addv','dil','hep','bolus','cri'].forEach(function(id){
+['species','bw','hyd','bun','hct','urr','ufTot','txno','filter','addv','dil','hep','bolus','cri'].forEach(function(id){
   var e=document.getElementById(id); if(!e) return;
   e.addEventListener('input',compute); e.addEventListener('change',compute);
 });
 
+function renderIris(){
+  var rows=[
+    ['&lt; 100 mg/dL (&lt; 35.7 mmol/L)',   '10 – 15 %/h', '10 – 20 %/h', '20 – 25 %/h'],
+    ['100 – 150 mg/dL',                     '7.5 – 10 %/h','10 – 12 %/h', '10 – 15 %/h'],
+    ['150 – 200 mg/dL (53.6 – 71.4 mmol/L)','7.5 – 10 %/h','10 – 12 %/h', '10 – 15 %/h'],
+    ['200 – 300 mg/dL (71.4 – 107.1 mmol/L)','5 – 7.5 %/h','5 – 10 %/h',  '개별 판단'],
+    ['&gt; 300 mg/dL (&gt; 107.1 mmol/L)',  '≤ 5 %/h',     '≤ 5 %/h',     '개별 판단']
+  ];
+  var bun=num('bun'), tx=parseInt(str('txno'),10)||1;
+  var hit = bun<100?0 : bun<=150?1 : bun<200?2 : bun<300?3 : 4;
+  var html='';
+  rows.forEach(function(r,i){
+    html+='<tr class="'+(i===hit?'ca key':'')+'"><td class="rl">'+r[0]+'</td>';
+    for(var c=1;c<=3;c++){
+      var on=(i===hit && c===tx);
+      html+='<td class="out"'+(on?' style="background:var(--brand);color:#fff;font-weight:700"':'')+'>'+r[c]+'</td>';
+    }
+    html+='</tr>';
+  });
+  document.getElementById('irisBody').innerHTML=html;
+}
 seedRows(); buildTable(); compute();
 })();
 </script>
