@@ -119,6 +119,8 @@ header.stuck{border-bottom-color:var(--line)}
   color:var(--ink-2);font-size:.9rem;font-weight:500;padding:8px 12px;border-radius:8px;transition:.18s;
 }
 .nav a.link:hover{color:var(--ink);background:var(--bg-sunk)}
+.nav a.link.calc{color:var(--brand);font-weight:700}
+.nav a.link.calc:hover{background:color-mix(in srgb,var(--brand) 12%,transparent)}
 @media(max-width:820px){.nav a.link{display:none}}
 .theme-btn{
   border:1px solid var(--line);background:transparent;color:var(--ink-2);
@@ -425,6 +427,7 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
     <a class="link" href="#academic">학술 활동</a>
     <a class="link" href="#press">언론 보도</a>
     <a class="link" href="#contact">진료 문의</a>
+    <a class="link calc" href="/calculator">계산기</a>
     <button class="theme-btn" id="themeBtn" aria-label="화면 테마 전환">◐</button>
   </div>
 </header>
@@ -885,6 +888,7 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
         <a href="#academic">학술 활동</a>
         <a href="#press">언론 보도</a>
         <a href="#contact">진료 문의</a>
+        <a class="ext" href="/calculator">HD 계산기</a>
         <a class="ext" href="https://signatureamc.co.kr" target="_blank" rel="noopener">병원 홈페이지 ↗</a>
         <a class="ext" href="https://blog.naver.com/signatureamc" target="_blank" rel="noopener">병원 블로그 ↗</a>
       </nav>

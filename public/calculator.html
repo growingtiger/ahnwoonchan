@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HD Prescription Calculator | 안운찬 수의사</title>
+<meta name="description" content="반려동물 혈액투석 처방 계산기. CRRT 플랫폼 기반으로 Kt/V, Qeff, Qd, Qb, Filtration Fraction, 항응고 용량을 산출합니다.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.ahnwoonchan.com/calculator">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="안운찬 수의사">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://www.ahnwoonchan.com/calculator">
+<meta property="og:title" content="HD Prescription Calculator | 안운찬 수의사">
+<meta property="og:description" content="반려동물 혈액투석 처방 계산기 — CRRT 플랫폼 기반">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f6b62'/%3E%3Cpath d='M9 16h4l2-5 3 10 2-5h4' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#ffffff; --bg-soft:#f5f7f8; --bg-sunk:#eceff1;
+  --ink:#12211f; --ink-2:#41544f; --ink-3:#6d7f7a; --line:#dde3e2;
+  --brand:#0f6b62; --brand-2:#12857a; --brand-ink:#0a4f48; --accent:#c4643c;
+  --calc:#fde8ec; --calc-line:#f3c7d0; --calc-ink:#8d3a4c;
+  --sel:#e2f4e4; --sel-line:#bfe3c4; --sel-ink:#2b6136;
+  --warn:#c4643c; --ok:#0f6b62;
+  --shadow:0 1px 2px rgba(16,40,36,.05),0 8px 24px -12px rgba(16,40,36,.18);
+  --radius:14px; --max:1180px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0d1413; --bg-soft:#121b19; --bg-sunk:#182422;
+    --ink:#e8efed; --ink-2:#b0c1bc; --ink-3:#849792; --line:#233330;
+    --brand:#4dbfae; --brand-2:#6fd4c3; --brand-ink:#a9e6db; --accent:#e08b62;
+    --calc:#3a1f27; --calc-line:#5c2f3c; --calc-ink:#f0b8c5;
+    --sel:#17301c; --sel-line:#2c4d33; --sel-ink:#9fd9a8;
+    --warn:#e08b62; --ok:#4dbfae;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d1413; --bg-soft:#121b19; --bg-sunk:#182422;
+  --ink:#e8efed; --ink-2:#b0c1bc; --ink-3:#849792; --line:#233330;
+  --brand:#4dbfae; --brand-2:#6fd4c3; --brand-ink:#a9e6db; --accent:#e08b62;
+  --calc:#3a1f27; --calc-line:#5c2f3c; --calc-ink:#f0b8c5;
+  --sel:#17301c; --sel-line:#2c4d33; --sel-ink:#9fd9a8;
+  --warn:#e08b62; --ok:#4dbfae;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
+}
+:root[data-theme="light"]{
+  --bg:#ffffff; --bg-soft:#f5f7f8; --bg-sunk:#eceff1;
+  --ink:#12211f; --ink-2:#41544f; --ink-3:#6d7f7a; --line:#dde3e2;
+  --brand:#0f6b62; --brand-2:#12857a; --brand-ink:#0a4f48; --accent:#c4643c;
+  --calc:#fde8ec; --calc-line:#f3c7d0; --calc-ink:#8d3a4c;
+  --sel:#e2f4e4; --sel-line:#bfe3c4; --sel-ink:#2b6136;
+  --warn:#c4643c; --ok:#0f6b62;
+  --shadow:0 1px 2px rgba(16,40,36,.05),0 8px 24px -12px rgba(16,40,36,.18);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.7;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+h1,h2,h3{letter-spacing:-.03em;line-height:1.3;font-weight:700}
+
+/* header */
+header{
+  position:sticky;top:0;z-index:50;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.nav{display:flex;align-items:center;gap:8px;height:66px}
+.brand{font-weight:700;letter-spacing:-.03em;font-size:1.02rem;margin-right:auto;display:flex;align-items:center;gap:9px}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--brand);flex:none}
+.brand small{font-weight:500;color:var(--ink-3);font-size:.78rem;letter-spacing:0}
+.nav a.link{color:var(--ink-2);font-size:.9rem;font-weight:500;padding:8px 12px;border-radius:8px;transition:.18s}
+.nav a.link:hover{color:var(--ink);background:var(--bg-sunk)}
+@media(max-width:700px){.nav a.link{display:none}}
+.theme-btn{
+  border:1px solid var(--line);background:transparent;color:var(--ink-2);
+  width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:.95rem;
+  display:grid;place-items:center;transition:.18s;flex:none;
+}
+
+/* page head */
+.phead{padding:48px 0 30px;border-bottom:1px solid var(--line);background:var(--bg-soft)}
+.eyebrow{font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brand);margin-bottom:12px}
+.phead h1{font-size:clamp(1.7rem,4vw,2.4rem)}
+.phead .sub{color:var(--ink-2);margin-top:10px;font-size:.97rem;max-width:70ch}
+.meta{margin-top:16px;font-size:.8rem;color:var(--ink-3)}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.lg{display:inline-flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600;padding:5px 11px;border-radius:100px;border:1px solid var(--line);background:var(--bg)}
+.sw{width:12px;height:12px;border-radius:3px;flex:none}
+.sw.c{background:var(--calc);border:1px solid var(--calc-line)}
+.sw.s{background:var(--sel);border:1px solid var(--sel-line)}
+.sw.i{background:var(--bg-soft);border:1px solid var(--line)}
+
+main{padding:34px 0 70px}
+.cols{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:22px;align-items:start}
+@media(max-width:920px){.cols{grid-template-columns:1fr}}
+
+.card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+.card + .card{margin-top:18px}
+.card > h2{font-size:.76rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--brand);margin-bottom:16px}
+.grp{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:20px 0 10px;padding-top:14px;border-top:1px dashed var(--line)}
+.grp:first-of-type{margin-top:0;padding-top:0;border-top:none}
+
+/* rows */
+.r{display:grid;grid-template-columns:1fr 116px 44px;gap:9px;align-items:center;margin-bottom:8px}
+.r label{font-size:.87rem;color:var(--ink-2);line-height:1.35}
+.r .u{font-size:.76rem;color:var(--ink-3)}
+.r input,.r select{
+  font-family:inherit;font-size:.92rem;font-weight:600;color:var(--ink);text-align:right;
+  background:var(--bg-soft);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;
+  transition:.15s;
+}
+.r select{text-align:left;font-weight:600}
+.r input:focus,.r select:focus{outline:none;border-color:var(--brand);background:var(--bg);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 15%,transparent)}
+.r select{background:var(--sel);border-color:var(--sel-line);color:var(--sel-ink)}
+.r input[readonly]{
+  background:var(--calc);border-color:var(--calc-line);color:var(--calc-ink);cursor:default;
+}
+.r input[readonly]:focus{box-shadow:none;border-color:var(--calc-line);background:var(--calc)}
+
+/* output grid */
+.og{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:10px}
+.o{background:var(--calc);border:1px solid var(--calc-line);border-radius:10px;padding:13px 14px}
+.o .k{font-size:.74rem;color:var(--calc-ink);opacity:.85;font-weight:600;line-height:1.3}
+.o .v{font-size:1.32rem;font-weight:700;color:var(--calc-ink);letter-spacing:-.03em;margin-top:3px;line-height:1.2;word-break:break-all}
+.o .v small{font-size:.62em;font-weight:600;opacity:.75;margin-left:3px}
+.o.hi{background:var(--brand);border-color:var(--brand)}
+.o.hi .k,.o.hi .v{color:#fff}
+:root[data-theme="dark"] .o.hi .k,:root[data-theme="dark"] .o.hi .v{color:#06201d}
+@media (prefers-color-scheme: dark){.o.hi .k,.o.hi .v{color:#06201d}}
+:root[data-theme="light"] .o.hi .k,:root[data-theme="light"] .o.hi .v{color:#fff}
+.o.warn{background:color-mix(in srgb,var(--warn) 14%,transparent);border-color:var(--warn)}
+.o.warn .k,.o.warn .v{color:var(--warn)}
+.badge{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:5px;margin-left:6px;vertical-align:middle}
+.badge.ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.badge.ng{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
+
+/* tables */
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tab{
+  font-family:inherit;font-size:.85rem;font-weight:600;cursor:pointer;
+  padding:8px 15px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--ink-2);transition:.18s;
+}
+.tab.on{background:var(--brand);border-color:var(--brand);color:#fff}
+:root[data-theme="dark"] .tab.on{color:#06201d}
+@media (prefers-color-scheme: dark){.tab.on{color:#06201d}}
+:root[data-theme="light"] .tab.on{color:#fff}
+.tnote{font-size:.83rem;color:var(--ink-3);margin-bottom:14px;line-height:1.6}
+.scroller{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:.84rem;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:var(--bg-sunk);font-weight:700;font-size:.76rem;color:var(--ink-2);position:sticky;top:0}
+th:first-child,td:first-child{text-align:left}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--bg-soft)}
+td.em{font-weight:700;color:var(--brand)}
+.hide{display:none}
+
+.note{
+  margin-top:22px;padding:16px 20px;border-radius:11px;font-size:.86rem;color:var(--ink-2);line-height:1.7;
+  background:color-mix(in srgb,var(--accent) 8%,transparent);border:1px solid color-mix(in srgb,var(--accent) 30%,transparent);
+}
+.note strong{color:var(--ink)}
+.note code{font-size:.92em;background:var(--bg-sunk);padding:1px 5px;border-radius:4px}
+.fixnote{background:var(--bg-soft);border-color:var(--line)}
+.btnrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.btn{
+  font-family:inherit;font-size:.87rem;font-weight:600;cursor:pointer;padding:10px 18px;border-radius:9px;
+  border:1px solid var(--line);background:transparent;color:var(--ink-2);transition:.18s;
+}
+.btn:hover{border-color:var(--ink-3);color:var(--ink)}
+.btn.p{background:var(--brand);border-color:var(--brand);color:#fff}
+:root[data-theme="dark"] .btn.p{color:#06201d}
+@media (prefers-color-scheme: dark){.btn.p{color:#06201d}}
+:root[data-theme="light"] .btn.p{color:#fff}
+
+footer{border-top:1px solid var(--line);padding:34px 0 46px;font-size:.8rem;color:var(--ink-3);line-height:1.7}
+footer a{color:var(--brand);font-weight:600}
+@media print{
+  header,.tabs,.btnrow,.legend,footer .noprint{display:none}
+  body{background:#fff}
+  .card{box-shadow:none;break-inside:avoid}
+  .hide{display:block !important}
+}
+</style>
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="/" class="brand"><span class="dot"></span>안운찬 <small>수의사 · Woonchan Ahn, DVM</small></a>
+    <a class="link" href="/">홈으로</a>
+    <a class="link" href="/#care">진료 분야</a>
+    <a class="link" href="/#contact">진료 문의</a>
+    <button class="theme-btn" id="themeBtn" aria-label="화면 테마 전환">◐</button>
+  </div>
+</header>
+
+<div class="phead">
+  <div class="wrap">
+    <div class="eyebrow">Calculator</div>
+    <h1>HD Prescription Calculator</h1>
+    <p class="sub">
+      CRRT 플랫폼을 이용한 간헐적 혈액투석 처방 계산기입니다.
+      체중과 목표 URR, 투석 시간을 넣으면 Kt/V와 Qeff, Qd, Qb, 여과분율, 항응고 용량이 함께 산출됩니다.
+    </p>
+    <p class="meta">version 2.0 웹 이식판 · 원본 산식: AHN, Woonchan — Smart Animal Hospital, Sinsa (2025.05)</p>
+    <div class="legend">
+      <span class="lg"><span class="sw i"></span>입력</span>
+      <span class="lg"><span class="sw s"></span>선택</span>
+      <span class="lg"><span class="sw c"></span>자동 계산 (수정 불가)</span>
+    </div>
+  </div>
+</div>
+
+<main>
+<div class="wrap cols">
+
+  <!-- ================= 입력 ================= -->
+  <div>
+    <div class="card">
+      <h2>Settings</h2>
+
+      <div class="grp">환자</div>
+      <div class="r">
+        <label for="species">Species</label>
+        <select id="species"><option>Canine</option><option>Feline</option></select><span class="u"></span>
+      </div>
+      <div class="r">
+        <label for="bw">Body weight</label>
+        <input id="bw" type="number" step="0.1" min="0.1" value="6"><span class="u">kg</span>
+      </div>
+      <div class="r">
+        <label for="hyd">Hydration state</label>
+        <select id="hyd">
+          <option value="-10">-10</option><option value="-5">-5</option>
+          <option value="0" selected>0</option><option value="5">5</option>
+          <option value="10">10</option><option value="15">15</option>
+        </select><span class="u">%</span>
+      </div>
+      <div class="r">
+        <label for="bun">Starting BUN</label>
+        <input id="bun" type="number" step="1" min="1" value="200"><span class="u">mg/dL</span>
+      </div>
+      <div class="r">
+        <label for="hct">Patient HCT</label>
+        <input id="hct" type="number" step="1" min="1" max="80" value="40"><span class="u">%</span>
+      </div>
+
+      <div class="grp">처방 목표</div>
+      <div class="r">
+        <label for="urr">Target URR</label>
+        <input id="urr" type="number" step="1" min="1" max="95" value="40"><span class="u">%</span>
+      </div>
+      <div class="r">
+        <label for="td">Treatment time</label>
+        <input id="td" type="number" step="0.5" min="0.5" value="5"><span class="u">hr</span>
+      </div>
+      <div class="r">
+        <label for="quf">Quf</label>
+        <input id="quf" type="number" step="1" min="0" value="10"><span class="u">ml/hr</span>
+      </div>
+      <div class="r">
+        <label for="qrpre">Qreplacement · Pre</label>
+        <input id="qrpre" type="number" step="1" min="0" value="0"><span class="u">ml/hr</span>
+      </div>
+      <div class="r">
+        <label for="qrpost">Qreplacement · Post</label>
+        <input id="qrpost" type="number" step="1" min="0" value="0"><span class="u">ml/hr</span>
+      </div>
+      <div class="r">
+        <label for="sr">Saturation rate</label>
+        <input id="sr" type="number" step="0.05" min="0.05" max="1" value="1"><span class="u"></span>
+      </div>
+
+      <div class="grp">회로</div>
+      <div class="r">
+        <label for="filter">Filter set</label>
+        <select id="filter"></select><span class="u"></span>
+      </div>
+      <div class="r">
+        <label for="addv">Additional filter &amp; line</label>
+        <input id="addv" type="number" step="1" min="0" value="0"><span class="u">ml</span>
+      </div>
+      <div class="r">
+        <label>Filter volume</label>
+        <input id="o_fv" readonly tabindex="-1"><span class="u">ml</span>
+      </div>
+      <div class="r">
+        <label>Blood line volume</label>
+        <input id="o_bv" readonly tabindex="-1"><span class="u">ml</span>
+      </div>
+      <div class="r">
+        <label>Extracorporeal volume</label>
+        <input id="o_ecv" readonly tabindex="-1"><span class="u">ml</span>
+      </div>
+      <div class="r">
+        <label>Total body volume</label>
+        <input id="o_tbv" readonly tabindex="-1"><span class="u">ml</span>
+      </div>
+      <div class="r">
+        <label>Recommend Kit ?</label>
+        <input id="o_kit" readonly tabindex="-1"><span class="u"></span>
+      </div>
+      <div class="r">
+        <label>Blood priming required ?</label>
+        <input id="o_prime" readonly tabindex="-1"><span class="u"></span>
+      </div>
+
+      <div class="grp">항응고</div>
+      <div class="r">
+        <label for="dil">Dilution N/S</label>
+        <input id="dil" type="number" step="10" min="1" value="100"><span class="u">ml</span>
+      </div>
+      <div class="r">
+        <label for="hep">Heparin</label>
+        <input id="hep" type="number" step="100" min="1" value="5000"><span class="u">IU</span>
+      </div>
+      <div class="r">
+        <label>Conc. of heparin</label>
+        <input id="o_hconc" readonly tabindex="-1"><span class="u">IU/ml</span>
+      </div>
+      <div class="r">
+        <label for="bolus">Initial bolus dose</label>
+        <input id="bolus" type="number" step="5" min="0" value="25"><span class="u">IU/kg</span>
+      </div>
+      <div class="r">
+        <label for="cri">CRI dose</label>
+        <input id="cri" type="number" step="5" min="0" value="25"><span class="u">IU/kg/hr</span>
+      </div>
+
+      <div class="btnrow">
+        <button class="btn p" id="printBtn" type="button">인쇄 / PDF 저장</button>
+        <button class="btn" id="resetBtn" type="button">기본값 복원</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 결과 ================= -->
+  <div>
+    <div class="card">
+      <h2>Prescription</h2>
+      <div class="og">
+        <div class="o hi"><div class="k">Qd Dialysate</div><div class="v" id="r_qd">—<small>ml/hr</small></div></div>
+        <div class="o hi"><div class="k">Qb Blood flow</div><div class="v" id="r_qb">—<small>ml/min</small></div></div>
+        <div class="o"><div class="k">Total eKt/V</div><div class="v" id="r_ektv">—</div></div>
+        <div class="o"><div class="k">URR per hour</div><div class="v" id="r_urrhr">—<small>%/hr</small></div></div>
+        <div class="o"><div class="k">Qeff = Qd+Qr+Quf</div><div class="v" id="r_qeff">—<small>ml/hr</small></div></div>
+        <div class="o"><div class="k">K = Qeff × SR</div><div class="v" id="r_k">—<small>ml/min</small></div></div>
+        <div class="o"><div class="k">Kt</div><div class="v" id="r_kt">—<small>ml</small></div></div>
+        <div class="o"><div class="k">Volume distribution</div><div class="v" id="r_vd">—<small>L</small></div></div>
+        <div class="o"><div class="k">Quf Ultrafiltration</div><div class="v" id="r_quf">—<small>ml/hr</small></div></div>
+        <div class="o"><div class="k">Qr Replacement · Pre</div><div class="v" id="r_qrpre">—<small>ml/hr</small></div></div>
+        <div class="o"><div class="k">Qr Replacement · Post</div><div class="v" id="r_qrpost">—<small>ml/hr</small></div></div>
+        <div class="o"><div class="k">Qh Heparin</div><div class="v" id="r_qh">—<small>ml/hr</small></div></div>
+        <div class="o" id="box_ffpre"><div class="k">Filtration Fraction · Pre</div><div class="v" id="r_ffpre">—<small>%</small></div></div>
+        <div class="o" id="box_ffpost"><div class="k">Filtration Fraction · Post</div><div class="v" id="r_ffpost">—<small>%</small></div></div>
+        <div class="o"><div class="k">Transit time</div><div class="v" id="r_transit">—<small>sec</small></div></div>
+        <div class="o"><div class="k">Plasma flow (Qp)</div><div class="v" id="r_qp">—<small>ml/hr</small></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Anticoagulation</h2>
+      <div class="og">
+        <div class="o"><div class="k">Initial bolus volume</div><div class="v" id="r_bolusv">—<small>ml</small></div></div>
+        <div class="o"><div class="k">CRI volume</div><div class="v" id="r_criv">—<small>ml/hr</small></div></div>
+        <div class="o"><div class="k">Total heparin (bolus)</div><div class="v" id="r_boluIU">—<small>IU</small></div></div>
+        <div class="o"><div class="k">Total heparin (CRI, 전체)</div><div class="v" id="r_criIU">—<small>IU</small></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>시간별 처방 (Prescription tab)</h2>
+      <div class="tabs">
+        <button class="tab on" data-m="1" type="button">Method 1 — 시간당 BUN 감소량 고정</button>
+        <button class="tab" data-m="2" type="button">Method 2 — 시간당 감소율 고정</button>
+      </div>
+      <p class="tnote" id="mnote"></p>
+      <div class="scroller">
+        <table>
+          <thead>
+            <tr>
+              <th>Time</th><th>BUN</th><th>Δ%</th><th>Δ%(누적)</th><th>ΔBUN</th>
+              <th>Qeff</th><th>Quf</th><th>Qr-pre</th><th>Qr-post</th><th>Qd</th><th>Qb</th><th>Kt/V</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="note fixnote">
+      <strong>원본 산식에서 수정한 부분 — Filtration Fraction</strong><br>
+      원본 계산기의 FF 식은 <code>(Quf+Qr)×60 / (Qb×(1−HCT/100))</code> 형태로,
+      ① ml/hr 값을 60으로 <em>나누지 않고 곱했고</em>,
+      ② HCT를 분율(0.4)로 입력받으면서 다시 100으로 나눠 <code>1−0.004</code>가 되어 있었습니다.
+      그 결과 기본값에서 FF가 33.7%로 나왔습니다. 아래 식으로 다시 세웠습니다.<br><br>
+      혈장유량 <code>Qp = Qb(ml/hr) × (1 − HCT)</code><br>
+      전희석 <code>FF-Pre = (Quf + Qr-pre) / (Qp + Qr-pre) × 100</code><br>
+      후희석 <code>FF-Post = (Quf + Qr-post) / Qp × 100</code><br><br>
+      전희석액은 필터 앞에서 혈액을 희석해 분모를 늘리고, 후희석액은 필터를 통과한 뒤 합류하므로 분모에 들어가지 않습니다.
+      같은 유량이라면 전희석의 FF가 항상 낮게 나오는 것이 정상입니다.
+      FF 20% 이상이면 주황색, 25%를 넘으면 경고로 표시합니다.
+    </div>
+
+    <div class="note">
+      <strong>이 계산기는 수의사용 참고 도구입니다.</strong>
+      산출값은 처방의 출발점일 뿐이며, 실제 처방은 환자의 활력징후와 전해질, 산-염기 상태, 잔여 신기능, 항응고 반응을 보며 조정해야 합니다.
+      첫 투석에서는 불균형증후군을 피하기 위해 목표 URR을 낮게 잡는 것이 일반적입니다.
+      보호자용이 아니며, 임상 판단을 대신하지 않습니다.
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    원본 계산식 © AHN, Woonchan — HD Prescription Calculator v2.0 (2025.05), Smart Animal Hospital Sinsa.<br>
+    웹 이식 및 Filtration Fraction 산식 수정 반영. 문의는 <a href="/#contact">진료 문의</a> 또는 02-549-0275.
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeBtn');
+  var saved=null; try{saved=localStorage.getItem('theme')}catch(e){}
+  if(saved) root.setAttribute('data-theme',saved);
+  btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    if(!cur) cur=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    var next=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('theme',next)}catch(e){}
+  });
+})();
+
+(function(){
+  'use strict';
+
+  /* ---- Filterset 시트 ---- */
+  var FILTERS = [
+    ['FMC AV Paed',   18,  54],
+    ['FMC AV 400s',   52,  83],
+    ['FMC AV 600s',  100, 110],
+    ['FMC AV 1000s', 130, 170],
+    ['Baxter HF20',   17,  43],
+    ['Baxter ST60',   44,  49],
+    ['Baxter ST100',  69,  83],
+    ['Baxter ST150', 105,  84]
+  ];
+  var TBV = { Canine:90, Feline:60 };                 // ml/kg
+  var HYD = {'-10':0.56,'-5':0.58,'0':0.60,'5':0.62,'10':0.64,'15':0.66}; // L/kg
+
+  var sel=document.getElementById('filter');
+  FILTERS.forEach(function(f){
+    var o=document.createElement('option'); o.value=f[0]; o.textContent=f[0];
+    if(f[0]==='Baxter HF20') o.selected=true;
+    sel.appendChild(o);
+  });
+
+  var DEFAULTS={species:'Canine',bw:6,hyd:'0',bun:200,hct:40,urr:40,td:5,quf:10,
+                qrpre:0,qrpost:0,sr:1,filter:'Baxter HF20',addv:0,dil:100,hep:5000,bolus:25,cri:25};
+  var IDS=Object.keys(DEFAULTS);
+  var method=1;
+
+  function num(id){ var v=parseFloat(document.getElementById(id).value); return isFinite(v)?v:0; }
+  function str(id){ return document.getElementById(id).value; }
+  function fmt(n,d){
+    if(!isFinite(n)) return '—';
+    return n.toLocaleString('ko-KR',{minimumFractionDigits:d,maximumFractionDigits:d});
+  }
+  function setV(id,val,unit){
+    var el=document.getElementById(id);
+    el.innerHTML = val + (unit?'<small>'+unit+'</small>':'');
+  }
+
+  function compute(){
+    var species=str('species'), bw=num('bw'), hydK=str('hyd');
+    var bun0=num('bun');
+    var hct=num('hct');  hct = hct>1 ? hct/100 : hct;          // 40 → 0.4, 0.4 → 0.4
+    var urr=num('urr');  urr = urr>1 ? urr/100 : urr;
+    var td=num('td'), quf=num('quf'), qrPre=num('qrpre'), qrPost=num('qrpost');
+    var sr=num('sr')||1, addv=num('addv'), fname=str('filter');
+
+    var fset=null; FILTERS.forEach(function(f){ if(f[0]===fname) fset=f; });
+    var filterVol=fset?fset[1]:0, lineVol=fset?fset[2]:0;
+    var ecv = filterVol + lineVol + addv;
+    var tbv = (TBV[species]||90) * bw;
+    var vd  = (HYD[hydK]||0.60) * bw;                          // L
+
+    var ektv = (urr>0 && urr<1) ? -Math.log(1-urr) : NaN;      // Total eKt/V
+    var kt   = ektv * vd * 1000;                               // ml
+    var k    = (td>0) ? kt/td : NaN;                           // ml/hr
+    var qeff = k / sr;                                         // ml/hr
+    var qd   = qeff - quf - qrPre - qrPost;                    // ml/hr
+    var qbMin= qd * 3 / 60;                                    // ml/min  (원본 유지)
+    var qbHr = qbMin * 60;                                     // ml/hr
+
+    /* ===== Filtration Fraction — 재작성한 산식 =====
+       Qp  = Qb(ml/hr) × (1 − HCT)
+       Pre : (Quf + Qr-pre) / (Qp + Qr-pre)      전희석액은 필터 앞에서 혈장을 희석
+       Post: (Quf + Qr-post) / Qp                후희석액은 필터 뒤에서 합류               */
+    var qp     = qbHr * (1 - hct);
+    var ffPre  = (qp + qrPre) > 0 ? (quf + qrPre) / (qp + qrPre) * 100 : NaN;
+    var ffPost = qp > 0          ? (quf + qrPost) / qp * 100           : NaN;
+
+    var transit = qbMin>0 ? ecv/qbMin*60 : NaN;                // sec
+    var urrHr   = td>0 ? urr/td*100 : NaN;                     // %/hr
+
+    var hconc  = num('dil')>0 ? num('hep')/num('dil') : NaN;   // IU/ml
+    var bolusV = hconc>0 ? num('bolus')*bw/hconc : NaN;
+    var criV   = hconc>0 ? num('cri')*bw/hconc : NaN;
+
+    /* 회로 셀 */
+    document.getElementById('o_fv').value    = fmt(filterVol,0);
+    document.getElementById('o_bv').value    = fmt(lineVol,0);
+    document.getElementById('o_ecv').value   = fmt(ecv,0);
+    document.getElementById('o_tbv').value   = fmt(tbv,0);
+    document.getElementById('o_kit').value   = (ecv < tbv*0.2) ? 'Recommend' : 'Change Lower Kit';
+    document.getElementById('o_prime').value = (ecv > tbv*0.15) ? 'YES' : 'No';
+    document.getElementById('o_hconc').value = fmt(hconc,1);
+
+    /* 처방 */
+    setV('r_qd',    fmt(qd,1),    'ml/hr');
+    setV('r_qb',    fmt(qbMin,1), 'ml/min');
+    setV('r_ektv',  fmt(ektv,3),  '');
+    setV('r_urrhr', fmt(urrHr,2), '%/hr');
+    setV('r_qeff',  fmt(qeff,1),  'ml/hr');
+    setV('r_k',     fmt(k/60,2),  'ml/min');
+    setV('r_kt',    fmt(kt,0),    'ml');
+    setV('r_vd',    fmt(vd,2),    'L');
+    setV('r_quf',   fmt(quf,0),   'ml/hr');
+    setV('r_qrpre', fmt(qrPre,0), 'ml/hr');
+    setV('r_qrpost',fmt(qrPost,0),'ml/hr');
+    setV('r_qh',    fmt(criV,1),  'ml/hr');
+    setV('r_ffpre', fmt(ffPre,2), '%');
+    setV('r_ffpost',fmt(ffPost,2),'%');
+    setV('r_transit',fmt(transit,0),'sec');
+    setV('r_qp',    fmt(qp,0),    'ml/hr');
+
+    [['box_ffpre',ffPre],['box_ffpost',ffPost]].forEach(function(p){
+      var box=document.getElementById(p[0]);
+      box.classList.toggle('warn', isFinite(p[1]) && p[1] >= 20);
+    });
+
+    /* 항응고 */
+    setV('r_bolusv', fmt(bolusV,2), 'ml');
+    setV('r_criv',   fmt(criV,2),   'ml/hr');
+    setV('r_boluIU', fmt(num('bolus')*bw,0), 'IU');
+    setV('r_criIU',  fmt(num('cri')*bw*td,0),'IU');
+
+    buildTable({bun0:bun0,urr:urr,td:td,vd:vd,quf:quf,qrPre:qrPre,qrPost:qrPost,sr:sr});
+  }
+
+  function buildTable(p){
+    var tb=document.getElementById('tbody');
+    var note=document.getElementById('mnote');
+    tb.innerHTML='';
+    var n=Math.max(1,Math.min(24,Math.ceil(p.td)));
+    if(!(p.urr>0 && p.urr<1) || !(p.td>0)){ note.textContent='Target URR과 Treatment time을 확인해 주세요.'; return; }
+
+    note.textContent = method===1
+      ? '시간당 BUN 감소량을 (시작 BUN − 목표 BUN) ÷ 투석시간으로 고정합니다. 남은 BUN이 줄어들수록 시간당 제거율이 커지므로 Qeff와 Qb를 시간마다 올려야 합니다.'
+      : '시간당 감소율을 목표 URR ÷ 투석시간으로 고정합니다. Qeff가 일정해 운용은 쉽지만, 지수적으로 감소하므로 종료 시점 누적 URR은 목표치보다 낮게 끝납니다.';
+
+    var dBun = p.bun0 * p.urr / p.td;      // Method 1 : 시간당 고정 감소량
+    var fHr  = p.urr / p.td;               // Method 2 : 시간당 고정 감소율
+    var prev = p.bun0, rows='';
+
+    for(var h=1; h<=n; h++){
+      var cur = (method===1) ? prev - dBun : prev * (1 - fHr);
+      if(cur<=0){ cur=0; }
+      var g   = prev>0 ? (prev-cur)/prev : 0;
+      var cum = p.bun0>0 ? (p.bun0-cur)/p.bun0 : 0;
+      var dB  = prev-cur;
+      var ktv = (g>0 && g<1) ? -Math.log(1-g) : 0;
+      var q   = ktv * p.vd * 1000;
+      var qef = q / p.sr;
+      var qd  = qef - p.quf - p.qrPre - p.qrPost;
+      var qb  = qd*3/60;
+
+      rows += '<tr><td>'+h+' hr</td>'
+           +  '<td>'+fmt(cur,1)+'</td>'
+           +  '<td>'+fmt(g*100,2)+'</td>'
+           +  '<td>'+fmt(cum*100,2)+'</td>'
+           +  '<td>'+fmt(dB,2)+'</td>'
+           +  '<td class="em">'+fmt(qef,1)+'</td>'
+           +  '<td>'+fmt(p.quf,0)+'</td>'
+           +  '<td>'+fmt(p.qrPre,0)+'</td>'
+           +  '<td>'+fmt(p.qrPost,0)+'</td>'
+           +  '<td class="em">'+fmt(qd,1)+'</td>'
+           +  '<td class="em">'+fmt(qb,1)+'</td>'
+           +  '<td>'+fmt(ktv,3)+'</td></tr>';
+      prev=cur;
+      if(cur<=0) break;
+    }
+    tb.innerHTML=rows;
+  }
+
+  /* 이벤트 */
+  IDS.forEach(function(id){
+    var el=document.getElementById(id);
+    if(el){ el.addEventListener('input',compute); el.addEventListener('change',compute); }
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(t){
+    t.addEventListener('click',function(){
+      Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(x){x.classList.remove('on')});
+      t.classList.add('on'); method=parseInt(t.getAttribute('data-m'),10); compute();
+    });
+  });
+  document.getElementById('resetBtn').addEventListener('click',function(){
+    IDS.forEach(function(id){ var el=document.getElementById(id); if(el) el.value=DEFAULTS[id]; });
+    compute();
+  });
+  document.getElementById('printBtn').addEventListener('click',function(){ window.print(); });
+
+  compute();
+})();
+</script>
+</body>
+</html>
