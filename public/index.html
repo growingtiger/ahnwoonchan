@@ -453,6 +453,94 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
 @media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:28px}}
 @media(max-width:900px){.notes-grid{grid-template-columns:1fr;gap:28px}}
 
+
+/* ═══════════ 전문성 강화 레이어 ═══════════ */
+body{font-feature-settings:"tnum" 0}
+h1,h2{letter-spacing:-.038em}
+h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
+.eyebrow{font-size:.71rem;letter-spacing:.2em}
+.eyebrow::after{max-width:44px;opacity:.8}
+.sec-head{margin-bottom:48px;position:relative;padding-left:18px}
+.sec-head::before{
+  content:"";position:absolute;left:0;top:4px;bottom:6px;width:3px;border-radius:2px;
+  background:linear-gradient(to bottom,var(--brand),transparent);
+}
+.lede{font-size:1.05rem;line-height:1.8}
+
+/* 히어로 */
+.hero{padding:96px 0 84px}
+.hero h1{font-size:clamp(2.35rem,5.9vw,3.65rem);line-height:1.08}
+.hero p.role{font-size:1.02rem;color:var(--ink-2);font-weight:600;margin:22px 0 4px}
+.hero p.role .divider{opacity:.55}
+.hero-quote{
+  margin:26px 0 0;padding:4px 0 4px 20px;border-left:3px solid var(--brand);
+  font-size:1.1rem;font-weight:500;line-height:1.72;max-width:44ch;
+}
+.tag{padding:7px 15px;font-size:.79rem;letter-spacing:-.005em}
+
+/* 자격 요약 */
+.creds{list-style:none;display:flex;flex-wrap:wrap;gap:7px;margin-top:26px}
+.creds li{
+  font-size:.76rem;font-weight:500;color:var(--ink-3);
+  border:1px solid var(--line);border-radius:100px;padding:5px 13px;
+  background:color-mix(in srgb,var(--bg) 70%,transparent);
+}
+.creds li b{color:var(--brand);font-weight:700}
+
+/* 인물 사진 */
+.portrait{border-radius:22px;box-shadow:0 2px 4px rgba(16,40,36,.06),0 24px 48px -24px rgba(16,40,36,.4)}
+.portrait::after{
+  content:"";position:absolute;inset:0;border-radius:22px;pointer-events:none;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--brand) 22%,transparent);
+}
+
+/* 숫자 밴드 */
+.stats{background:var(--bg);border-top:1px solid var(--line)}
+.stat{padding:40px 22px}
+.stat .num{
+  font-size:clamp(2rem,4.4vw,2.7rem);letter-spacing:-.05em;line-height:1.05;
+  font-variant-numeric:tabular-nums;
+}
+.stat .lbl{
+  font-size:.82rem;margin-top:12px;position:relative;display:inline-block;padding-top:12px;
+}
+.stat .lbl::before{
+  content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:22px;height:2px;border-radius:1px;background:var(--brand);opacity:.55;
+}
+.stat .note{font-size:.71rem;margin-top:6px}
+
+/* 진료 카드 */
+.card{transition:transform .24s cubic-bezier(.2,.7,.3,1),box-shadow .24s,border-color .24s}
+.card h3{font-size:1.14rem}
+.card h3::before{width:34px;height:3px}
+.card:hover{transform:translateY(-4px)}
+
+/* 연구 실적 요약 */
+.tally{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:1px;margin-bottom:26px;
+  background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+}
+@media(max-width:760px){.tally{grid-template-columns:repeat(3,1fr)}}
+.ty{background:var(--bg);padding:18px 10px;text-align:center}
+.ty b{display:block;font-size:1.5rem;font-weight:700;color:var(--brand);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.ty span{display:block;font-size:.74rem;color:var(--ink-3);margin-top:3px;font-weight:500}
+
+/* 아코디언 */
+.ac summary{font-size:1.03rem;padding:17px 22px}
+.ac[open]{border-color:color-mix(in srgb,var(--brand) 30%,var(--line))}
+
+/* 시스템 밴드 */
+.sys .sec-head::before{background:linear-gradient(to bottom,#7fd9c8,transparent)}
+.sys-k{letter-spacing:.08em}
+
+/* 수의사 전용 */
+.vetonly{background:var(--bg);border:1px solid color-mix(in srgb,var(--brand) 26%,var(--line))}
+
+/* 문의 */
+.info-list .v .tel{font-size:1.42rem}
+.emergency{border-left-width:4px}
+
 /* ---------- reveal (JS 없으면 그대로 보이도록 .js 가드) ---------- */
 .js .rv{opacity:0;transform:translateY(16px);transition:opacity .6s cubic-bezier(.2,.7,.3,1),transform .6s cubic-bezier(.2,.7,.3,1)}
 .js .rv.in{opacity:1;transform:none}
@@ -534,6 +622,12 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
           혈액투석·혈액관류 등 신대체요법과 고유량산소요법, 기계환기로
           질병으로 고통받는 중환자를 살리기 위해 노력하고 있습니다.
         </p>
+        <ul class="creds">
+          <li>건국대학교 수의과대학 <b>겸임교수</b></li>
+          <li>한국수의신장대체치료연구회 <b>부회장</b></li>
+          <li>미국수의신장비뇨기학회 <b>정회원</b></li>
+          <li>IRIS Hemodialysis Academy <b>이수</b></li>
+        </ul>
         <div class="cta-row">
           <a class="btn btn-primary" href="tel:0225490275">02-549-0275 전화하기</a>
           <a class="btn btn-ghost" href="#contact">진료·전원 문의</a>
@@ -820,6 +914,15 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
            수의 혈액투석의 발전에 필요하다고 생각합니다.</p>
       </div>
 
+      <div class="tally">
+        <div class="ty"><b>5</b><span>논문 발표</span></div>
+        <div class="ty"><b>5</b><span>국제학회 발표</span></div>
+        <div class="ty"><b>21</b><span>강의·교육</span></div>
+        <div class="ty"><b>9</b><span>저술</span></div>
+        <div class="ty"><b>2</b><span>방송</span></div>
+        <div class="ty"><b>12</b><span>언론 보도</span></div>
+      </div>
+
       <div class="acc" id="acc">
 
         <details class="ac" open>
@@ -971,7 +1074,7 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
         </div>
         <div>
           <div class="card">
-            <h3>어디에 기록하나요</h3>
+            <h3>무엇을 기록하나요</h3>
             <ul>
               <li>신장질환과 투석을 공부하며 배운 내용</li>
               <li>새로 읽은 논문 정리</li>
@@ -996,7 +1099,7 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
       <div class="contact-grid">
         <div>
           <div class="emergency">
-            <h3>보호자께</h3>
+            <h3>보호자님께</h3>
             <p>예정된 혈액투석 상담은 예약제로 운영합니다.
                환자가 소변을 보지 못하거나 호흡곤란, 의식 저하, 경련, 심한 구토 또는 중독이 의심되는
                응급 상황이라면 출발 전에 먼저 전화해 주세요.</p>
