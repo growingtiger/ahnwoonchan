@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>안운찬 수의사 | 반려동물 혈액투석·응급의학</title>
-<meta name="description" content="개와 고양이의 혈액투석·신대체요법(RRT)과 응급·중환자 진료. 시그니처동물의료센터 내과원장 안운찬 수의사. 서울 강남구 도산대로 213, 365일 24시간 진료, 02-549-0275.">
+<title>안운찬 수의사 | 개와 고양이 신장질환·혈액투석·응급중환자 진료</title>
+<meta name="description" content="개와 고양이의 신장질환·혈액투석·응급중환자 진료. 시그니처동물의료센터 내과원장 안운찬 수의사. 서울 강남구 도산대로 213, 365일 24시간 응급진료, 02-549-0275.">
 <meta name="keywords" content="강아지 혈액투석, 고양이 혈액투석, 반려동물 투석, 급성신부전, 급성신손상, 혈액관류, 중독 치료, 강남 24시 동물병원, 안운찬 수의사, 시그니처동물의료센터">
 <meta name="author" content="안운찬">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -371,6 +371,88 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
   font-size:.78rem;color:var(--ink-3);line-height:1.7;
 }
 
+
+/* ---------- 신규/보강 ---------- */
+.para{color:var(--ink-2);font-size:.96rem;margin-bottom:16px}
+.para:last-child{margin-bottom:0}
+.inline-link{color:var(--brand);font-weight:600;border-bottom:1px solid color-mix(in srgb,var(--brand) 40%,transparent)}
+.about-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:48px}
+.subhead{font-size:1.15rem;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.cv-wrap{margin-top:52px}
+.stats-note{font-size:.8rem;color:var(--ink-3);text-align:center;padding:16px 0 4px;line-height:1.6}
+.stats-note strong{color:var(--ink-2);font-weight:600}
+.cards-4{grid-template-columns:repeat(2,1fr)}
+@media(max-width:900px){.cards-4{grid-template-columns:1fr}}
+
+/* research intro */
+.rsintro{max-width:74ch;margin-bottom:34px}
+.rsintro p{color:var(--ink-2);font-size.96rem;font-size:.96rem;margin-bottom:14px}
+.rsintro p:last-child{margin-bottom:0}
+
+/* accordion */
+.acc{display:flex;flex-direction:column;gap:10px}
+.ac{border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);overflow:hidden}
+.ac[open]{box-shadow:var(--shadow)}
+.ac summary{
+  cursor:pointer;list-style:none;padding:16px 20px;display:flex;align-items:center;gap:12px;
+  font-weight:700;font-size:1rem;letter-spacing:-.02em;transition:.15s;
+}
+.ac summary::-webkit-details-marker{display:none}
+.ac summary:hover{background:var(--bg-soft)}
+.ac summary::after{
+  content:"+";margin-left:auto;font-size:1.2rem;font-weight:600;color:var(--brand);
+  width:22px;height:22px;display:grid;place-items:center;flex:none;
+}
+.ac[open] summary::after{content:"−"}
+.ac[open] summary{border-bottom:1px solid var(--line)}
+.ac-t{color:var(--ink)}
+.ac-c{
+  font-size:.7rem;font-weight:700;color:var(--brand);
+  background:color-mix(in srgb,var(--brand) 12%,transparent);
+  padding:2px 8px;border-radius:100px;flex:none;
+}
+.ac ul{list-style:none;padding:6px 20px 18px}
+.pub li{padding:13px 0;border-bottom:1px solid var(--line);font-size:.92rem;line-height:1.55}
+.pub li:last-child{border-bottom:none}
+.pub li b{display:block;color:var(--ink);font-weight:600;margin-bottom:4px}
+.pub li span{color:var(--ink-3);font-size:.85rem}
+.pub li i{font-style:italic}
+.lec li{
+  padding:9px 0 9px 76px;position:relative;font-size:.9rem;color:var(--ink-2);
+  border-bottom:1px solid var(--line);line-height:1.6;
+}
+.lec li:last-child{border-bottom:none}
+.lec li em{
+  position:absolute;left:0;top:9px;font-style:normal;font-size:.76rem;font-weight:700;
+  color:var(--brand);letter-spacing:.02em;
+}
+.lec li a{color:var(--brand);font-weight:600}
+.lec li a:hover{text-decoration:underline}
+.lec.serial li{padding-left:16px}
+.lec.serial li::before{content:"·";position:absolute;left:2px;color:var(--ink-3);font-weight:700}
+.serial-h{padding:14px 20px 4px;font-size:.88rem;font-weight:700;color:var(--ink)}
+.serial-h em{font-style:normal;color:var(--brand);font-size:.76rem;margin-right:8px}
+.news li{padding-left:0}
+.news li span{display:block;font-size:.76rem;color:var(--ink-3);margin-top:2px}
+
+/* 수의사 전용 배너 */
+.vetonly{
+  margin-top:26px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;
+  background:var(--bg-sunk);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;
+}
+.vetonly > div{flex:1;min-width:240px}
+.vetonly strong{
+  display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--brand);background:color-mix(in srgb,var(--brand) 12%,transparent);
+  padding:3px 9px;border-radius:5px;margin-bottom:8px;
+}
+.vetonly p{font-size:.9rem;color:var(--ink-2);margin:0}
+
+/* notes */
+.notes-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:44px;align-items:start}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:28px}}
+@media(max-width:900px){.notes-grid{grid-template-columns:1fr;gap:28px}}
+
 /* ---------- reveal (JS 없으면 그대로 보이도록 .js 가드) ---------- */
 .js .rv{opacity:0;transform:translateY(16px);transition:opacity .6s cubic-bezier(.2,.7,.3,1),transform .6s cubic-bezier(.2,.7,.3,1)}
 .js .rv.in{opacity:1;transform:none}
@@ -420,14 +502,11 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
   <div class="wrap nav">
     <a href="#top" class="brand"><span class="dot"></span>안운찬 <small>수의사 · Woonchan Ahn, DVM</small></a>
     <a class="link" href="#about">소개</a>
-    <a class="link" href="#cv">약력</a>
     <a class="link" href="#care">진료 분야</a>
-    <a class="link" href="#when">투석이 필요할 때</a>
-    <a class="link" href="#system">진료 체계</a>
-    <a class="link" href="#academic">학술 활동</a>
-    <a class="link" href="#press">언론 보도</a>
-    <a class="link" href="#contact">진료 문의</a>
-    <a class="link calc" href="/calculator">계산기</a>
+    <a class="link" href="#dialysis">투석 안내</a>
+    <a class="link" href="#research">연구·활동</a>
+    <a class="link" href="#notes">글과 기록</a>
+    <a class="link" href="#contact">진료·전원</a>
     <button class="theme-btn" id="themeBtn" aria-label="화면 테마 전환">◐</button>
   </div>
 </header>
@@ -438,29 +517,27 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <span class="tag"><span class="pulse"></span>365일 24시간 응급진료 · 개·고양이 혈액투석</span>
+        <span class="tag"><span class="pulse"></span>개와 고양이의 신장질환 · 혈액투석 · 응급중환자 진료</span>
         <h1>
           <span class="name">안운찬 수의사</span>
-          <span class="sub">개와 고양이 혈액투석 · 응급중환자 진료</span>
         </h1>
         <p class="role">
           시그니처동물의료센터 내과원장
           <span class="divider">|</span>
-          혈액투석·신장비뇨기센터 및 응급중환자 센터장
+          혈액투석·신장비뇨기센터 및 응급중환자센터장
         </p>
         <blockquote class="hero-quote">
-          <span class="q">어떤 환자에게 언제, 어떻게 하는지에 대한 데이터를 모아 표준화해나가야 한다</span>
-          <cite>2026년 제1회 수의첨단재생의료포럼</cite>
+          <span class="q">회복할 가능성이 남아 있다면, 그 시간을 버틸 수 있도록 돕겠습니다.</span>
         </blockquote>
         <p class="desc">
-          급성신손상, 약물 중독, 중증 신부전 환자에게 혈액투석(HD)과
-          지속적신대체요법(CRRT), 혈액관류(HP)를 합니다.
-          2016년 무렵부터 이 분야에 집중해 왔고, 그동안의 증례는 학회와 세미나에서 공개하고 있습니다.
+          급성신손상, 중증 신부전과 중독으로 위중한 개와 고양이를 진료하며
+          혈액투석·혈액관류 등 신대체요법과 고유량산소요법, 기계환기로
+          질병으로 고통받는 중환자를 살리기 위해 노력하고 있습니다.
         </p>
         <div class="cta-row">
           <a class="btn btn-primary" href="tel:0225490275">02-549-0275 전화하기</a>
-          <a class="btn btn-ghost" href="#contact">진료·전원 안내</a>
-          <a class="btn btn-ghost" href="#academic">학술 활동</a>
+          <a class="btn btn-ghost" href="#contact">진료·전원 문의</a>
+          <a class="btn btn-ghost" href="#dialysis">투석 안내</a>
         </div>
       </div>
       <div>
@@ -479,12 +556,10 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
         <div class="stat">
           <div class="num">800<span style="font-size:.6em">+</span></div>
           <div class="lbl">누적 혈액투석 세션</div>
-          <div class="note">2026년 7월 기준</div>
         </div>
         <div class="stat">
           <div class="num">200<span style="font-size:.6em">+</span></div>
           <div class="lbl">투석 치료 환자 수</div>
-          <div class="note">개·고양이 누적</div>
         </div>
         <div class="stat">
           <div class="num">136</div>
@@ -496,6 +571,10 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
           <div class="lbl">신장·투석 진료 시작</div>
         </div>
       </div>
+      <p class="stats-note">
+        누적 세션과 환자 수는 시그니처동물의료센터(구 스마트동물병원 신사본원) 혈액투석센터에서
+        안운찬 수의사가 직접 시행한 치료를 집계한 것으로, <strong>2025년 기준</strong>입니다.
+      </p>
     </div>
   </section>
 
@@ -504,36 +583,49 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
     <div class="wrap">
       <div class="sec-head">
         <div class="eyebrow">About</div>
-        <h2>투석을 하게 된 이유</h2>
+        <h2>혈액투석을 시작하게 된 이유</h2>
       </div>
-      <div style="display:grid;grid-template-columns:1.15fr .85fr;gap:48px" class="about-grid">
+      <div class="about-grid">
         <div>
           <p class="lede" style="margin-bottom:18px">
-            급성신손상은 원인만 제거되면 신장 기능이 돌아오는 경우가 있습니다.
-            문제는 그 전에 요독증과 고칼륨혈증으로 환자를 잃는다는 것입니다.
-            혈액투석은 그 기간 동안 신장이 하던 일을 기계가 대신하는 치료입니다.
+            처음 혈액투석을 시작한 이유는 단순했습니다.
+            내과적 치료만으로는 위중한 상태를 견디기 어렵지만,
+            신장이 다시 기능할 가능성은 남아 있는 환자들이 있었기 때문입니다.
           </p>
-          <p style="color:var(--ink-2);font-size:.96rem;margin-bottom:16px">
-            내과 치료만으로는 살릴 수 없는 신장질환 환자들이 있었고, 그래서 투석을 시작했습니다.
-            2016년 무렵부터 지금까지 신장질환과 신대체요법에 집중해 왔습니다.
-            현재 시그니처동물의료센터(구 스마트동물병원 신사본원)에서 혈액투석·신장비뇨기센터를 맡고 있습니다.
+          <p class="para">
+            급성신손상은 원인을 해결하고 충분한 시간이 주어지면 신장 기능이 회복되는 경우가 있습니다.
+            그러나 회복을 기다리는 동안 심한 요독증, 고칼륨혈증, 산-염기 불균형과 수액 과부하로 환자를 잃기도 합니다.
+            혈액투석은 그 기간 동안 손상된 신장이 수행하지 못하는 기능의 일부를 대신합니다.
           </p>
-          <p style="color:var(--ink-2);font-size:.96rem;margin-bottom:16px">
-            보는 환자는 크게 두 갈래입니다. <strong>혈액투석을 비롯한 신대체요법(RRT)</strong>이 하나고,
-            그 환자들이 실제로 실려 오는 <strong>응급·중환자 진료</strong>가 다른 하나입니다.
-            급성신손상, 요로폐색, 약물 중독, 패혈증은 몇 시간 만에 판단이 뒤집힙니다.
-            투석을 언제 시작하고 언제 멈출지 정하는 일이 진료의 대부분입니다.
+          <p class="para">
+            처음 시작하던 2016년 무렵에는 한국 수의계에서 혈액투석은 매우 생소한 치료였고,
+            참고할 수 있는 자료도, 직접 물어볼 수 있는 곳도 마땅치 않았습니다.
+            그럼에도 눈앞에서 꺼져가는 생명을 살리기 위해 가능한 모든 방법을 공부하고 시도해야 했습니다.
+            그 과정에서 수많은 시행착오와 고민이 있었지만, 결국 환자 한 마리 한 마리를 살리기 위해
+            누구보다 깊이 고민해 왔다고 생각합니다.
+            현재는 시그니처동물의료센터에서 혈액투석·신장비뇨기센터와 응급중환자센터를 맡고 있습니다.
           </p>
-          <p style="color:var(--ink-2);font-size:.96rem">
-            국내에는 아직 수의 투석 사례가 적습니다. 그래서 병원에서 겪은 것을 되도록 밖에 내놓으려고 합니다.
-            VHR을 열어 생존율과 예후는 물론 잘 안 됐던 사례까지 다른 병원들과 나눴고,
-            IRIS 국제학회에서는 국내 투석 증례 136마리분을 발표했습니다.
+          <p class="para">
+            투석이 필요한 환자는 대부분 매우 위중한 상태로 내원합니다.
+            투석을 시행할 것인지뿐 아니라 언제 시작하고, 어느 정도의 강도로 진행하며,
+            언제 중단할지를 판단하는 과정이 중요합니다.
+            같은 신장수치라도 원인과 소변량, 체액 상태, 동반 질환과 회복 가능성에 따라 치료 방향은 달라집니다.
+          </p>
+          <p class="para">
+            이제는 그동안 축적해 온 경험과 데이터를 우리 환자들에만 머무르게 하지 않고,
+            더 많은 환자들이 도움을 받을 수 있도록 동료 수의사들과 공유하려고 노력하고 있습니다.
+            진료 현장에서 생긴 질문을 연구로 확인하고, 연구에서 얻은 답을 다시 환자 진료에 적용하는 것이
+            제가 지향하는 방향입니다.
+          </p>
+          <p class="para" style="color:var(--ink-3)">
+            2016년 무렵부터 이 분야에 집중해 오고 있으며, 다양한 논문과 연구,
+            수의사를 대상으로 한 강의를 통해 더 많은 환자를 살릴 수 있도록 지식을 나누고 있습니다.
           </p>
         </div>
         <div>
           <div class="card" style="height:100%">
             <h3>현재 소속</h3>
-            <p><a href="https://signatureamc.co.kr" target="_blank" rel="noopener" style="color:var(--brand);font-weight:600;border-bottom:1px solid color-mix(in srgb,var(--brand) 40%,transparent)">시그니처동물의료센터</a> 내과원장<br>혈액투석·신장비뇨기센터 및 응급중환자 센터장</p>
+            <p><a href="https://signatureamc.co.kr" target="_blank" rel="noopener" class="inline-link">시그니처동물의료센터</a> 내과원장<br>혈액투석·신장비뇨기센터 및 응급중환자 센터장</p>
             <ul>
               <li>진료과목 — 내과, 신장내과, 혈액투석, 중환자응급의학</li>
               <li>구 스마트동물병원 신사본원 (2013년 개원, 서울 강남구)</li>
@@ -544,41 +636,40 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- CV -->
-  <section id="cv" style="background:var(--bg-soft);border-top:1px solid var(--line)">
-    <div class="wrap">
-      <div class="sec-head">
-        <div class="eyebrow">Credentials</div>
-        <h2>약력</h2>
-      </div>
-      <div class="cv-grid">
-        <div class="cv-block rv">
-          <h3>학력</h3>
-          <ul>
-            <li>강원대학교 수의과대학 수의내과학 학사 졸업</li>
-            <li>강원대학교 수의과대학 수의내과학 석사 졸업</li>
-            <li>강원대학교 수의과대학 수의내과학 박사 수료</li>
-          </ul>
-          <h3 style="margin-top:30px">현직</h3>
-          <ul>
-            <li>시그니처동물의료센터 내과원장</li>
-            <li>혈액투석·신장비뇨기센터 및 응급중환자 센터장</li>
-            <li>건국대학교 수의과대학 수의내과학 겸임교수</li>
-          </ul>
-        </div>
-        <div class="cv-block rv">
-          <h3>학회 활동</h3>
-          <ul>
-            <li>한국수의신장대체치료 연구회(KSVERRT) 부회장</li>
-            <li>한국수의응급중환자의학회(KVECCS) 위원</li>
-            <li>벳아너스(VETHONORS) 학술위원</li>
-            <li>미국수의신장비뇨기학회(ASVNU) 정회원</li>
-            <li>미국수의응급중환자의학회(VECCS) 정회원</li>
-            <li>대한신장학회 중환자신장학회 준회원</li>
-          </ul>
+      <!-- 약력 -->
+      <div class="cv-wrap">
+        <h3 class="subhead">약력</h3>
+        <div class="cv-grid">
+          <div class="cv-block rv">
+            <h3>학력</h3>
+            <ul>
+              <li>강원대학교 수의과대학 졸업</li>
+              <li>강원대학교 수의과대학 수의내과학 석사 졸업</li>
+              <li>강원대학교 수의과대학 수의내과학 박사 수료</li>
+            </ul>
+            <h3 style="margin-top:30px">이수 교육</h3>
+            <ul>
+              <li>IRIS Hemodialysis Academy</li>
+            </ul>
+            <h3 style="margin-top:30px">현직</h3>
+            <ul>
+              <li>시그니처동물의료센터 내과원장</li>
+              <li>혈액투석·신장비뇨기센터 및 응급중환자 센터장</li>
+              <li>건국대학교 수의과대학 수의내과학 겸임교수</li>
+            </ul>
+          </div>
+          <div class="cv-block rv">
+            <h3>학회 활동</h3>
+            <ul>
+              <li>한국수의신장대체치료 연구회(KSVERRT) 부회장</li>
+              <li>한국수의응급중환자의학회(KVECCS) 위원</li>
+              <li>벳아너스(VETHONORS) 학술위원</li>
+              <li>미국수의신장비뇨기학회(ASVNU) 정회원</li>
+              <li>미국수의응급중환자의학회(VECCS) 정회원</li>
+              <li>대한신장학회 중환자신장학회 준회원</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -590,9 +681,9 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
       <div class="sec-head">
         <div class="eyebrow">Clinical Focus</div>
         <h2>주요 진료 분야</h2>
-        <p class="lede">개와 고양이의 신대체요법, 그리고 응급·중환자 진료를 봅니다.</p>
+        <p class="lede">개와 고양이의 신대체요법, 신장·비뇨기 질환, 그리고 응급·중환자 진료를 봅니다.</p>
       </div>
-      <div class="cards">
+      <div class="cards cards-4">
         <div class="card rv">
           <h3>혈액투석 · 신대체요법 (RRT)</h3>
           <p>몸 밖으로 혈액을 돌려 노폐물과 수분, 전해질을 직접 걸러냅니다. 신장 기능이 돌아올 때까지 요독증과 전해질 이상을 붙잡아 둡니다.</p>
@@ -602,6 +693,17 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
             <li>Kt/V 기반 투석 처방 설계</li>
             <li>투석 카테터 장착 및 관리</li>
             <li>만성신장병에 겹친 급성신손상(ACKD) 관리</li>
+          </ul>
+        </div>
+        <div class="card rv">
+          <h3>신장 · 비뇨기 진료</h3>
+          <p>투석이 필요하지 않은 단계의 신장질환부터 폐색성 요로질환까지, 원인과 회복 가능성에 따라 치료 방향을 정합니다.</p>
+          <ul>
+            <li>급성신장손상(급성신부전, AKI)과 만성신장질환(만성신부전, CKD)</li>
+            <li>고양이 요로폐색 — 요관폐색, SUB, 요관스텐트</li>
+            <li>재발성 비뇨기 질환</li>
+            <li>방광염, 방광결석, 요도폐색</li>
+            <li>산-염기 및 체액 불균형</li>
           </ul>
         </div>
         <div class="card rv">
@@ -619,19 +721,20 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
           <h3>응급 · 중환자 진료</h3>
           <p>투석이 필요한 환자는 대부분 응급으로 실려 옵니다. 도착 직후의 판단과 안정화, 투석 개시 시점을 같은 사람이 이어서 봅니다.</p>
           <ul>
-            <li>급성신손상 · 무뇨/핍뇨 환자</li>
-            <li>고양이 요로폐색 및 재발성 비뇨기 질환</li>
-            <li>중증 고칼륨혈증 · 산-염기 불균형</li>
-            <li>수액 과부하 및 폐부종</li>
-            <li>타 병원 전원 환자 상담</li>
+            <li>급성 호흡부전 및 저산소증 집중 치료 (폐수종, 폐렴 등)</li>
+            <li>고유량 비강 캐뉼라 산소요법 (HFNC)</li>
+            <li>기계환기 관리 (mechanical ventilation)</li>
+            <li>쇼크 및 다장기부전 환자 소생·안정화</li>
+            <li>패혈증 및 SIRS 집중 치료</li>
+            <li>심폐소생술 및 응급환자 관리</li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- WHEN -->
-  <section id="when" class="ind">
+  <!-- DIALYSIS (투석 안내 = 적응증 + 진료 체계) -->
+  <section id="dialysis" class="ind">
     <div class="wrap">
       <div class="sec-head">
         <div class="eyebrow">Indications</div>
@@ -639,30 +742,18 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
         <p class="lede">아래에 해당한다면 주치의 선생님과 상의해 전원 여부를 검토해 보시기를 권합니다.</p>
       </div>
       <div class="ind-grid">
-        <div class="ind-item rv">
-          <span class="n">01</span>
-          <p><strong>소변량이 급격히 줄었을 때</strong>수액 치료에도 반응하지 않는 핍뇨·무뇨는 시간을 다투는 상황입니다.</p>
-        </div>
-        <div class="ind-item rv">
-          <span class="n">02</span>
-          <p><strong>수액을 더 줄 수 없을 때</strong>이미 수액 과부하로 부종이나 호흡 곤란이 생겨 치료가 막힌 경우입니다.</p>
-        </div>
-        <div class="ind-item rv">
-          <span class="n">03</span>
-          <p><strong>약물·독성물질을 먹었을 때</strong>진통제, 항응고제, 심장약 등 해독제가 없거나 흡착이 늦은 중독입니다.</p>
-        </div>
-        <div class="ind-item rv">
-          <span class="n">04</span>
-          <p><strong>요독 증상이 조절되지 않을 때</strong>구토, 경련, 의식 저하 등 요독성 뇌증이 동반된 중증 신부전입니다.</p>
-        </div>
-        <div class="ind-item rv">
-          <span class="n">05</span>
-          <p><strong>고칼륨혈증이 반복될 때</strong>내과적 처치로 교정되지 않아 심정지 위험이 있는 전해질 이상입니다.</p>
-        </div>
-        <div class="ind-item rv">
-          <span class="n">06</span>
-          <p><strong>만성 신장병 환자가 갑자기 나빠졌을 때</strong>기존 CKD에 급성 악화가 겹친 ACKD 상황입니다.</p>
-        </div>
+        <div class="ind-item rv"><span class="n">01</span>
+          <p><strong>소변량이 급격히 줄었을 때</strong>수액 치료에도 반응하지 않는 핍뇨·무뇨는 시간을 다투는 상황입니다.</p></div>
+        <div class="ind-item rv"><span class="n">02</span>
+          <p><strong>수액을 더 줄 수 없을 때</strong>이미 수액 과부하로 부종이나 호흡 곤란이 생겨 치료가 막힌 경우입니다.</p></div>
+        <div class="ind-item rv"><span class="n">03</span>
+          <p><strong>약물·독성물질을 먹었을 때</strong>진통제, 항응고제, 심장약 등 해독제가 없거나 흡착이 늦은 중독입니다.</p></div>
+        <div class="ind-item rv"><span class="n">04</span>
+          <p><strong>요독 증상이 조절되지 않을 때</strong>구토, 경련, 의식 저하 등 요독성 뇌증이 동반된 중증 신부전입니다.</p></div>
+        <div class="ind-item rv"><span class="n">05</span>
+          <p><strong>고칼륨혈증이 반복될 때</strong>내과적 처치로 교정되지 않아 심정지 위험이 있는 전해질 이상입니다.</p></div>
+        <div class="ind-item rv"><span class="n">06</span>
+          <p><strong>만성 신장병 환자가 갑자기 나빠졌을 때</strong>기존 CKD에 급성 악화가 겹친 ACKD 상황입니다.</p></div>
       </div>
       <div class="callout">
         <strong>투석이 신장을 고치지는 못합니다.</strong>
@@ -693,8 +784,8 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
         </div>
         <div class="sys-item rv">
           <div class="sys-k">당일 투석</div>
-          <h3>오후 5시까지 도착하면 그날 투석이 가능합니다</h3>
-          <p>평일과 주말, 공휴일을 가리지 않습니다.
+          <h3>365일 주말·공휴일 없이 혈액투석이 가능합니다</h3>
+          <p>급성신손상과 중독은 날짜를 가려서 오지 않습니다.
              보통 당일 오후 5시까지 내원한 환자는 그날 안에 투석을 시작할 수 있고,
              그보다 늦게 도착하면 먼저 응급 처치로 상태를 잡은 뒤 투석 일정을 잡습니다.</p>
         </div>
@@ -712,112 +803,184 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
     </div>
   </section>
 
-  <!-- ACADEMIC -->
-  <section id="academic">
+  <!-- RESEARCH -->
+  <section id="research">
     <div class="wrap">
       <div class="sec-head">
-        <div class="eyebrow">Academic Activity</div>
-        <h2>학술 활동 및 연구</h2>
-        <p class="lede">공개된 학회 발표, 논문, 세미나 활동입니다.</p>
+        <div class="eyebrow">Research &amp; Academic</div>
+        <h2>연구와 학술 활동</h2>
+        <p class="lede" style="font-weight:600;color:var(--ink)">진료에서 생긴 질문을 데이터로 확인합니다</p>
       </div>
-      <div class="tl">
-        <div class="tl-item rv">
-          <div class="tl-date">2026. 06</div>
-          <h3>제1회 수의첨단재생의료포럼 연자</h3>
-          <p>투석이 지시되는 급성신손상(AKI) 환자에서의 줄기세포 활용을 주제로, 환자 선택부터 투여 타이밍과 경로,
-             치료 효과 평가와 보호자 소통에 이르는 임상적 질문을 공유했습니다.</p>
-          <div class="tl-meta">건국대학교 생명과학관 · 신장질환 세션</div>
+
+      <div class="rsintro">
+        <p>임상에서 경험한 결과를 개인적인 경험에 머무르게 하지 않으려 합니다.</p>
+        <p>어떤 환자가 치료로 도움을 받을 수 있는지, 언제 투석을 시작해야 하는지,
+           치료 강도와 합병증은 어떻게 관리해야 하는지를 데이터를 통해 확인하고 동료 수의사들과 공유하고 있습니다.</p>
+        <p>치료가 잘된 증례뿐 아니라 예상과 다른 결과, 치료의 한계와 시행착오도 함께 살펴보는 것이
+           수의 혈액투석의 발전에 필요하다고 생각합니다.</p>
+      </div>
+
+      <div class="acc" id="acc">
+
+        <details class="ac" open>
+          <summary><span class="ac-t">학술활동 — 논문 발표</span><span class="ac-c">5</span></summary>
+          <ul class="pub">
+            <li><b>Successful treatment of ibuprofen intoxication using hemoperfusion with porous polymeric adsorbents in a toy poodle</b>
+              <span>Ahn W. et al. <i>JVMS</i> 2026;88(3):505–508</span></li>
+            <li><b>Successful hemodialysis treatment of suspected acorn toxicosis in a Bedlington terrier</b>
+              <span>Jung S. et al. <i>CVJ</i> 2026;67</span></li>
+            <li><b>A Case Report of Successful Treatment of Minoxidil Toxicosis Using Hemodialysis in a Cat</b>
+              <span>Ahn W. et al. <i>Vet Sci</i> 2024;11:487</span></li>
+            <li><b>Alteration of serum cystatin-C levels after hemodialysis in dogs with kidney disease</b>
+              <span>Ahn W. et al. <i>Pak Vet J</i> 2021</span></li>
+            <li><b>Tracheal hypoplasia in 6 English bulldogs</b>
+              <span>Yoon W.-K. et al. <i>J Vet Clin</i> 2013</span></li>
+          </ul>
+        </details>
+
+        <details class="ac">
+          <summary><span class="ac-t">학술활동 — 학회 발표</span><span class="ac-c">5</span></summary>
+          <ul class="pub">
+            <li><b>Retrospective evaluation of outcomes in dogs and cats with acute-on-chronic kidney disease treated with renal replacement therapy</b>
+              <span>2025 IRIS-ACVNU Renal Week · 노스캐롤라이나주립대 공동 · ACKD 투석 성적 최초 보고</span></li>
+            <li><b>Renal Pelvic versus Bladder Urine Cystatin B Concentrations in five Cats with Ureteral Obstruction Undergoing Subcutaneous Ureteral Bypass: A Pilot Study</b>
+              <span>2025 아시아태평양 소동물수의사대회 (FASAVA)</span></li>
+            <li><b>Juvenile diabetes mellitus concomitant with congenital anomalies of renal parenchyma in a Samoyed dog</b>
+              <span>2025 아시아태평양 소동물수의사대회 (FASAVA)</span></li>
+            <li><b>Successful treatment of ibuprofen intoxication using hemoperfusion with porous polymeric adsorbents in a miniature poodle</b>
+              <span>2024 아시아태평양 수의사대회 (FAVA)</span></li>
+            <li><b>Serum cystatin-C levels in dogs with kidney disease managed by hemodialysis</b>
+              <span>2019 아시아 수의전문의대회 (AMAMS)</span></li>
+          </ul>
+        </details>
+
+        <details class="ac">
+          <summary><span class="ac-t">강의 및 교육 활동</span><span class="ac-c">21</span></summary>
+          <ul class="lec">
+            <li><em>2026</em> 제1회 수의첨단재생의료포럼 — 문헌을 넘어선 AKI, 혈액투석과 줄기세포: 실제 임상현장의 고민들과 접근전략</li>
+            <li><em>2026</em> 제주대학교 수의과대학 수의내과학 교실 — 해답없는 고민, 혈액투석: 물을 얼마나 빼야 할까? Volume-targeted ERRT</li>
+            <li><em>2026</em> 경기도수의사회 연수교육 — 고양이 신장수치 상승, 수액만이 정답일까? 내일부터 바꾸는 고양이 맞춤형 치료전략</li>
+            <li><em>2025</em> IDEXX 웨비나 — 급성신장손상, 진단과 치료의 지형변화: Urine Cystatin B의 소개와 활용</li>
+            <li><em>2025</em> 한국수의응급중환자의학회(KVECCS) 학술세미나 — 패널 디스커션: 증례로 보는 혈액투석의 임상적 활용</li>
+            <li><em>2025</em> 충북대학교 수의과대학 성봉학술제 — Renal Replacement Therapy: Life and Identity as a Vet Clinician</li>
+            <li><em>2025</em> VCRS 동물 심장신장의학 최신치료기술 세미나 — Volume-targeted Extracorporeal Therapies in Veterinary Cardio-renal Syndrome</li>
+            <li><em>2025</em> 제9회 청수콘서트 — 사공 없는 나룻배가 닿는 곳: 덕질이 특화분야가 된 성덕 스토리</li>
+            <li><em>2025</em> VHR (Veterinary Hemodialysis Round) — New Trend of Veterinary Renal Replacement Therapies</li>
+            <li><em>2025</em> 한국고양이수의사회(KSFM) 컨퍼런스 — 강아지와 같은듯 다른 고양이 급성신손상: 진단과 치료에서 혈액투석까지</li>
+            <li><em>2024</em> 서울시 × 동그람이 멍냥연수원 — 신장질환 우리아이에게도? 우리 아이 콩팥 건강하게 지키기</li>
+            <li><em>2024</em> 추계 서울수의컨퍼런스 — 신부전, 과연 투석하면 좋아질까?</li>
+            <li><em>2024</em> 벳스템솔루션 반려동물 줄기세포 심포지엄 — 반려동물 줄기세포 치료의 정립: 패널 디스커션</li>
+            <li><em>2024</em> CES (Case Exchange Symposium) — 신우확장을 보이는 급성신손상, 개통성이 먼저일까 투석이 먼저일까?</li>
+            <li><em>2024</em> 인벳츠 × 벳아너스 임상특강 — Creatinine 8! 투석 해야할까? 증례중심으로 알아보는 혈액투석의 적용과 투석 타이밍</li>
+            <li><em>2024</em> 인벳츠 × 벳아너스 임상특강 — 급성신손상 진단과 관리의 최신 가이드라인: IRIS consensus AKI Guideline</li>
+            <li><em>2024</em> 강원대학교 임상수의사회(KUVMA) 특강 — 요즘 핫한 신장질환의 진단 및 치료방법</li>
+            <li><em>2024</em> 강원대학교 임상수의사회(KUVMA) 특강 — IRIS 가이드라인으로 알아보는 신장질환의 진단과 치료</li>
+            <li><em>2023</em> 수의학 전문 유튜브 채널 「베테랑」 — 급성 신손상과 혈액투석: 급성 신부전, 중요한 것은 꺾이지 않는 마음</li>
+            <li><em>2022~2025</em> 스마트(시그니처) 혈액투석 아카데미 — 건국대·경북대 등 4개 수의과대학, 일산동물의료원 등 8개 병원 대상 1박 2일 아카데미</li>
+            <li><em>2022</em> 수의사 교육 플랫폼 「V-Box」 — 급성 신손상과 혈액투석: 급성 신손상, 끝날 때까지 끝난 게 아니다</li>
+          </ul>
+        </details>
+
+        <details class="ac">
+          <summary><span class="ac-t">교육 및 저술 활동</span><span class="ac-c">9</span></summary>
+          <ul class="lec">
+            <li><em>2026</em> 서울시수의사회 진료 가이드북 — 신장비뇨기 파트 9개 chapter 저술</li>
+            <li><em>2025</em> 수의학술정보지 BIBLE 16호 — 고양이 CKD에서 단백뇨, Telmisartan 적용 증례</li>
+          </ul>
+          <p class="serial-h"><em>2023.05 ~ 2023.11</em> 대한수의사회지 「동물의료」 혈액투석 6개월 연재</p>
+          <ul class="lec serial">
+            <li>어서와(요) 혈액투석은 처음이지(요)? — 혈액투석의 원리와 목표, 진행 절차, 흔한 궁금증</li>
+            <li>혈액투석, 어차피 죽는 거 아니야? — 급성신장손상과 혈액투석 시의 사망률, 실제 임상에서의 신장 회복률</li>
+            <li>혈액투석, 중요한 건 꺾이지 않는 마음 — 신장의 병태생리에 따른 급성신손상의 치료 기간</li>
+            <li>세상에서 제일 비싼 과일, 포도! — 일반 급성신장손상 외 중독 상황에서의 혈액투석</li>
+            <li>책에서만 봤지, Leptospira — 간과하기 쉬운 급성신장손상의 원인, 렙토스피라증의 재조명</li>
+            <li>혈액투석, 너 아니면 어쩔 뻔 했어? — 원인을 알 수 없는 무뇨기 환자의 치료 및 회복기</li>
+          </ul>
+        </details>
+
+        <details class="ac">
+          <summary><span class="ac-t">방송 출연</span><span class="ac-c">2</span></summary>
+          <ul class="lec">
+            <li><em>2025</em> <a href="https://www.supervetsmedia.com/?wix-vod-video-id=8b4df5842023422cace03774bf67fde3&amp;wix-vod-comp-id=comp-mio5r9q0" target="_blank" rel="noopener">「최고의 수의사들」 8화 — 혈액투석, 생과 사의 경계에서 ↗</a></li>
+            <li>유튜브 채널 <a href="https://www.youtube.com/@ddokki_" target="_blank" rel="noopener">「똑똑하개 키우자옹」 ↗</a> — 「똑키 스터디」 신장질환·혈액투석 4개 회차 출연</li>
+          </ul>
+        </details>
+
+        <details class="ac">
+          <summary><span class="ac-t">신문 기사</span><span class="ac-c">12</span></summary>
+          <ul class="lec news">
+            <li><a href="https://www.dailygaewon.com/news/articleView.html?idxno=17196" target="_blank" rel="noopener">[연자 인터뷰] 안운찬 내과원장 ↗</a> <span>데일리개원</span></li>
+            <li><a href="https://www.dailyvet.co.kr/v/280723" target="_blank" rel="noopener">게보린릴렉스 치사량 먹은 국내 반려견, 혈액관류로 살렸다 ↗</a> <span>데일리벳</span></li>
+            <li><a href="https://www.dailyvet.co.kr/v/267395" target="_blank" rel="noopener">“CREA 정상인 무증상 AKI, Cystatin B로 조기 진단 가능” ↗</a> <span>데일리벳</span></li>
+            <li><a href="https://www.dailyvet.co.kr/v/262260" target="_blank" rel="noopener">한국수의체외신장대체치료연구회 KSVERRT 창립 ↗</a> <span>데일리벳</span></li>
+            <li><a href="https://www.dailyvet.co.kr/v/244751" target="_blank" rel="noopener">‘VHR’ 수의 혈액투석·신대체치료를 고민하는 수의사들이 전국에서 모였다 ↗</a> <span>데일리벳</span></li>
+            <li><a href="https://www.dailyvet.co.kr/v/241809" target="_blank" rel="noopener">IRIS 국제 학회서 혈액투석 연구 발표 ↗</a> <span>데일리벳</span></li>
+            <li><a href="https://www.dailygaewon.com/news/articleView.html?idxno=16525" target="_blank" rel="noopener">IRIS-ACVNU 2025 Renal Week서 ACKD 환자 치료결과 최초 보고 ↗</a> <span>데일리개원</span></li>
+            <li><a href="https://www.dailyvet.co.kr/v/231432" target="_blank" rel="noopener">인수공통감염병 렙토스피라증, 국내 반려견에서 연속 보고 ↗</a> <span>데일리벳</span></li>
+            <li><a href="https://www.dailyvet.co.kr/v/227965" target="_blank" rel="noopener">‘아차’ 미녹시딜 핥아 먹은 고양이에 치명적 중독증 ↗</a> <span>데일리벳</span></li>
+            <li><a href="https://www.dailyvet.co.kr/v/210143" target="_blank" rel="noopener">투석센터, 최신 장비 도입으로 CRRT 인프라 확충 ↗</a> <span>데일리벳</span></li>
+            <li><a href="https://www.dailyvet.co.kr/v/197297" target="_blank" rel="noopener">소형견·고양이도 급성 중독 시 혈액관류 치료 가능해진다 ↗</a> <span>데일리벳</span></li>
+            <li><a href="https://www.dailyvet.co.kr/v/185554" target="_blank" rel="noopener">[참관기] Of the kidney, by the kidney, for the kidney ↗</a> <span>데일리벳</span></li>
+          </ul>
+        </details>
+
+      </div>
+
+      <div class="vetonly">
+        <div>
+          <strong>수의사 전용</strong>
+          <p>혈액투석 처방 계산기 — 시간대별 처방 입력, Kt/V·Qeff·청소율·여과분율 산출, IRIS 권장치 대조</p>
         </div>
-        <div class="tl-item rv">
-          <div class="tl-date">2026. 04</div>
-          <h3>초소형견 이부프로펜 중독의 혈액관류 치료 증례 발표</h3>
-          <p>체중 2.15kg, 생후 6개월 토이푸들이 치사량 수준(558mg/kg)의 이부프로펜을 섭취한 증례에서
-             소형동물 전용 다공성 고분자 흡착 카트리지를 이용해 2시간 만에 혈중 농도를 66.8% 감소시켰습니다.</p>
-          <div class="tl-meta">건국대학교 수의과대학 연구팀과 공동 · 일본수의학회 국제학술지 JVMS 게재</div>
-        </div>
-        <div class="tl-item rv">
-          <div class="tl-date">2025. 04</div>
-          <h3>제1회 VHR(Veterinary Hemodialysis Rounds) 개최 · 대표 연자</h3>
-          <p>국내에서 처음으로 혈액투석을 비롯한 신대체요법을 집중적으로 논의한 자리로,
-             ‘New trend of VET RRT’를 주제로 Kt/V 기반 투석 처방과 투석 후 생존율·예후를 상세히 공유했습니다.</p>
-          <div class="tl-meta">12개 동물병원 · 7개 수의과대학에서 52명 참석</div>
-        </div>
-        <div class="tl-item rv">
-          <div class="tl-date">2025. 03</div>
-          <h3>IRIS-ACVNU 2025 Renal Week 국제학회 연구 발표</h3>
-          <p>「신장대체치료(혈액투석)를 받은 만성신장병에 겹친 급성신손상 환자의 치료 결과에 대한 후향적 연구」.
-             2017~2024년 혈액투석을 받은 개·고양이 136마리를 분석해, AKI 환자의 단기 생존율 58.6%에 비해
-             ACKD 환자는 39.4%로 낮음을 보고했습니다. ACKD 환자의 투석 치료 결과를 다룬 최초의 보고입니다.</p>
-          <div class="tl-meta">미국 메릴랜드주 베데스다 · 노스캐롤라이나주립대 허지웅 교수팀 공동 · 포스터 및 초록 발표</div>
-        </div>
-        <div class="tl-item rv">
-          <div class="tl-date">2023. 11</div>
-          <h3>소형견·고양이 전용 혈액관류 장비 국내 도입</h3>
-          <p>체외순환 혈액량을 15~50mL까지 낮춘 동물 전용 카트리지를 도입해,
-             기존 사람용 장비(약 260mL)로는 어려웠던 소형견과 고양이의 급성 중독 치료를 가능하게 했습니다.</p>
-          <div class="tl-meta">Aimalojic V100 · CytoSorbents VetResQ</div>
-        </div>
-        <div class="tl-item rv">
-          <div class="tl-date">2023. 05</div>
-          <h3>IRIS Renal Week 2023 참관 및 참관기 기고</h3>
-          <p>미국 UC Davis에서 열린 학회에 참석해 초기 진행성 만성신장질환, 체외 신장 대체 치료의 새로운 개념,
-             신장학 교육의 미래를 정리하고, IRIS 급성신손상·혈액투석 가이드라인 선공개 내용을 국내에 소개했습니다.</p>
-          <div class="tl-meta">데일리벳 기고 「Of the kidney, by the kidney, for the kidney」</div>
-        </div>
-        <div class="tl-item rv">
-          <div class="tl-date">지속</div>
-          <h3>혈액투석 세미나 · 저널 클럽</h3>
-          <p>동료 수의사를 대상으로 한 혈액투석 기초 세미나와 워크숍을 정기적으로 진행하고,
-             병원 내에서는 격주로 저널 클럽을 열어 최신 문헌을 검토하고 있습니다.</p>
-        </div>
+        <a class="btn btn-primary" href="/calculator">Signature AMC HD Calculator 열기</a>
       </div>
     </div>
   </section>
 
-  <!-- PRESS -->
-  <section id="press" style="background:var(--bg-soft);border-top:1px solid var(--line)">
+  <!-- NOTES (블로그) -->
+  <section id="notes" style="background:var(--bg-soft);border-top:1px solid var(--line)">
     <div class="wrap">
       <div class="sec-head">
-        <div class="eyebrow">In the Press</div>
-        <h2>언론 보도</h2>
+        <div class="eyebrow">Notes</div>
+        <h2>진료실 밖의 공부와 기록</h2>
+        <p class="lede" style="font-weight:600;color:var(--ink)">배우고 고민한 것을 조금 더 편안한 언어로 나눕니다</p>
       </div>
-      <div class="press-grid">
-        <a class="press rv" href="https://www.dailyvet.co.kr/news/academy/280723" target="_blank" rel="noopener">
-          <div class="src">데일리벳 · 2026.04.19</div>
-          <div class="ttl">치사량 진통제 먹은 반려견, 혈액관류로 살렸다</div>
-          <div class="dsc">2.15kg 토이푸들의 이부프로펜 중독을 혈액관류로 치료한 증례. “초소형 환자에게도 혈액관류가 훌륭한 치료 옵션이 될 수 있음을 입증했다.”</div>
-          <div class="go">기사 보기 →</div>
-        </a>
-        <a class="press rv" href="https://www.dailyvet.co.kr/news/practice/companion-animal/288422" target="_blank" rel="noopener">
-          <div class="src">데일리벳 · 2026</div>
-          <div class="ttl">‘혈액투석·줄기세포’, 신장 주제로 출범 알린 수의첨단재생의료포럼</div>
-          <div class="dsc">제1회 수의첨단재생의료포럼에서 AKI 환자의 줄기세포 활용에 대한 임상적 질문과 표준화 과제를 제시.</div>
-          <div class="go">기사 보기 →</div>
-        </a>
-        <a class="press rv" href="https://www.dailyvet.co.kr/news/academy/241809" target="_blank" rel="noopener">
-          <div class="src">데일리벳 · 2025.04.07</div>
-          <div class="ttl">IRIS 국제학회서 혈액투석 연구 발표한 스마트동물병원 신사본원</div>
-          <div class="dsc">136마리 투석 환자 데이터를 분석한 후향적 연구를 미국 IRIS-ACVNU Renal Week에서 발표.</div>
-          <div class="go">기사 보기 →</div>
-        </a>
-        <a class="press rv" href="https://www.dailygaewon.com/news/articleView.html?idxno=16642" target="_blank" rel="noopener">
-          <div class="src">데일리개원 · 2025.05.08</div>
-          <div class="ttl">‘제1회 VHR’ 개최 … 국내 첫 신대체요법 집중 논의</div>
-          <div class="dsc">170여 마리 600여 세션의 투석 경험에서 얻은 시행착오를 동료 병원들과 공유한 자리.</div>
-          <div class="go">기사 보기 →</div>
-        </a>
-        <a class="press rv" href="https://www.dailyvet.co.kr/news/practice/companion-animal/197297" target="_blank" rel="noopener">
-          <div class="src">데일리벳 · 2023.11.16</div>
-          <div class="ttl">소형견·고양이도 급성 중독 시 혈액관류 치료 가능해진다</div>
-          <div class="dsc">동물 전용 혈액관류 장비 도입으로 체외순환 혈액량 부담을 크게 낮춘 사례.</div>
-          <div class="go">기사 보기 →</div>
-        </a>
-        <a class="press rv" href="https://www.dailyvet.co.kr/news/practice/companion-animal/185554" target="_blank" rel="noopener">
-          <div class="src">데일리벳 · 2023.05.11</div>
-          <div class="ttl">[참관기] Of the kidney, by the kidney, for the kidney</div>
-          <div class="dsc">IRIS Renal Week 2023 참관기. 안운찬 원장이 직접 쓴 학회 리뷰 칼럼.</div>
-          <div class="go">기사 보기 →</div>
-        </a>
+      <div class="notes-grid">
+        <div>
+          <p class="para">
+            오랫동안 신장질환과 혈액투석을 진료하면서 가장 자주 들었던 질문은
+            “투석을 하면 좋아질까요?”와 “투석을 해도 결국 살기 어려운 것 아닌가요?”였습니다.
+          </p>
+          <p class="para"><strong style="color:var(--ink)">이 질문에는 간단한 하나의 답이 없습니다.</strong></p>
+          <p class="para">
+            환자마다 원인 질환과 손상 정도, 회복 가능성과 치료 목표가 다르기 때문입니다.
+            정확한 정보를 충분히 알지 못해 치료 가능성이 남은 환자의 치료가 너무 일찍 중단되는 경우도 있었고,
+            반대로 치료의 한계가 충분히 설명되지 않은 채 과도한 기대를 갖게 되는 경우도 있었습니다.
+          </p>
+          <p class="para">
+            강의와 논문, 학술 기고를 통해 이러한 인식을 바꾸려고 노력해 왔지만,
+            전문적인 글만으로는 미처 전하지 못하는 이야기가 많았습니다.
+          </p>
+          <p class="para">
+            블로그에는 신장질환과 투석을 공부하며 배운 내용, 새로 읽은 논문, 혈액투석 아카데미 학습 기록,
+            환자를 진료하며 했던 고민과 수의사로 살아가며 갖게 된 생각을 조금 더 편안하게 기록하려 합니다.
+          </p>
+          <p class="para" style="color:var(--ink);font-weight:600">
+            정답을 말하기보다, 한 환자에게 더 나은 선택을 하기 위해 무엇을 고민했는지 나누겠습니다.
+          </p>
+          <a class="btn btn-primary" style="margin-top:22px" href="https://blog.naver.com/signatureamc" target="_blank" rel="noopener">안운찬 수의사의 진료 노트 읽기 ↗</a>
+        </div>
+        <div>
+          <div class="card">
+            <h3>어디에 기록하나요</h3>
+            <ul>
+              <li>신장질환과 투석을 공부하며 배운 내용</li>
+              <li>새로 읽은 논문 정리</li>
+              <li>혈액투석 아카데미 학습 기록</li>
+              <li>환자를 진료하며 했던 고민</li>
+              <li>수의사로 살아가며 갖게 된 생각</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -828,17 +991,40 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
       <div class="sec-head">
         <div class="eyebrow">Contact</div>
         <h2>진료 및 전원 문의</h2>
-        <p class="lede">365일 24시간 진료합니다. 투석 상담은 예약제로 운영되며, 응급 상황이라면 출발 전에 먼저 전화 주세요.</p>
       </div>
+
       <div class="contact-grid">
+        <div>
+          <div class="emergency">
+            <h3>보호자께</h3>
+            <p>예정된 혈액투석 상담은 예약제로 운영합니다.
+               환자가 소변을 보지 못하거나 호흡곤란, 의식 저하, 경련, 심한 구토 또는 중독이 의심되는
+               응급 상황이라면 출발 전에 먼저 전화해 주세요.</p>
+            <p style="margin-top:14px;font-weight:600;color:var(--ink)">내원 시 아래 정보를 준비하면 보다 빠른 판단에 도움이 됩니다.</p>
+            <ol>
+              <li>증상이 시작된 시각</li>
+              <li>마지막으로 소변을 본 시각과 대략적인 소변량</li>
+              <li>섭취가 의심되는 약물이나 물질의 이름, 양과 시각</li>
+              <li>현재 체중, 기존 진단명과 복용 약물</li>
+              <li>최근 혈액검사, 요검사와 영상검사 결과</li>
+              <li>다른 병원에서 받은 치료 내용과 수액 투여량</li>
+            </ol>
+          </div>
+          <div class="callout" style="margin-top:14px">
+            <strong>전원을 고민하는 수의사 선생님께.</strong>
+            투석이 필요한 환자인지, 언제 이송하고 어떤 처치를 먼저 해야 하는지 전화로 상의해 주셔도 됩니다.
+            환자의 활력징후, 소변량, 체액 상태, 전해질 및 산-염기 상태와 최근 검사 결과를 바탕으로
+            이송 전 안정화와 치료 시점을 함께 논의하겠습니다.
+          </div>
+        </div>
+
         <div>
           <ul class="info-list">
             <li><span class="k">병원</span><span class="v">시그니처동물의료센터<br><span style="font-size:.85rem;color:var(--ink-3)">구 스마트동물병원 신사본원</span></span></li>
-            <li><span class="k">진료과</span><span class="v">내과 · 혈액투석 / 신장비뇨기센터</span></li>
+            <li><span class="k">진료과</span><span class="v">내과 · 혈액투석 / 신장비뇨기센터 및 응급중환자센터</span></li>
             <li><span class="k">주소</span><span class="v">서울특별시 강남구 도산대로 213 신동화빌딩<br><a class="maplink" href="https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%20%EA%B0%95%EB%82%A8%EA%B5%AC%20%EB%8F%84%EC%82%B0%EB%8C%80%EB%A1%9C%20213" target="_blank" rel="noopener">지도에서 보기 →</a></span></li>
             <li><span class="k">대표전화</span><span class="v"><a class="tel" href="tel:0225490275">02-549-0275</a></span></li>
-            <li><span class="k">진료시간</span><span class="v"><strong style="color:var(--ink);font-weight:600">365일 24시간 진료</strong><br><span style="font-size:.85rem;color:var(--ink-3)">일반진료 10:00–21:00 · 심야진료 21:00–10:00</span></span></li>
-            <li><span class="k">투석 상담</span><span class="v">사전 예약제 · 주치의 소견서 및 최근 검사 결과 지참 권장</span></li>
+            <li><span class="k">진료시간</span><span class="v"><strong style="color:var(--ink);font-weight:600">365일 24시간 응급진료</strong><br><span style="font-size:.85rem;color:var(--ink-3)">일반진료 10:00–21:00 · 심야진료 21:00–10:00</span></span></li>
             <li><span class="k">병원 채널</span><span class="v">
               <span class="linkrow">
                 <a href="https://signatureamc.co.kr" target="_blank" rel="noopener">병원 홈페이지 ↗</a>
@@ -847,25 +1033,7 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
             </span></li>
           </ul>
         </div>
-        <div>
-          <div class="emergency">
-            <h3>응급으로 오실 때</h3>
-            <p>오시는 길에 아래 내용을 정리해 오시면 훨씬 빨리 판단할 수 있습니다.</p>
-            <ol>
-              <li>증상이 시작된 시각과 마지막으로 소변을 본 시각</li>
-              <li>먹은 것으로 의심되는 약물·물질의 이름과 양, 섭취 시각 (포장지가 있다면 함께)</li>
-              <li>체중, 기존 진단명, 복용 중인 약</li>
-              <li>다른 병원에서 진료받았다면 혈액검사·영상 결과 사본</li>
-            </ol>
-          </div>
-          <div class="callout" style="margin-top:14px">
-            <strong>전원을 고민 중인 수의사 선생님께.</strong>
-            투석이 필요한 환자인지, 한다면 언제 시작할지는 전화로 상의해 주셔도 됩니다.
-            환자 상태에 따라 이송 전 안정화를 어떻게 할지부터 함께 정합니다.
-          </div>
-        </div>
       </div>
-
     </div>
   </section>
 
@@ -876,27 +1044,28 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
     <div class="foot">
       <div class="who">
         안운찬 수의사
-        <span>시그니처동물의료센터 내과원장 · 혈액투석 / 신장비뇨기센터</span>
-        <span>서울특별시 강남구 도산대로 213 · <a href="tel:0225490275">02-549-0275</a> · 365일 24시간 진료</span>
+        <span>시그니처동물의료센터 내과원장 · 혈액투석/신장비뇨기센터 및 응급중환자센터</span>
+        <span>서울특별시 강남구 도산대로 213 · <a href="tel:0225490275">02-549-0275</a> · 365일 24시간 응급진료</span>
       </div>
       <nav>
         <a href="#about">소개</a>
-        <a href="#cv">약력</a>
         <a href="#care">진료 분야</a>
-        <a href="#when">투석이 필요할 때</a>
-        <a href="#system">진료 체계</a>
-        <a href="#academic">학술 활동</a>
-        <a href="#press">언론 보도</a>
-        <a href="#contact">진료 문의</a>
-        <a class="ext" href="/calculator">HD 계산기</a>
+        <a href="#dialysis">투석 안내</a>
+        <a href="#research">연구·활동</a>
+        <a href="#notes">글과 기록</a>
+        <a href="#contact">진료·전원</a>
+        <a class="ext" href="/calculator">투석 계산기 ↗</a>
         <a class="ext" href="https://signatureamc.co.kr" target="_blank" rel="noopener">병원 홈페이지 ↗</a>
         <a class="ext" href="https://blog.naver.com/signatureamc" target="_blank" rel="noopener">병원 블로그 ↗</a>
       </nav>
     </div>
     <p class="disclaimer">
-      이 페이지의 내용은 반려동물 보호자와 수의사를 위한 일반적인 정보 제공을 목적으로 하며, 개별 환자에 대한 진단이나 치료를 대신하지 않습니다.
-      실제 치료 방침은 반드시 담당 수의사의 진찰을 통해 결정되어야 합니다.<br>
-      게재된 경력·연구·치료 성적은 데일리벳, 데일리개원 등에 보도된 공개 자료를 바탕으로 정리했으며, 수치는 각 보도 시점 기준입니다.<br>
+      이 홈페이지는 반려동물 보호자와 수의사에게 일반적인 정보를 제공하기 위한 목적으로 작성되었습니다.
+      홈페이지의 내용은 개별 환자에 대한 진단이나 치료를 대신하지 않으며,
+      실제 치료 방침은 담당 수의사의 진찰과 환자 상태에 따라 결정됩니다.<br>
+      게재된 치료 경험, 연구 결과와 치료 성적에는 집계 기준과 분석 시점을 표시합니다.
+      연구 결과는 특정 환자의 치료 결과를 보장하지 않으며,
+      환자의 원인 질환과 중증도, 동반 질환 및 치료 시작 시점에 따라 결과는 달라질 수 있습니다.<br>
       <span style="opacity:.8">© <span id="yr">2026</span> Woonchan Ahn. All rights reserved.</span>
     </p>
   </div>
