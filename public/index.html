@@ -415,6 +415,7 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
 .pub li{padding:13px 0;border-bottom:1px solid var(--line);font-size:.92rem;line-height:1.55}
 .pub li:last-child{border-bottom:none}
 .pub li b{display:block;color:var(--ink);font-weight:600;margin-bottom:4px}
+.pub li .me{font-style:normal;font-weight:700;color:var(--ink-2)}
 .pub li span{color:var(--ink-3);font-size:.85rem}
 .pub li i{font-style:italic}
 .lec li{
@@ -455,6 +456,21 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
 
 
 /* ═══════════ 전문성 강화 레이어 ═══════════ */
+/* ── 최신 논문 강조 ── */
+.pub li.latest{
+  background:color-mix(in srgb,var(--brand) 7%,transparent);
+  border-left:3px solid var(--brand);
+  padding:16px 18px;border-radius:0 10px 10px 0;margin-bottom:6px;
+}
+.pub li.latest .nb{
+  display:inline-block;font-size:.67rem;font-weight:700;letter-spacing:.08em;
+  color:#fff;background:var(--brand);padding:3px 9px;border-radius:5px;margin-bottom:9px;
+}
+:root[data-theme="dark"] .pub li.latest .nb{color:#06201d}
+@media (prefers-color-scheme: dark){.pub li.latest .nb{color:#06201d}}
+:root[data-theme="light"] .pub li.latest .nb{color:#fff}
+.pub li.latest a{color:var(--brand);font-weight:600}
+
 /* ── 연구 근거 논지 ── */
 .why{
   background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);
@@ -696,8 +712,8 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
         </div>
         <div class="stat">
           <div class="num">136</div>
-          <div class="lbl">국제학회 발표 코호트</div>
-          <div class="note">2017–2024년 증례 분석</div>
+          <div class="lbl">논문 분석 코호트</div>
+          <div class="note">2017–2024년 · 개 67 · 고양이 69</div>
         </div>
         <div class="stat">
           <div class="num">2016<span style="font-size:.55em">~</span></div>
@@ -891,7 +907,8 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
       <div class="callout">
         <strong>투석이 신장을 고치지는 못합니다.</strong>
         이미 망가진 신장을 되돌리는 치료가 아니라, 회복 여지가 남은 환자를 그때까지 버티게 하는 치료입니다.
-        실제로 발표한 데이터에서도 급성신손상 환자와 만성신장병에 급성 악화가 겹친 환자의 성적은 뚜렷하게 달랐습니다(58.6% 대 39.4%).
+        직접 분석해 발표한 136마리의 데이터에서 퇴원 생존율은 급성신손상 70%, 만성신장병에 급성 악화가 겹친 경우 53%였습니다.
+        같은 투석을 해도 원인과 기저 상태에 따라 결과가 달라집니다.
         그래서 시작하기 전에 어디까지 기대할 수 있는지를 먼저 말씀드립니다.
       </div>
     </div>
@@ -966,8 +983,8 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
           <div class="wi rv">
             <span class="wn">02</span>
             <h3>데이터로 확인해야 합니다</h3>
-            <p>인상과 기억은 틀립니다. 136두의 치료 결과를 후향적으로 분석해
-               급성신손상과 만성신장병 악화 환자의 생존율이 뚜렷이 다르다는 것을 확인하고 국제학회에 보고했습니다.</p>
+            <p>인상과 기억은 틀립니다. 8년간 투석한 136마리를 후향적으로 분석해
+               급성신손상과 만성신장병 악화 환자의 생존율 차이를 확인하고 국제 학술지에 제1저자로 게재했습니다.</p>
           </div>
           <div class="wi rv">
             <span class="wn">03</span>
@@ -987,10 +1004,11 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
              12개 동물병원과 7개 수의과대학에서 52명이 참석해 생존율과 예후, 실패 사례까지 공유했습니다.</p>
         </div>
         <div class="mi rv">
-          <div class="mk">국제 최초 보고</div>
-          <h3>ACKD 환자의 투석 치료 성적</h3>
-          <p>2025년 IRIS-ACVNU Renal Week에서 만성신장병에 급성 악화가 겹친 환자의 투석 결과를
-             세계 최초로 보고했습니다. 노스캐롤라이나주립대 연구팀과 공동 연구입니다.</p>
+          <div class="mk">국제 학술지 게재</div>
+          <h3>ACKD 환자의 투석 치료 성적, 제1저자 논문</h3>
+          <p>만성신장병에 급성 악화가 겹친 환자의 투석 결과를 세계 최초로 분석해
+             2026년 7월 <i>Frontiers in Veterinary Science</i>에 제1저자로 게재했습니다.
+             노스캐롤라이나주립대 연구팀과 공동 연구이며, 개·고양이 136마리를 8년간 추적했습니다.</p>
         </div>
         <div class="mi rv">
           <div class="mk">교육</div>
@@ -1001,7 +1019,7 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
       </div>
 
       <div class="tally">
-        <div class="ty"><b>5</b><span>논문 발표</span></div>
+        <div class="ty"><b>6</b><span>논문 발표</span></div>
         <div class="ty"><b>5</b><span>국제학회 발표</span></div>
         <div class="ty"><b>21</b><span>강의·교육</span></div>
         <div class="ty"><b>9</b><span>저술</span></div>
@@ -1012,8 +1030,13 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
       <div class="acc" id="acc">
 
         <details class="ac" open>
-          <summary><span class="ac-t">학술활동 — 논문 발표</span><span class="ac-c">5</span></summary>
+          <summary><span class="ac-t">학술활동 — 논문 발표</span><span class="ac-c">6</span></summary>
           <ul class="pub">
+            <li class="latest"><span class="nb">최신 · 제1저자</span>
+              <b>Dogs and cats with acute-on-chronic kidney disease have worse outcomes than those with acute kidney injury following renal replacement therapy</b>
+              <span><em class="me">Ahn W</em>, Kim K, Kim J, Lee Y, Lee T, Her J.
+                <i>Frontiers in Veterinary Science</i> 2026;13:1857111 ·
+                <a href="https://doi.org/10.3389/fvets.2026.1857111" target="_blank" rel="noopener">doi:10.3389/fvets.2026.1857111 ↗</a></span></li>
             <li><b>Successful treatment of ibuprofen intoxication using hemoperfusion with porous polymeric adsorbents in a toy poodle</b>
               <span>Ahn W. et al. <i>JVMS</i> 2026;88(3):505–508</span></li>
             <li><b>Successful hemodialysis treatment of suspected acorn toxicosis in a Bedlington terrier</b>
@@ -1031,7 +1054,7 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
           <summary><span class="ac-t">학술활동 — 학회 발표</span><span class="ac-c">5</span></summary>
           <ul class="pub">
             <li><b>Retrospective evaluation of outcomes in dogs and cats with acute-on-chronic kidney disease treated with renal replacement therapy</b>
-              <span>2025 IRIS-ACVNU Renal Week · 노스캐롤라이나주립대 공동 · ACKD 투석 성적 최초 보고</span></li>
+              <span>2025 IRIS-ACVNU Renal Week · 노스캐롤라이나주립대 공동 · ACKD 투석 성적 최초 보고 <b style="color:var(--brand);font-weight:600">→ 2026 Front Vet Sci 게재</b></span></li>
             <li><b>Renal Pelvic versus Bladder Urine Cystatin B Concentrations in five Cats with Ureteral Obstruction Undergoing Subcutaneous Ureteral Bypass: A Pilot Study</b>
               <span>2025 아시아태평양 소동물수의사대회 (FASAVA)</span></li>
             <li><b>Juvenile diabetes mellitus concomitant with congenital anomalies of renal parenchyma in a Samoyed dog</b>
