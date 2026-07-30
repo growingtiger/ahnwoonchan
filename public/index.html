@@ -493,22 +493,6 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
 .mi h3{font-size:1.02rem;margin-bottom:9px;line-height:1.42;letter-spacing:-.03em}
 .mi p{font-size:.88rem;color:var(--ink-2);line-height:1.72}
 
-/* ── 연도별 차트 ── */
-.yrbox{
-  background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);
-  padding:26px 26px 20px;margin-bottom:20px;
-}
-@media(max-width:640px){.yrbox{padding:20px 16px 16px}}
-.yr-h h3{font-size:1.05rem;margin-bottom:5px;letter-spacing:-.03em}
-.yr-h p{font-size:.84rem;color:var(--ink-3)}
-.yrchart{margin:20px 0 6px}
-.yrchart svg{display:block;width:100%;height:auto;overflow:visible}
-.ybar{fill:var(--brand);transition:opacity .2s}
-.ybar.now{fill:var(--brand);opacity:.42}
-.yval{font-size:12.5px;font-weight:700;fill:var(--ink);font-variant-numeric:tabular-nums}
-.yyear{font-size:11.5px;fill:var(--ink-3);font-weight:600}
-.ybase{stroke:var(--line);stroke-width:1}
-.yr-n{font-size:.78rem;color:var(--ink-3)}
 
 body{font-feature-settings:"tnum" 0}
 h1,h2{letter-spacing:-.038em}
@@ -1016,20 +1000,6 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
         </div>
       </div>
 
-      <!-- 연도별 학술 활동 -->
-      <div class="yrbox">
-        <div class="yr-h">
-          <h3>해마다 이어온 활동</h3>
-          <p>논문 발표 · 국제학회 발표 · 강의 · 저술 · 방송을 합한 연도별 건수입니다.</p>
-        </div>
-        <figure class="yrchart" id="yrChart">
-          <svg viewBox="0 0 720 220" role="img" aria-label="연도별 학술 활동 건수 막대그래프">
-            <g id="yrG"></g><g id="yrB"></g><g id="yrA"></g>
-          </svg>
-        </figure>
-        <p class="yr-n">2026년은 상반기까지 집계된 수치입니다.</p>
-      </div>
-
       <div class="tally">
         <div class="ty"><b>5</b><span>논문 발표</span></div>
         <div class="ty"><b>5</b><span>국제학회 발표</span></div>
@@ -1330,26 +1300,6 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
   document.getElementById('yr').textContent=new Date().getFullYear();
 })();
 
-/* 연도별 학술 활동 막대그래프 */
-(function(){
-  var DATA=[[2019,1],[2020,0],[2021,1],[2022,2],[2023,3],[2024,10],[2025,11],[2026,6]];
-  var svg=document.querySelector('#yrChart svg'); if(!svg) return;
-  var NS='http://www.w3.org/2000/svg';
-  var W=720,H=220,L=8,R=8,T=26,B=30;
-  var iw=W-L-R, ih=H-T-B;
-  var max=Math.max.apply(null,DATA.map(function(d){return d[1];}))||1;
-  var slot=iw/DATA.length, bw=Math.min(56,slot*0.52);
-  var gB=svg.querySelector('#yrB'), gA=svg.querySelector('#yrA'), gG=svg.querySelector('#yrG');
-  function mk(t,a,x){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e;}
-  gG.appendChild(mk('line',{class:'ybase',x1:L,x2:L+iw,y1:T+ih,y2:T+ih}));
-  DATA.forEach(function(d,i){
-    var cx=L+slot*(i+0.5);
-    var h=d[1]/max*ih, y=T+ih-h;
-    gB.appendChild(mk('rect',{class:'ybar'+(d[0]===2026?' now':''),x:cx-bw/2,y:y,width:bw,height:Math.max(h,d[1]?2:0),rx:5}));
-    if(d[1]) gA.appendChild(mk('text',{class:'yval',x:cx,y:y-7,'text-anchor':'middle'},d[1]));
-    gA.appendChild(mk('text',{class:'yyear',x:cx,y:T+ih+19,'text-anchor':'middle'},d[0]));
-  });
-})();
 
 </script>
 
