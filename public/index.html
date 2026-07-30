@@ -456,6 +456,23 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
 
 
 /* ═══════════ 전문성 강화 레이어 ═══════════ */
+/* ── 한글 줄바꿈 : 단어 중간에서 끊기지 않게 ── */
+body{
+  word-break:keep-all;        /* 한글은 어절(공백) 단위로만 줄바꿈 */
+  overflow-wrap:break-word;   /* 한 줄에 못 들어가는 긴 단어만 예외적으로 분리 */
+}
+h1,h2,h3,.why-h,.mi h3,.wi h3,.card h3,.tl-item h3,.press .ttl,.ind-item strong{
+  text-wrap:balance;          /* 제목의 줄 길이를 고르게 */
+}
+p,li,.lede,.sub2,.hint,.disclaimer,.chip .k,.o .k,.stat .lbl,.stat .note{
+  text-wrap:pretty;           /* 마지막 줄에 한 단어만 남는 것 방지 */
+}
+/* 영문·URL·DOI 등 긴 라틴 문자열은 기존 규칙 유지 */
+.pub li b,.pub li span,.pub li a,code,.tip,.o .v,table.hx td,.linkrow a{
+  word-break:normal;
+  overflow-wrap:anywhere;
+}
+
 /* ── 최신 논문 강조 ── */
 .pub li.latest{
   background:color-mix(in srgb,var(--brand) 7%,transparent);
