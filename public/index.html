@@ -455,6 +455,61 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
 
 
 /* ═══════════ 전문성 강화 레이어 ═══════════ */
+/* ── 연구 근거 논지 ── */
+.why{
+  background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);
+  padding:32px 30px;margin:34px 0 20px;
+}
+@media(max-width:640px){.why{padding:24px 20px}}
+.why-h{
+  font-size:1.16rem;font-weight:700;letter-spacing:-.035em;color:var(--ink);
+  padding-bottom:20px;margin-bottom:24px;border-bottom:1px solid var(--line);
+}
+.why-g{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+@media(max-width:860px){.why-g{grid-template-columns:1fr;gap:22px}}
+.wi{position:relative;padding-left:42px}
+.wn{
+  position:absolute;left:0;top:1px;font-size:.72rem;font-weight:700;color:var(--brand);
+  width:28px;height:28px;border-radius:8px;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--brand) 12%,transparent);
+}
+.wi h3{font-size:1rem;margin-bottom:7px;letter-spacing:-.03em}
+.wi p{font-size:.89rem;color:var(--ink-2);line-height:1.72}
+
+/* ── 대표 성과 ── */
+.mile{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+@media(max-width:900px){.mile{grid-template-columns:1fr}}
+.mi{
+  background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);
+  padding:24px 22px;position:relative;overflow:hidden;transition:.24s;
+}
+.mi::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--brand)}
+.mi:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--brand) 34%,var(--line))}
+.mk{
+  display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.09em;
+  color:var(--brand);background:color-mix(in srgb,var(--brand) 12%,transparent);
+  padding:4px 10px;border-radius:6px;margin-bottom:13px;
+}
+.mi h3{font-size:1.02rem;margin-bottom:9px;line-height:1.42;letter-spacing:-.03em}
+.mi p{font-size:.88rem;color:var(--ink-2);line-height:1.72}
+
+/* ── 연도별 차트 ── */
+.yrbox{
+  background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px 26px 20px;margin-bottom:20px;
+}
+@media(max-width:640px){.yrbox{padding:20px 16px 16px}}
+.yr-h h3{font-size:1.05rem;margin-bottom:5px;letter-spacing:-.03em}
+.yr-h p{font-size:.84rem;color:var(--ink-3)}
+.yrchart{margin:20px 0 6px}
+.yrchart svg{display:block;width:100%;height:auto;overflow:visible}
+.ybar{fill:var(--brand);transition:opacity .2s}
+.ybar.now{fill:var(--brand);opacity:.42}
+.yval{font-size:12.5px;font-weight:700;fill:var(--ink);font-variant-numeric:tabular-nums}
+.yyear{font-size:11.5px;fill:var(--ink-3);font-weight:600}
+.ybase{stroke:var(--line);stroke-width:1}
+.yr-n{font-size:.78rem;color:var(--ink-3)}
+
 body{font-feature-settings:"tnum" 0}
 h1,h2{letter-spacing:-.038em}
 h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
@@ -914,6 +969,67 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
            수의 혈액투석의 발전에 필요하다고 생각합니다.</p>
       </div>
 
+      <!-- 왜 연구가 치료 실력의 근거인가 -->
+      <div class="why">
+        <div class="why-h">혈액투석은 교과서만으로 배울 수 없는 치료입니다</div>
+        <div class="why-g">
+          <div class="wi rv">
+            <span class="wn">01</span>
+            <h3>정해진 답이 없습니다</h3>
+            <p>같은 신장수치라도 원인과 소변량, 체액 상태에 따라 시작 시점과 강도가 달라집니다.
+               표준 처방을 그대로 적용할 수 없기에, 판단의 근거를 스스로 만들어야 합니다.</p>
+          </div>
+          <div class="wi rv">
+            <span class="wn">02</span>
+            <h3>데이터로 확인해야 합니다</h3>
+            <p>인상과 기억은 틀립니다. 136두의 치료 결과를 후향적으로 분석해
+               급성신손상과 만성신장병 악화 환자의 생존율이 뚜렷이 다르다는 것을 확인하고 국제학회에 보고했습니다.</p>
+          </div>
+          <div class="wi rv">
+            <span class="wn">03</span>
+            <h3>가르치면 검증받습니다</h3>
+            <p>4개 수의과대학과 8개 병원에서 투석 아카데미를 진행하고 학회에서 발표해 왔습니다.
+               동료들의 질문과 반박을 통과한 판단만 환자에게 적용합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 대표 성과 -->
+      <div class="mile">
+        <div class="mi rv">
+          <div class="mk">국내 최초</div>
+          <h3>수의 신대체요법 집중 논의의 장 개설</h3>
+          <p>2025년 제1회 VHR(Veterinary Hemodialysis Rounds)을 열고 대표 연자로 발표했습니다.
+             12개 동물병원과 7개 수의과대학에서 52명이 참석해 생존율과 예후, 실패 사례까지 공유했습니다.</p>
+        </div>
+        <div class="mi rv">
+          <div class="mk">국제 최초 보고</div>
+          <h3>ACKD 환자의 투석 치료 성적</h3>
+          <p>2025년 IRIS-ACVNU Renal Week에서 만성신장병에 급성 악화가 겹친 환자의 투석 결과를
+             세계 최초로 보고했습니다. 노스캐롤라이나주립대 연구팀과 공동 연구입니다.</p>
+        </div>
+        <div class="mi rv">
+          <div class="mk">교육</div>
+          <h3>4개 수의과대학 · 8개 병원 투석 아카데미</h3>
+          <p>2022년부터 건국대·경북대 등 수의과대학과 일산동물의료원 등 동물병원을 대상으로
+             1박 2일 과정의 혈액투석 아카데미를 운영해 왔습니다.</p>
+        </div>
+      </div>
+
+      <!-- 연도별 학술 활동 -->
+      <div class="yrbox">
+        <div class="yr-h">
+          <h3>해마다 이어온 활동</h3>
+          <p>논문 발표 · 국제학회 발표 · 강의 · 저술 · 방송을 합한 연도별 건수입니다.</p>
+        </div>
+        <figure class="yrchart" id="yrChart">
+          <svg viewBox="0 0 720 220" role="img" aria-label="연도별 학술 활동 건수 막대그래프">
+            <g id="yrG"></g><g id="yrB"></g><g id="yrA"></g>
+          </svg>
+        </figure>
+        <p class="yr-n">2026년은 상반기까지 집계된 수치입니다.</p>
+      </div>
+
       <div class="tally">
         <div class="ty"><b>5</b><span>논문 발표</span></div>
         <div class="ty"><b>5</b><span>국제학회 발표</span></div>
@@ -1213,6 +1329,28 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
 
   document.getElementById('yr').textContent=new Date().getFullYear();
 })();
+
+/* 연도별 학술 활동 막대그래프 */
+(function(){
+  var DATA=[[2019,1],[2020,0],[2021,1],[2022,2],[2023,3],[2024,10],[2025,11],[2026,6]];
+  var svg=document.querySelector('#yrChart svg'); if(!svg) return;
+  var NS='http://www.w3.org/2000/svg';
+  var W=720,H=220,L=8,R=8,T=26,B=30;
+  var iw=W-L-R, ih=H-T-B;
+  var max=Math.max.apply(null,DATA.map(function(d){return d[1];}))||1;
+  var slot=iw/DATA.length, bw=Math.min(56,slot*0.52);
+  var gB=svg.querySelector('#yrB'), gA=svg.querySelector('#yrA'), gG=svg.querySelector('#yrG');
+  function mk(t,a,x){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e;}
+  gG.appendChild(mk('line',{class:'ybase',x1:L,x2:L+iw,y1:T+ih,y2:T+ih}));
+  DATA.forEach(function(d,i){
+    var cx=L+slot*(i+0.5);
+    var h=d[1]/max*ih, y=T+ih-h;
+    gB.appendChild(mk('rect',{class:'ybar'+(d[0]===2026?' now':''),x:cx-bw/2,y:y,width:bw,height:Math.max(h,d[1]?2:0),rx:5}));
+    if(d[1]) gA.appendChild(mk('text',{class:'yval',x:cx,y:y-7,'text-anchor':'middle'},d[1]));
+    gA.appendChild(mk('text',{class:'yyear',x:cx,y:T+ih+19,'text-anchor':'middle'},d[0]));
+  });
+})();
+
 </script>
 
 <style>
