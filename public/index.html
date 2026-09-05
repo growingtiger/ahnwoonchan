@@ -523,6 +523,13 @@ p,li,.lede,.sub2,.hint,.disclaimer,.chip .k,.o .k,.stat .lbl,.stat .note{
   color:var(--brand);background:color-mix(in srgb,var(--brand) 12%,transparent);
   padding:4px 10px;border-radius:6px;margin-bottom:13px;
 }
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:4px 0 32px}
+@media(max-width:900px){.photos{grid-template-columns:1fr}}
+.photos figure{margin:0}
+.photos .ph{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--bg-sunk)}
+.photos img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;display:block}
+.photos figcaption{margin-top:9px;font-size:.78rem;color:var(--ink-3);line-height:1.6}
+.photos figcaption a{color:var(--ink-2);border-bottom:1px solid var(--line)}
 .mi h3{font-size:1.02rem;margin-bottom:9px;line-height:1.42;letter-spacing:-.03em}
 .mi p{font-size:.88rem;color:var(--ink-2);line-height:1.72}
 
@@ -1037,6 +1044,21 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
           <p>2022년부터 건국대·경북대 등 수의과대학과 일산동물의료원 등 동물병원을 대상으로
              1박 2일 과정의 혈액투석 아카데미를 운영해 왔습니다.</p>
         </div>
+      </div>
+
+      <div class="photos">
+        <figure class="rv">
+          <div class="ph"><img src="press/dailyvet-2025-iris-acvnu.jpg" alt="IRIS-ACVNU 2025 Renal Week에서 포스터 앞에 선 안운찬 수의사" width="1200" height="825" loading="lazy"></div>
+          <figcaption>2025년 3월 IRIS-ACVNU Renal Week에서 ACKD 환자의 신대체요법 치료 결과 포스터 앞에서. 사진 출처 데일리벳 · <a href="https://www.dailyvet.co.kr/v/241809" target="_blank" rel="noopener">기사 보기 ↗</a></figcaption>
+        </figure>
+        <figure class="rv">
+          <div class="ph"><img src="press/dailyvet-2025-vhr.jpg" alt="제1회 Veterinary Hemodialysis Rounds 참석자 단체 사진" width="1200" height="675" loading="lazy"></div>
+          <figcaption>2025년 4월 26일 제1회 VHR(Veterinary Hemodialysis Rounds). 12개 동물병원과 7개 수의과대학에서 52명이 모였습니다. 사진 출처 데일리벳 · <a href="https://www.dailyvet.co.kr/v/244751" target="_blank" rel="noopener">기사 보기 ↗</a></figcaption>
+        </figure>
+        <figure class="rv">
+          <div class="ph"><img src="press/dailyvet-2025-ksverrt.jpg" alt="한국수의체외신장대체치료연구회 창립 기념식" width="1200" height="720" loading="lazy"></div>
+          <figcaption>2025년 11월 4일 한국수의체외신장대체치료연구회(KSVERRT) 창립 기념식. 부회장을 맡고 있습니다. 사진 출처 데일리벳 · <a href="https://www.dailyvet.co.kr/v/262260" target="_blank" rel="noopener">기사 보기 ↗</a></figcaption>
+        </figure>
       </div>
 
       <div class="tally">
