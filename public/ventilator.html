@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signature AMC Ventilator Calculator | 안운찬 수의사</title>
+<meta name="description" content="개와 고양이 기계환기 세팅 계산기. 예측 체중 기준 P-A/C 모드 파라미터, 목표 일회환기량, 인덕션·CRI 약물 용량을 함께 산출합니다.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.ahnwoonchan.com/ventilator">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="안운찬 수의사">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://www.ahnwoonchan.com/ventilator">
+<meta property="og:title" content="Signature AMC Ventilator Calculator | 안운찬 수의사">
+<meta property="og:description" content="기계환기 세팅과 인덕션·CRI 약물 용량 계산">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f6b62'/%3E%3Cpath d='M9 16h4l2-5 3 10 2-5h4' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#ffffff; --bg-soft:#f5f7f8; --bg-sunk:#eceff1;
+  --ink:#12211f; --ink-2:#41544f; --ink-3:#6d7f7a; --line:#dde3e2;
+  --brand:#0f6b62; --brand-2:#12857a; --accent:#c4643c;
+  --inp:#e8f0fb; --inp-line:#b9d2f0; --inp-ink:#1b4f8f;   /* 파랑 = 시간대별 입력 */
+  --calc:#fdece2; --calc-line:#f5cfb6; --calc-ink:#8d4a23; /* 주황 = 자동 계산 */
+  --sel:#e2f4e4; --sel-line:#bfe3c4; --sel-ink:#2b6136;   /* 초록 = 선택 */
+  --warn:#c4643c; --ok:#0f6b62;
+  --s1:#2a78d6; --s2:#eb6834;
+  --shadow:0 1px 2px rgba(16,40,36,.05),0 8px 24px -12px rgba(16,40,36,.18);
+  --radius:14px; --max:1300px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0d1413; --bg-soft:#121b19; --bg-sunk:#182422;
+    --ink:#e8efed; --ink-2:#b0c1bc; --ink-3:#849792; --line:#233330;
+    --brand:#4dbfae; --brand-2:#6fd4c3; --accent:#e08b62;
+    --inp:#152436; --inp-line:#28486d; --inp-ink:#9cc6f5;
+    --calc:#33231a; --calc-line:#5a3b28; --calc-ink:#f0bd97;
+    --sel:#17301c; --sel-line:#2c4d33; --sel-ink:#9fd9a8;
+    --warn:#e08b62; --ok:#4dbfae;
+    --s1:#3987e5; --s2:#d95926;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d1413; --bg-soft:#121b19; --bg-sunk:#182422;
+  --ink:#e8efed; --ink-2:#b0c1bc; --ink-3:#849792; --line:#233330;
+  --brand:#4dbfae; --brand-2:#6fd4c3; --accent:#e08b62;
+  --inp:#152436; --inp-line:#28486d; --inp-ink:#9cc6f5;
+  --calc:#33231a; --calc-line:#5a3b28; --calc-ink:#f0bd97;
+  --sel:#17301c; --sel-line:#2c4d33; --sel-ink:#9fd9a8;
+  --warn:#e08b62; --ok:#4dbfae; --s1:#3987e5; --s2:#d95926;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
+}
+:root[data-theme="light"]{
+  --bg:#ffffff; --bg-soft:#f5f7f8; --bg-sunk:#eceff1;
+  --ink:#12211f; --ink-2:#41544f; --ink-3:#6d7f7a; --line:#dde3e2;
+  --brand:#0f6b62; --brand-2:#12857a; --accent:#c4643c;
+  --inp:#e8f0fb; --inp-line:#b9d2f0; --inp-ink:#1b4f8f;
+  --calc:#fdece2; --calc-line:#f5cfb6; --calc-ink:#8d4a23;
+  --sel:#e2f4e4; --sel-line:#bfe3c4; --sel-ink:#2b6136;
+  --warn:#c4643c; --ok:#0f6b62; --s1:#2a78d6; --s2:#eb6834;
+  --shadow:0 1px 2px rgba(16,40,36,.05),0 8px 24px -12px rgba(16,40,36,.18);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+/* ── 한글 줄바꿈 : 단어 중간에서 끊기지 않게 ── */
+body{
+  word-break:keep-all;        /* 한글은 어절(공백) 단위로만 줄바꿈 */
+  overflow-wrap:break-word;   /* 한 줄에 못 들어가는 긴 단어만 예외적으로 분리 */
+}
+h1,h2,h3,.why-h,.mi h3,.wi h3,.card h3,.tl-item h3,.press .ttl,.ind-item strong{
+  text-wrap:balance;          /* 제목의 줄 길이를 고르게 */
+}
+p,li,.lede,.sub2,.hint,.disclaimer,.chip .k,.o .k,.stat .lbl,.stat .note{
+  text-wrap:pretty;           /* 마지막 줄에 한 단어만 남는 것 방지 */
+}
+/* 영문·URL·DOI 등 긴 라틴 문자열은 기존 규칙 유지 */
+.pub li b,.pub li span,.pub li a,code,.tip,.o .v,table.hx td,.linkrow a{
+  word-break:normal;
+  overflow-wrap:anywhere;
+}
+
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg-soft);color:var(--ink);
+  font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  line-height:1.65;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+h1,h2,h3{letter-spacing:-.03em;line-height:1.3;font-weight:700}
+input,select,button{font-family:inherit}
+
+header{
+  position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 90%,transparent);
+  backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.nav{display:flex;align-items:center;gap:8px;height:60px}
+.brand{font-weight:700;font-size:1rem;margin-right:auto;display:flex;align-items:center;gap:9px}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--brand);flex:none}
+.brand small{font-weight:500;color:var(--ink-3);font-size:.76rem;letter-spacing:0}
+.nav a.link{color:var(--ink-2);font-size:.88rem;font-weight:500;padding:7px 11px;border-radius:8px}
+.nav a.link:hover{color:var(--ink);background:var(--bg-sunk)}
+@media(max-width:760px){.nav a.link{display:none}}
+.theme-btn{border:1px solid var(--line);background:transparent;color:var(--ink-2);width:33px;height:33px;
+  border-radius:9px;cursor:pointer;display:grid;place-items:center;flex:none}
+
+.phead{padding:26px 0 20px}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brand);margin-bottom:8px}
+.phead h1{font-size:clamp(1.5rem,3.4vw,2.05rem)}
+.phead .sub{color:var(--ink-3);margin-top:7px;font-size:.9rem;max-width:78ch}
+
+main{padding-bottom:64px}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.chead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.sub2{font-size:.85rem;color:var(--ink-3);line-height:1.65;max-width:96ch}
+.sub2 b{color:var(--ink-2)}
+.sub2 em{font-style:normal;color:var(--accent);font-weight:700}
+.chead h2{font-size:.75rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--brand);margin-right:auto}
+.legend{display:flex;flex-wrap:wrap;gap:7px}
+.lg{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;color:var(--ink-3)}
+.sw{width:11px;height:11px;border-radius:3px;flex:none}
+.sw.i{background:var(--inp);border:1px solid var(--inp-line)}
+.sw.c{background:var(--calc);border:1px solid var(--calc-line)}
+.sw.s{background:var(--sel);border:1px solid var(--sel-line)}
+
+/* ── 환자·목표 입력 바 ── */
+.setgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:12px}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:.76rem;font-weight:600;color:var(--ink-3);white-space:nowrap}
+.f .un{color:var(--ink-3);font-weight:500}
+.f input,.f select{
+  font-size:.95rem;font-weight:700;color:var(--ink);text-align:right;
+  background:var(--bg-soft);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;
+}
+.f select{background:var(--sel);border-color:var(--sel-line);color:var(--sel-ink);text-align:left}
+.f input:focus,.f select:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 15%,transparent)}
+
+/* ── 목표 요약 칩 ── */
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:16px;padding-top:16px;border-top:1px dashed var(--line)}
+.chip{background:var(--calc);border:1px solid var(--calc-line);border-radius:10px;padding:11px 13px}
+.chip .k{font-size:.71rem;font-weight:600;color:var(--calc-ink);opacity:.85;line-height:1.25}
+.chip .v{font-size:1.16rem;font-weight:700;color:var(--calc-ink);letter-spacing:-.03em;margin-top:2px;line-height:1.2}
+.chip .v small{font-size:.6em;opacity:.75;margin-left:3px}
+.chip.hi{background:var(--brand);border-color:var(--brand)}
+.chip.hi .k,.chip.hi .v{color:#fff}
+:root[data-theme="dark"] .chip.hi .k,:root[data-theme="dark"] .chip.hi .v{color:#06201d}
+@media (prefers-color-scheme: dark){.chip.hi .k,.chip.hi .v{color:#06201d}}
+:root[data-theme="light"] .chip.hi .k,:root[data-theme="light"] .chip.hi .v{color:#fff}
+.chip.warn{background:color-mix(in srgb,var(--warn) 14%,transparent);border-color:var(--warn)}
+.chip.warn .k,.chip.warn .v{color:var(--warn)}
+
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font-size:.84rem;font-weight:600;cursor:pointer;padding:9px 15px;border-radius:9px;
+  border:1px solid var(--line);background:transparent;color:var(--ink-2)}
+.btn:hover{border-color:var(--ink-3);color:var(--ink)}
+.btn.p{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.big{font-size:1rem;font-weight:800;padding:9px 20px;display:inline-flex;align-items:baseline;gap:8px}
+.btn.big span{font-size:.72rem;font-weight:600;opacity:.85}
+.btn.big span::before{content:"("} .btn.big span::after{content:")"}
+:root[data-theme="dark"] .btn.p{color:#06201d}
+@media (prefers-color-scheme: dark){.btn.p{color:#06201d}}
+:root[data-theme="light"] .btn.p{color:#fff}
+
+/* ── 시간대별 표 ── */
+.scroller{overflow-x:auto;border:1px solid var(--line);border-radius:11px;background:var(--bg)}
+table.hx{border-collapse:separate;border-spacing:0;width:100%;min-width:820px;font-variant-numeric:tabular-nums}
+table.hx th,table.hx td{border-bottom:1px solid var(--line);padding:0;text-align:center}
+table.hx thead th{
+  background:var(--brand);color:#fff;font-size:.8rem;font-weight:700;padding:9px 6px;
+  position:sticky;top:0;z-index:3;
+}
+:root[data-theme="dark"] table.hx thead th{color:#06201d}
+@media (prefers-color-scheme: dark){table.hx thead th{color:#06201d}}
+:root[data-theme="light"] table.hx thead th{color:#fff}
+table.hx thead th:first-child{text-align:left;padding-left:14px;position:sticky;left:0;z-index:4;min-width:200px}
+table.hx td.rl,table.hx th.rl{
+  text-align:left;padding:0 12px;font-size:.82rem;font-weight:600;color:var(--ink-2);
+  position:sticky;left:0;background:var(--bg);z-index:2;min-width:200px;white-space:nowrap;
+}
+table.hx tr.sec td{background:var(--bg-sunk);font-size:.71rem;font-weight:700;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--ink-3);padding:7px 12px;text-align:left;position:sticky;left:0}
+table.hx tr.in td.rl{background:var(--inp);color:var(--inp-ink)}
+table.hx tr.ca td.rl{background:var(--calc);color:var(--calc-ink)}
+table.hx td.cell{min-width:74px}
+table.hx td.cell input{
+  width:100%;border:none;background:var(--inp);color:var(--inp-ink);
+  font-size:.86rem;font-weight:700;text-align:center;padding:9px 4px;
+  border-left:1px solid var(--line);
+}
+table.hx td.cell input:focus{outline:2px solid var(--brand);outline-offset:-2px;position:relative;z-index:1}
+table.hx td.out{font-size:.84rem;font-weight:600;color:var(--ink-2);padding:9px 6px;border-left:1px solid var(--line);background:var(--bg)}
+table.hx tr.ca td.out{background:color-mix(in srgb,var(--calc) 38%,var(--bg));color:var(--calc-ink);font-weight:700}
+table.hx tr.key td.out{font-size:.92rem;font-weight:700;color:var(--ink)}
+table.hx td.out.bad{color:var(--warn);font-weight:700}
+table.hx td.out.alarm{background:color-mix(in srgb,var(--warn) 22%,var(--bg));color:var(--warn);font-weight:700;
+  box-shadow:inset 0 0 0 1.5px var(--warn)}
+.hint{font-size:.8rem;color:var(--ink-3);margin-top:11px;line-height:1.6}
+.hint b{color:var(--warn)}
+
+/* ── 차트 ── */
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:980px){.charts{grid-template-columns:1fr}}
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.ct{font-size:.78rem;font-weight:700;color:var(--ink-2);margin-bottom:6px}
+.grid{stroke:var(--line);stroke-width:1}
+.axis{stroke:var(--line);stroke-width:1}
+.tick{fill:var(--ink-3);font-size:11px}
+.alab{fill:var(--ink-3);font-size:10.5px;font-weight:600;letter-spacing:.05em}
+.tgt{stroke:var(--ink-3);stroke-width:1.5;stroke-dasharray:5 4;opacity:.75}
+.tgtx{fill:var(--ink-3);font-size:10.5px;font-weight:600}
+.ln{fill:none;stroke:var(--s1);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.dot{fill:var(--s1);stroke:var(--bg);stroke-width:2}
+.bar{fill:var(--s2)}
+.dlab{font-size:11px;font-weight:700;fill:var(--s1)}
+.cross{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+.chart.hov .cross{opacity:.8}
+.hitrect{fill:transparent;cursor:crosshair}
+.tip{position:absolute;pointer-events:none;opacity:0;transform:translate(-50%,-112%);
+  background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:8px 11px;
+  box-shadow:var(--shadow);font-size:.78rem;white-space:nowrap;z-index:5;transition:opacity .12s}
+.chart.hov .tip{opacity:1}
+.tip .th{font-weight:700;color:var(--ink);margin-bottom:4px}
+.tip .tr{display:flex;gap:10px;color:var(--ink-2)}
+.tip .tr b{margin-left:auto;color:var(--ink)}
+
+.note{margin-top:4px;padding:15px 18px;border-radius:11px;font-size:.85rem;color:var(--ink-2);line-height:1.7;
+  background:color-mix(in srgb,var(--accent) 8%,transparent);border:1px solid color-mix(in srgb,var(--accent) 28%,transparent)}
+.note strong{color:var(--ink)}
+.note code{font-size:.92em;background:var(--bg-sunk);padding:1px 5px;border-radius:4px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:860px){.two{grid-template-columns:1fr}}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;font-size:.79rem;color:var(--ink-3)}
+footer a{color:var(--brand);font-weight:600}
+@media print{header,.btnrow,footer .noprint{display:none}body{background:#fff}.card{box-shadow:none;break-inside:avoid}}
+
+/* ── 환기기 계산기 전용 ── */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.modebar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+.mb{
+  font-size:.85rem;font-weight:600;padding:9px 16px;border-radius:9px;cursor:pointer;
+  border:1px solid var(--line);background:var(--bg-soft);color:var(--ink-2);transition:.16s;
+}
+.mb:hover{border-color:var(--ink-3);color:var(--ink)}
+.mb.on{background:var(--brand);border-color:var(--brand);color:#fff}
+:root[data-theme="dark"] .mb.on{color:#06201d}
+@media (prefers-color-scheme: dark){.mb.on{color:#06201d}}
+:root[data-theme="light"] .mb.on{color:#fff}
+.mb small{display:block;font-size:.7rem;font-weight:500;opacity:.75;margin-top:1px}
+
+.vsplit{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:start}
+@media(max-width:920px){.vsplit{grid-template-columns:1fr}}
+
+table.vt{border-collapse:separate;border-spacing:0;width:100%;font-variant-numeric:tabular-nums}
+table.vt th,table.vt td{border-bottom:1px solid var(--line);padding:10px 12px;text-align:left;font-size:.88rem}
+table.vt thead th{
+  background:var(--brand);color:#fff;font-size:.76rem;font-weight:700;letter-spacing:.04em;
+}
+:root[data-theme="dark"] table.vt thead th{color:#06201d}
+@media (prefers-color-scheme: dark){table.vt thead th{color:#06201d}}
+:root[data-theme="light"] table.vt thead th{color:#fff}
+table.vt tbody tr:last-child td{border-bottom:none}
+table.vt td.p{font-weight:600;color:var(--ink-2);white-space:nowrap}
+table.vt td.v.vin{padding:5px 8px;background:var(--inp)}
+table.vt td.v.vin select{
+  width:100%;max-width:110px;border:1px solid var(--inp-line);background:var(--bg);
+  color:var(--inp-ink);font-size:.92rem;font-weight:700;text-align:right;
+  padding:7px 9px;border-radius:7px;font-family:inherit;
+}
+table.vt td.v.vin input{
+  width:100%;max-width:110px;border:1px solid var(--inp-line);background:var(--bg);
+  color:var(--inp-ink);font-size:.95rem;font-weight:700;text-align:right;
+  padding:7px 9px;border-radius:7px;font-family:inherit;
+}
+table.vt td.v.vin input:focus{outline:2px solid var(--brand);outline-offset:-2px}
+table.vt td.v{
+  font-weight:700;color:var(--calc-ink);background:color-mix(in srgb,var(--calc) 42%,var(--bg));
+  text-align:right;white-space:nowrap;font-size:.95rem;
+}
+table.vt td.u{color:var(--ink-3);font-size:.79rem;white-space:nowrap}
+table.vt td.n{color:var(--ink-3);font-size:.8rem;line-height:1.55}
+table.vt tr.derived td.v{background:var(--brand);color:#fff}
+:root[data-theme="dark"] table.vt tr.derived td.v{color:#06201d}
+@media (prefers-color-scheme: dark){table.vt tr.derived td.v{color:#06201d}}
+:root[data-theme="light"] table.vt tr.derived td.v{color:#fff}
+table.vt tr.alarm td.v{background:color-mix(in srgb,var(--warn) 22%,var(--bg));color:var(--warn);
+  box-shadow:inset 0 0 0 1.5px var(--warn)}
+
+table.dg{border-collapse:separate;border-spacing:0;width:100%;min-width:780px;font-variant-numeric:tabular-nums}
+table.dg th,table.dg td{border-bottom:1px solid var(--line);padding:9px 10px;font-size:.86rem;text-align:right}
+table.dg th:first-child,table.dg td:first-child,
+table.dg th:nth-child(2),table.dg td:nth-child(2){text-align:left}
+table.dg thead th{background:var(--bg-sunk);color:var(--ink-2);font-size:.75rem;font-weight:700;letter-spacing:.03em;white-space:nowrap}
+table.dg td.drug{font-weight:600;color:var(--ink)}
+table.dg td.drug small{display:block;font-weight:500;font-size:.76rem;color:var(--ink-3);margin-top:1px}
+table.dg td.range{color:var(--ink-3);font-size:.79rem;white-space:nowrap}
+table.dg td.inp{padding:4px 6px}
+table.dg td.inp input{
+  width:100%;max-width:92px;border:1px solid var(--inp-line);background:var(--inp);color:var(--inp-ink);
+  font-size:.88rem;font-weight:700;text-align:right;padding:7px 9px;border-radius:7px;font-family:inherit;
+}
+table.dg td.inp input:focus{outline:2px solid var(--brand);outline-offset:-2px}
+table.dg td.out{color:var(--calc-ink);font-weight:600;white-space:nowrap}
+table.dg td.out.big{font-weight:700;font-size:1.02rem;color:var(--ink);
+  background:color-mix(in srgb,var(--calc) 42%,var(--bg))}
+table.dg td.out.bad{color:var(--warn);font-weight:700}
+table.dg td.memo{text-align:left;color:var(--ink-3);font-size:.79rem;line-height:1.55;min-width:200px}
+table.dg tr.off{opacity:.42}
+
+.rules{list-style:none;counter-reset:r}
+.rules li{
+  position:relative;padding:0 0 14px 40px;counter-increment:r;
+  font-size:.89rem;color:var(--ink-2);line-height:1.72;
+}
+.rules li:last-child{padding-bottom:0}
+.rules li::before{
+  content:counter(r);position:absolute;left:0;top:1px;
+  width:25px;height:25px;border-radius:7px;display:grid;place-items:center;
+  font-size:.73rem;font-weight:700;color:var(--brand);
+  background:color-mix(in srgb,var(--brand) 12%,transparent);
+}
+.rules li b{color:var(--ink);font-weight:700}
+
+.flag{
+  display:flex;gap:11px;align-items:flex-start;margin-top:14px;padding:13px 16px;border-radius:10px;
+  background:color-mix(in srgb,var(--warn) 9%,transparent);
+  border:1px solid color-mix(in srgb,var(--warn) 30%,transparent);
+  font-size:.85rem;color:var(--ink-2);line-height:1.65;
+}
+.flag b{color:var(--warn)}
+.flag .wi{
+  flex:none;font-size:.66rem;font-weight:700;letter-spacing:.06em;color:#fff;
+  background:var(--warn);padding:3px 8px;border-radius:5px;margin-top:1px;
+}
+:root[data-theme="dark"] .flag .wi{color:#06201d}
+@media (prefers-color-scheme: dark){.flag .wi{color:#06201d}}
+:root[data-theme="light"] .flag .wi{color:#fff}
+table.dg td.out.slow{color:var(--warn);font-weight:700;
+  background:color-mix(in srgb,var(--warn) 16%,var(--bg))}
+.flag.hide{display:none}
+.ptag{
+  display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.06em;
+  color:var(--brand);background:color-mix(in srgb,var(--brand) 12%,transparent);
+  padding:3px 9px;border-radius:5px;margin-left:8px;vertical-align:2px;
+}
+</style>
+<script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="/" class="brand"><span class="dot"></span>안운찬 <small>수의사 · Woonchan Ahn, DVM</small></a>
+    <a class="link" href="/">홈으로</a>
+    <a class="link" href="/calculator">투석 계산기</a>
+    <a class="link" href="/#contact">진료 문의</a>
+    <button class="theme-btn" id="themeBtn" aria-label="화면 테마 전환">◐</button>
+  </div>
+</header>
+
+<div class="wrap phead">
+  <div class="eyebrow">Calculator</div>
+  <h1>Signature AMC Ventilator Calculator</h1>
+  <p class="sub">예측 체중과 질환 유형을 넣으면 P-A/C 모드 초기 세팅값과 목표 일회환기량, 인덕션·CRI 약물 용량이 함께 계산됩니다.</p>
+</div>
+
+<main class="wrap">
+
+  <!-- ① 환자 -->
+  <div class="card">
+    <div class="chead">
+      <h2>① 환자 정보</h2>
+      <div class="btnrow">
+        <button class="btn" id="resetBtn" type="button">초기화</button>
+        <button class="btn" id="printBtn" type="button">인쇄 / PDF</button>
+      </div>
+    </div>
+    <div class="pgrid">
+      <div class="f" style="grid-column:span 2">
+        <label for="pname">환자 이름 / 차트번호</label>
+        <input id="pname" type="text" placeholder="응급 환자" style="text-align:left">
+      </div>
+      <div class="f">
+        <label for="ibw">예측 체중 (IBW) <span class="un">kg</span></label>
+        <input id="ibw" type="number" step="0.1" min="0.1" placeholder="10">
+      </div>
+      <div class="f">
+        <label for="species">축종 (Species)</label>
+        <select id="species"><option value="dog">개 (Dog)</option><option value="cat">고양이 (Cat)</option></select>
+      </div>
+    </div>
+    <p class="hint" style="margin-top:12px">
+      비만 환자는 실제 체중이 아니라 <b>골격 기준 이상체중(lean weight)</b>을 넣어야 합니다.
+      실제 체중으로 계산하면 일회환기량이 과대 설정되어 용적상해(volutrauma)가 생기고 약물도 과다 투여됩니다.
+    </p>
+  </div>
+
+  <!-- ② 환기기 세팅 -->
+  <div class="card">
+    <div class="chead">
+      <h2>② 인공호흡기 초기 세팅 <span class="ptag">P-A/C 모드</span></h2>
+    </div>
+    <div class="flag" style="margin:0 0 16px;background:color-mix(in srgb,var(--brand) 7%,transparent);border-color:color-mix(in srgb,var(--brand) 26%,transparent)">
+      <span class="wi" style="background:var(--brand)">전제</span>
+      <div><b>Mindray SV300 Vet</b> 기준입니다. 이 장비의 P insp는 PEEP 위에 얹는 상대압(ΔP)이라
+        <b>최종 PIP = PEEP + P insp</b>로 계산합니다. 흡기압을 절대압으로 설정하는 장비를 쓰신다면
+        PEEP이 이중으로 더해지지 않는지 확인하세요.</div>
+    </div>
+    <div class="modebar" id="modebar"></div>
+    <p class="sub2" style="margin:14px 0 16px" id="modedesc"></p>
+
+    <div class="vsplit">
+      <div class="scroller" style="border-radius:11px">
+        <table class="vt">
+          <thead><tr><th>파라미터</th><th style="text-align:right">설정값</th><th>단위</th><th>임상 메모</th></tr></thead>
+          <tbody id="ventBody"></tbody>
+        </table>
+      </div>
+      <div>
+        <div class="chips" style="grid-template-columns:1fr 1fr;margin-top:0;padding-top:0;border-top:none">
+          <div class="chip hi"><div class="k">최종 PIP<br>(PEEP + P insp)</div><div class="v" id="v_pip">—</div></div>
+          <div class="chip hi"><div class="k">목표 일회환기량<br>(Tidal volume)</div><div class="v" id="v_vt">—</div></div>
+          <div class="chip"><div class="k">T insp (흡기시간)</div><div class="v" id="v_ti">—</div></div>
+          <div class="chip"><div class="k">T exp (호기시간)</div><div class="v" id="v_te">—</div></div>
+          <div class="chip"><div class="k">분당환기량 (MV)</div><div class="v" id="v_mv">—</div></div>
+          <div class="chip"><div class="k">호흡주기</div><div class="v" id="v_cyc">—</div></div>
+        </div>
+        <div class="flag hide" id="pipFlag">
+          <span class="wi">주의</span><div><b>PIP 상한 초과</b> — <span id="pipMsg"></span>
+            기도내압이 높으면 기압상해(barotrauma) 위험이 올라갑니다. P insp를 낮추거나 PEEP을 조정하세요.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ 인덕션 -->
+  <div class="card">
+    <div class="chead">
+      <h2>③ 삽관·마취 유도 약물 <span class="ptag">Induction</span></h2>
+      <div class="legend">
+        <span class="lg"><span class="sw i"></span>용량 입력</span>
+        <span class="lg"><span class="sw c"></span>자동 계산</span>
+      </div>
+    </div>
+    <div class="scroller">
+      <table class="dg">
+        <thead><tr>
+          <th>약물</th><th>추천 용량</th><th style="text-align:right">선택 용량<br>(mg/kg)</th>
+          <th style="text-align:right">필요 약물량<br>(mg)</th><th style="text-align:right">투여 부피<br>(mL)</th><th style="text-align:left">비고</th>
+        </tr></thead>
+        <tbody>
+        <tr data-drug="propofol">
+          <td class="drug">프로포폴<small>Propofol 1% · 10 mg/mL</small></td>
+          <td class="range">2.0 ~ 4.0 mg/kg</td>
+          <td class="inp"><input type="number" step="0.005" min="0" id="d_propofol" value="3" data-lo="2.0" data-hi="4.0"></td>
+          <td class="out" id="mg_propofol">—</td>
+          <td class="out big" id="ml_propofol">—</td>
+          <td class="memo"></td>
+        </tr>
+        <tr data-drug="alfax">
+          <td class="drug">알팍살론<small>Alfaxan · 10 mg/mL</small></td>
+          <td class="range">1.0 ~ 2.0 mg/kg</td>
+          <td class="inp"><input type="number" step="0.005" min="0" id="d_alfax" value="1.5" data-lo="1.0" data-hi="2.0"></td>
+          <td class="out" id="mg_alfax">—</td>
+          <td class="out big" id="ml_alfax">—</td>
+          <td class="memo"></td>
+        </tr>
+        <tr data-drug="etomi">
+          <td class="drug">에토미데이트<small>Etomidate · 2 mg/mL</small></td>
+          <td class="range">0.5 ~ 1.5 mg/kg</td>
+          <td class="inp"><input type="number" step="0.005" min="0" id="d_etomi" value="1" data-lo="0.5" data-hi="1.5"></td>
+          <td class="out" id="mg_etomi">—</td>
+          <td class="out big" id="ml_etomi">—</td>
+          <td class="memo">심혈관 안정성이 필요한 환자에 유리. 단회 투여로도 부신피질 억제가 수 시간 지속될 수 있어 패혈증 환자에서는 신중히</td>
+        </tr>
+        <tr data-drug="ketam">
+          <td class="drug">케타민<small>Ketamine · 50 mg/mL</small></td>
+          <td class="range">2.0 ~ 5.0 mg/kg</td>
+          <td class="inp"><input type="number" step="0.005" min="0" id="d_ketam" value="2.5" data-lo="2.0" data-hi="5.0"></td>
+          <td class="out" id="mg_ketam">—</td>
+          <td class="out big" id="ml_ketam">—</td>
+          <td class="memo"></td>
+        </tr>
+        <tr data-drug="midaz">
+          <td class="drug">미다졸람<small>Midazolam · 5 mg/mL</small></td>
+          <td class="range">0.2 ~ 0.3 mg/kg</td>
+          <td class="inp"><input type="number" step="0.005" min="0" id="d_midaz" value="0.2" data-lo="0.2" data-hi="0.3"></td>
+          <td class="out" id="mg_midaz">—</td>
+          <td class="out big" id="ml_midaz">—</td>
+          <td class="memo">단독 사용보다 병용 시 유용</td>
+        </tr>
+        <tr data-drug="butor">
+          <td class="drug">부토파놀<small>Butophan · 10 mg/mL</small></td>
+          <td class="range">0.1 ~ 0.2 mg/kg</td>
+          <td class="inp"><input type="number" step="0.005" min="0" id="d_butor" value="0.1" data-lo="0.1" data-hi="0.2"></td>
+          <td class="out" id="mg_butor">—</td>
+          <td class="out big" id="ml_butor">—</td>
+          <td class="memo"></td>
+        </tr>
+        <tr data-drug="medet">
+          <td class="drug">메데토미딘<small>Domitor · 1 mg/mL</small></td>
+          <td class="range">0.005 ~ 0.01 mg/kg</td>
+          <td class="inp"><input type="number" step="0.005" min="0" id="d_medet" value="0.005" data-lo="0.005" data-hi="0.01"></td>
+          <td class="out" id="mg_medet">—</td>
+          <td class="out big" id="ml_medet">—</td>
+          <td class="memo">서맥·혈관수축 유의</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="hint" style="margin-top:12px">
+      추천 범위를 벗어난 용량은 주황색으로 표시됩니다.
+      용량은 일반적인 범위이며 알팍살론·케타민·메데토미딘은 개와 고양이 허가 용량이 다르므로 축종에 맞게 확인하세요.
+    </p>
+  </div>
+
+  <!-- ④ CRI -->
+  <div class="card">
+    <div class="chead">
+      <h2>④ 지속 정밀 주입 약물 <span class="ptag">CRI · Syringe pump</span></h2>
+    </div>
+    <div class="scroller">
+      <table class="dg">
+        <thead><tr>
+          <th>약물</th><th>표준 CRI 범위</th><th style="text-align:right">목표 속도<br>(mg/kg/h)</th>
+          <th style="text-align:right">희석<br>(배)</th><th style="text-align:right">시간당 약물량<br>(mg/h)</th>
+          <th style="text-align:right">펌프 속도<br>(mL/h)</th><th style="text-align:left">적응증 · 주의</th>
+        </tr></thead>
+        <tbody>
+        <tr data-drug="cpropofol">
+          <td class="drug">프로포폴 CRI<small>Propofol 10 mg/mL</small></td>
+          <td class="range">3.0 ~ 24.0 mg/kg/h</td>
+          <td class="inp"><input type="number" step="0.0005" min="0" id="d_cpropofol" value="6" data-lo="3.0" data-hi="24.0"></td>
+          <td class="inp"><input type="number" step="1" min="1" id="x_cpropofol" value="1"></td><td class="out" id="mg_cpropofol">—</td>
+          <td class="out big" id="ml_cpropofol">—</td>
+          <td class="memo">자발호흡 억제와 진정 유지. 고양이 장기 사용 주의</td>
+        </tr>
+        <tr data-drug="cfent">
+          <td class="drug">펜타닐 CRI<small>Fentanyl 0.05 mg/mL</small></td>
+          <td class="range">0.002 ~ 0.008 mg/kg/h (2~8 mcg/kg/h)</td>
+          <td class="inp"><input type="number" step="0.0005" min="0" id="d_cfent" value="0.005" data-lo="0.002" data-hi="0.008"></td>
+          <td class="inp"><input type="number" step="1" min="1" id="x_cfent" value="1"></td><td class="out" id="mg_cfent">—</td>
+          <td class="out big" id="ml_cfent">—</td>
+          <td class="memo">강력한 진통. 기계 충돌(asynchrony) 방지</td>
+        </tr>
+        <tr data-drug="cmidaz">
+          <td class="drug">미다졸람 CRI<small>Midazolam 5 mg/mL</small></td>
+          <td class="range">0.1 ~ 0.5 mg/kg/h</td>
+          <td class="inp"><input type="number" step="0.0005" min="0" id="d_cmidaz" value="0.2" data-lo="0.1" data-hi="0.5"></td>
+          <td class="inp"><input type="number" step="1" min="1" id="x_cmidaz" value="1"></td><td class="out" id="mg_cmidaz">—</td>
+          <td class="out big" id="ml_cmidaz">—</td>
+          <td class="memo">근이완과 보조 진정. 수액관 흡착 없음</td>
+        </tr>
+        <tr data-drug="cdex">
+          <td class="drug">덱스메데토미딘 CRI<small>Dexmedetomidine 0.5 mg/mL</small></td>
+          <td class="range">0.0005 ~ 0.003 mg/kg/h (0.5~3 mcg/kg/h)</td>
+          <td class="inp"><input type="number" step="0.0005" min="0" id="d_cdex" value="0.001" data-lo="0.0005" data-hi="0.003"></td>
+          <td class="inp"><input type="number" step="1" min="1" id="x_cdex" value="1"></td><td class="out" id="mg_cdex">—</td>
+          <td class="out big" id="ml_cdex">—</td>
+          <td class="memo">서맥과 혈관수축 유의. 심부전 환자 금기</td>
+        </tr>
+        <tr data-drug="cketam">
+          <td class="drug">케타민 CRI<small>Ketamine 50 mg/mL</small></td>
+          <td class="range">0.1 ~ 0.6 mg/kg/h</td>
+          <td class="inp"><input type="number" step="0.0005" min="0" id="d_cketam" value="0.3" data-lo="0.1" data-hi="0.6"></td>
+          <td class="inp"><input type="number" step="1" min="1" id="x_cketam" value="1"></td><td class="out" id="mg_cketam">—</td>
+          <td class="out big" id="ml_cketam">—</td>
+          <td class="memo">NMDA 길항 진통, 마취제 절감</td>
+        </tr>
+        <tr data-drug="cbutor">
+          <td class="drug">부토파놀 CRI<small>Butophan 10 mg/mL</small></td>
+          <td class="range">0.1 ~ 0.4 mg/kg/h</td>
+          <td class="inp"><input type="number" step="0.0005" min="0" id="d_cbutor" value="0.1" data-lo="0.1" data-hi="0.4"></td>
+          <td class="inp"><input type="number" step="1" min="1" id="x_cbutor" value="1"></td><td class="out" id="mg_cbutor">—</td>
+          <td class="out big" id="ml_cbutor">—</td>
+          <td class="memo">진해·진정 보조</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="hint" style="margin-top:12px">
+      <b>희석 배수</b>는 최종 부피 기준입니다. 20배라면 원액 1 mL에 희석액 19 mL를 더해 총 20 mL로 만든다는 뜻입니다.
+      고농도 약물은 원액 그대로면 펌프가 낼 수 없는 속도가 나오므로 희석해서 씁니다.
+    </p>
+
+    <div class="flag hide" id="slowFlag">
+      <span class="wi">주의</span><div><b>펌프 최소 속도 미만</b> — <span id="slowMsg"></span>의 주입 속도가
+        0.1 mL/h를 밑돕니다. 대부분의 시린지 펌프가 이 영역에서는 속도를 정확히 내지 못합니다.
+        희석 배수를 올려 실제로 맞출 수 있는 속도로 만드세요.</div>
+    </div>
+
+    <div class="flag hide" id="catFlag">
+      <span class="wi">주의</span><div><b>프로포폴 장기 주입 — 적혈구 산화 손상</b> — 고양이에서 매일 30분 마취를 반복했을 때 3일째부터 하인즈 소체가 유의하게 늘었고, 용혈은 확인되지 않았으나 회복이 느려지고 5~7일째 식욕부진과 설사가 나타났습니다(Andress 1995). 기계환기 중인 개에서도 프로포폴 CRI 시작 47~96시간 사이 하인즈 소체가 확인됐고, 다섯 마리 중 한 마리는 수혈을 받았습니다(Ireland 2025). 장기 환기가 예상되면 축종과 무관하게 알팍살론이나 미다졸람·오피오이드 조합을 고려하세요.</div>
+    </div>
+  </div>
+
+  <!-- ⑤ 임상 수칙 -->
+  <div class="card">
+    <div class="chead"><h2>⑤ 중환자 마취·진정 관리 수칙</h2></div>
+    <ol class="rules">
+      <li><b>기관 삽관 인덕션</b> — 프로포폴이나 알팍살론 단독 대신 미다졸람(0.2 mg/kg)과 부토파놀(0.1 mg/kg)을 함께 쓰면 기침 반사를 차단하면서 유도제 용량을 줄일 수 있습니다.</li>
+      <li><b>CRI 정밀 주입</b> — 펜타닐과 덱스메데토미딘 같은 고위험 약물은 반드시 시린지 펌프로 mL/h 단위를 맞춰 넣어야 혈압 변동과 서맥을 피할 수 있습니다.</li>
+      <li><b>프로포폴 장기 주입</b> — 고양이는 매일 30분 마취를 반복한 연구에서 3일째부터 하인즈 소체가 유의하게 늘었습니다(Andress 1995). 기계환기 중인 개에서도 프로포폴 CRI 시작 47~96시간 사이 하인즈 소체가 확인됐습니다(Ireland 2025). 축종을 가리지 않는 문제이므로 장기 환기가 예상되면 처음부터 다른 조합을 고려합니다.</li>
+      <li><b>모니터링 연동</b> — 혈압, EtCO2, SpO2, ECG를 계속 보면서 기계와 자발호흡이 충돌하면 펜타닐이나 프로포폴 속도를 조금씩 올립니다.</li>
+    </ol>
+  </div>
+
+  <div class="note">
+    <strong>이 계산기는 수의사용 참고 도구입니다.</strong>
+    제시되는 세팅값은 초기 설정을 위한 출발점이며, 실제 환기 조건은 흉부 팽창과 EtCO2, 혈액가스, 혈압 반응을 보면서 조정해야 합니다.
+    약물 용량 역시 환자의 순환 상태와 동반 질환, 병용 약물에 따라 달라집니다.
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    © AHN, Woonchan — Signature Animal Medical Center.<br>
+    문의는 <a href="/#contact">진료 문의</a> 또는 02-549-0275.
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement, b=document.getElementById('themeBtn'), saved=null;
+  try{saved=localStorage.getItem('theme')}catch(e){}
+  if(saved) root.setAttribute('data-theme',saved);
+  b.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    if(!cur) cur=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    var n=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',n); try{localStorage.setItem('theme',n)}catch(e){}
+  });
+})();
+
+(function(){
+'use strict';
+var VENT={"dog": {"label": "개 (Dog)", "pipMax": 25, "modes": [["std", "표준 / 마취유지", {"fio2": 100, "peep": 5, "pinsp": 10, "f": 18, "assist": "ON (1.5)", "vtMin": 6, "vtMax": 8}], ["ards", "중증 폐렴 / ARDS", {"fio2": 100, "peep": 8, "pinsp": 10, "f": 20, "assist": "ON (1.5)", "vtMin": 6, "vtMax": 8}], ["obs", "폐쇄성 기도질환", {"fio2": 100, "peep": 3, "pinsp": 12, "f": 14, "assist": "ON (1.5)", "vtMin": 8, "vtMax": 10, "ie": 3}], ["res", "제한성 흉막질환", {"fio2": 100, "peep": 5, "pinsp": 10, "f": 22, "assist": "ON (1.5)", "vtMin": 5, "vtMax": 7}]], "notes": {"fio2": "100%로 시작하고 SpO2가 안정되면 12~24시간 안에 50~60% 이하로 감량", "peep": "폐포 허탈(atelectrauma) 방지를 위해 최소 3~5는 유지. 폐쇄성 기도질환에서는 더 낮게 잡습니다", "pinsp": "최종 PIP = PEEP + P insp. 25 cmH2O 이하로 유지", "f": "CO2 배출 조절. 개 표준 15~20 bpm이며 폐쇄성 기도질환은 호기시간 확보를 위해 낮춥니다", "ie": "역비율 환기 금지 — 공기 가둠과 저혈압을 유발합니다. 폐쇄성 기도질환은 호기시간을 더 길게 잡습니다", "assist": "Flow trigger를 켜 자발호흡과 동기화", "vt": "예측 체중 기준 목표 환기량 범위"}}, "cat": {"label": "고양이 (Cat)", "pipMax": 20, "modes": [["std", "표준 / 마취유지", {"fio2": 100, "peep": 4, "pinsp": 8, "f": 25, "assist": "ON (1.0)", "vtMin": 6, "vtMax": 8}], ["ards", "중증 폐렴 / ARDS", {"fio2": 100, "peep": 8, "pinsp": 10, "f": 30, "assist": "ON (1.0)", "vtMin": 6, "vtMax": 8}], ["obs", "폐쇄성 기도질환", {"fio2": 100, "peep": 2, "pinsp": 10, "f": 20, "assist": "ON (1.0)", "vtMin": 7, "vtMax": 9, "ie": 3}], ["res", "제한성 흉막질환", {"fio2": 100, "peep": 4, "pinsp": 8, "f": 30, "assist": "ON (1.0)", "vtMin": 5, "vtMax": 7}]], "notes": {"fio2": "100%로 시작하고 SpO2가 안정되면 12~24시간 안에 50~60% 이하로 감량", "peep": "고양이 호흡생리를 고려해 기본 3~4 적용. 폐쇄성 기도질환에서는 더 낮게 잡습니다", "pinsp": "최종 PIP가 20 cmH2O를 넘지 않도록 주의", "f": "고양이 표준 호흡수 20~30 bpm이며 폐쇄성 기도질환은 호기시간 확보를 위해 낮춥니다", "ie": "역비율 환기 금지 — 공기 가둠과 저혈압을 유발합니다. 유연한 기도를 고려해 비율을 정밀하게 유지하고, 폐쇄성 기도질환은 호기시간을 더 길게 잡습니다", "assist": "미세 유량 감지 (flow trigger 1.0 L/min)", "vt": "예측 체중 기준 목표 환기량 범위"}}};
+var CONC={"propofol": 10, "alfax": 10, "etomi": 2, "ketam": 50, "midaz": 5, "butor": 10, "medet": 1, "cpropofol": 10, "cfent": 0.05, "cmidaz": 5, "cdex": 0.5, "cketam": 50, "cbutor": 10};
+var MODE='std', cur=null;
+/* 시린지 펌프가 신뢰성 있게 낼 수 있는 최소 속도 (mL/h) */
+var MIN_RATE=0.1;
+
+function num(id){var v=parseFloat(document.getElementById(id).value);return isFinite(v)?v:0;}
+function sp(){return document.getElementById('species').value;}
+function fmt(n,d){ if(!isFinite(n)) return '—';
+  return n.toLocaleString('ko-KR',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function setV(id,v,u){var e=document.getElementById(id);
+  if(e) e.innerHTML = v + ((u && v!=='—')?'<small>'+u+'</small>':''); }
+
+/* T insp 메모 — 현재 I:E 와 장비 입력 단위를 함께 안내 */
+function tiNote(ti){
+  var txt='현재 I:E 1:'+cur.ie+'에 맞춰 자동 계산 (호흡주기 ÷ '+(1+cur.ie)+')';
+  if(isFinite(ti)) txt += ' · 장비 입력 단위 0.05초 → <b>'+fmt(Math.round(ti/0.05)*0.05,2)+'초</b>로 설정';
+  return txt;
+}
+
+function modeOf(){
+  var list=VENT[sp()].modes;
+  for(var i=0;i<list.length;i++) if(list[i][0]===MODE) return list[i];
+  return list[0];
+}
+/* 모드나 축종이 바뀌면 편집값을 추천값으로 되돌린다 */
+function resetCur(){
+  var c=modeOf()[2];
+  cur={fio2:c.fio2, peep:c.peep, pinsp:c.pinsp, f:c.f, ie:(c.ie||2)};
+}
+
+function buildModes(){
+  var bar=document.getElementById('modebar'), h='';
+  VENT[sp()].modes.forEach(function(m){
+    h+='<button type="button" class="mb'+(m[0]===MODE?' on':'')+'" data-m="'+m[0]+'">'+m[1]+'</button>';
+  });
+  bar.innerHTML=h;
+  Array.prototype.forEach.call(bar.querySelectorAll('.mb'),function(btn){
+    btn.addEventListener('click',function(){ MODE=btn.dataset.m; resetCur(); buildModes(); compute(); });
+  });
+}
+
+/* 표를 다시 그리지 않고 파생값만 갱신 — 입력 중 포커스 유지 */
+function redraw(){
+  var ibw=num('ibw'), S=VENT[sp()], c=modeOf()[2];
+  var blank=!(ibw>0);
+  var cycle = cur.f>0 ? 60/cur.f : NaN;
+  var ti = isFinite(cycle)?Math.round(cycle/(1+cur.ie)*100)/100:NaN;
+  var te = isFinite(cycle)?Math.round((cycle-ti)*100)/100:NaN;
+  var pip = cur.peep + cur.pinsp;
+  var vtMin=ibw*c.vtMin, vtMax=ibw*c.vtMax;
+  var mvMin=vtMin*cur.f/1000, mvMax=vtMax*cur.f/1000;
+  var tb=document.getElementById('ventBody');
+  var dr=tb.querySelectorAll('tr.derived');
+  if(dr[0]){
+    dr[0].cells[1].textContent = isFinite(ti)?fmt(ti,2):'—';
+    dr[0].cells[3].innerHTML = tiNote(ti);
+  }
+  setV('v_pip',fmt(pip,0),'cmH2O');
+  setV('v_ti', isFinite(ti)?fmt(ti,2):'—','초');
+  setV('v_te', isFinite(te)?fmt(te,2):'—','초');
+  setV('v_mv', blank?'—':fmt(mvMin,2)+'~'+fmt(mvMax,2),'L/min');
+  setV('v_cyc',isFinite(cycle)?fmt(cycle,2):'—','초');
+  var over=pip>S.pipMax;
+  document.getElementById('pipFlag').classList.toggle('hide',!over);
+  if(over) document.getElementById('pipMsg').textContent =
+    S.label+' 권장 상한은 '+S.pipMax+' cmH2O인데 현재 '+pip+' cmH2O입니다.';
+  var t=document.getElementById('v_pip').parentNode;
+  t.style.background = over?'color-mix(in srgb,var(--warn) 20%,var(--bg))':'';
+  t.style.borderColor = over?'var(--warn)':'';
+}
+
+function compute(){
+  var ibw=num('ibw'), S=VENT[sp()], m=modeOf(), c=m[2], N=S.notes;
+  var blank = !(ibw>0);
+  if(!cur) resetCur();
+
+  /* 유도 파라미터 — 편집값(cur) 기준 */
+  var cycle = cur.f>0 ? 60/cur.f : NaN;             /* 호흡주기 sec */
+  var ti    = isFinite(cycle) ? Math.round(cycle/(1+cur.ie)*100)/100 : NaN;   /* I:E = 1:ie */
+  var te    = isFinite(cycle) ? Math.round((cycle-ti)*100)/100 : NaN;
+  var pip   = cur.peep + cur.pinsp;
+  var vtMin = ibw*c.vtMin, vtMax = ibw*c.vtMax;
+  var mvMin = vtMin*cur.f/1000, mvMax = vtMax*cur.f/1000;   /* L/min */
+
+  document.getElementById('modedesc').textContent =
+    S.label + ' · ' + m[1] + ' 기준 초기 세팅값입니다. 흉부 팽창과 EtCO2를 보며 조정하세요.';
+
+  var rows=[
+    ['fio2','O2% (흡기 산소분율)', '%',     N.fio2,  1,   21],
+    ['peep','PEEP (호기말 양압)',  'cmH2O', N.peep,  1,   0],
+    ['pinsp','P insp (흡기 보조압)','cmH2O', N.pinsp, 1,   5],
+    ['f','f (강제 호흡수)',        'bpm',   N.f,     1,   1]
+  ];
+  var html='';
+  rows.forEach(function(r){
+    html+='<tr><td class="p">'+r[1]+'</td>'+
+          '<td class="v vin"><input type="number" step="'+r[4]+'" min="'+r[5]+'" id="p_'+r[0]+'" value="'+cur[r[0]]+'"></td>'+
+          '<td class="u">'+r[2]+'</td><td class="n">'+r[3]+'</td></tr>';
+  });
+  html+='<tr class="derived"><td class="p">T insp (흡기시간)</td><td class="v">'+(isFinite(ti)?fmt(ti,2):'—')+
+        '</td><td class="u">초</td><td class="n" id="tiNote">'+tiNote(ti)+'</td></tr>';
+  html+='<tr><td class="p">I:E 비율</td><td class="v vin"><select id="p_ie">'+
+        [2,2.5,3,4].map(function(x){return '<option value="'+x+'"'+(cur.ie==x?' selected':'')+'>1 : '+x+'</option>';}).join('')+
+        '</select></td><td class="u"></td><td class="n">'+N.ie+'</td></tr>';
+  html+='<tr><td class="p">Assist (트리거)</td><td class="v">'+c.assist+'</td><td class="u">L/min</td><td class="n">'+N.assist+'</td></tr>';
+  html+='<tr class="derived"><td class="p">목표 Vt (최소~최대)</td><td class="v">'+
+        (blank?'—':fmt(vtMin,0)+' ~ '+fmt(vtMax,0))+'</td><td class="u">mL</td><td class="n">'+
+        N.vt+' ('+c.vtMin+'~'+c.vtMax+' mL/kg)</td></tr>';
+  document.getElementById('ventBody').innerHTML=html;
+
+  setV('v_pip', fmt(pip,0), 'cmH2O');
+  setV('v_vt', blank?'—':fmt(vtMin,0)+'~'+fmt(vtMax,0), 'mL');
+  setV('v_ti', isFinite(ti)?fmt(ti,2):'—', '초');
+  setV('v_te', isFinite(te)?fmt(te,2):'—', '초');
+  setV('v_mv', blank?'—':fmt(mvMin,2)+'~'+fmt(mvMax,2), 'L/min');
+  setV('v_cyc', isFinite(cycle)?fmt(cycle,2):'—', '초');
+
+  /* PIP 경고 */
+  var over = pip > S.pipMax;
+  document.getElementById('pipFlag').classList.toggle('hide', !over);
+  if(over) document.getElementById('pipMsg').textContent =
+    S.label + ' 권장 상한은 ' + S.pipMax + ' cmH2O인데 현재 ' + pip + ' cmH2O입니다.';
+  var pipTile=document.getElementById('v_pip').parentNode;
+  pipTile.style.background = over ? 'color-mix(in srgb,var(--warn) 20%,var(--bg))' : '';
+  pipTile.style.borderColor = over ? 'var(--warn)' : '';
+
+  /* 약물 */
+  var tooSlow=[];
+  Object.keys(CONC).forEach(function(k){
+    var inp=document.getElementById('d_'+k); if(!inp) return;
+    var dose=parseFloat(inp.value); if(!isFinite(dose)) dose=0;
+    var isCri = k.charAt(0)==='c';
+    var dilEl = document.getElementById('x_'+k);
+    var dil = dilEl ? (parseFloat(dilEl.value)||1) : 1;
+    if(dil<1) dil=1;
+    var conc = CONC[k]/dil;                       /* 희석 후 농도 mg/mL */
+    var mg = dose*ibw, ml = conc>0 ? mg/conc : NaN;
+    setV('mg_'+k, blank||!dose?'—':fmt(mg,3)+(isCri?' mg/h':' mg'));
+    setV('ml_'+k, blank||!dose?'—':fmt(ml,isCri?2:3)+(isCri?' mL/h':' mL'));
+    var lo=parseFloat(inp.dataset.lo), hi=parseFloat(inp.dataset.hi);
+    var bad = dose>0 && (dose<lo || dose>hi);
+    var slow = isCri && dose>0 && ibw>0 && isFinite(ml) && ml<MIN_RATE;
+    var cell=document.getElementById('ml_'+k);
+    cell.classList.toggle('bad', bad);
+    cell.classList.toggle('slow', slow);
+    if(slow) tooSlow.push(k);
+    inp.closest('tr').classList.toggle('off', !dose);
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.vin input, .vin select'),function(inp){
+    inp.addEventListener(inp.tagName==='SELECT'?'change':'input',function(){
+      var k=inp.id.slice(2), v=parseFloat(inp.value);
+      cur[k]=isFinite(v)?v:0;
+      if(k==='ie') compute(); else redraw();
+    });
+  });
+
+  /* 시린지 펌프 최소 주입속도 미만 경고 */
+  var sf=document.getElementById('slowFlag');
+  sf.classList.toggle('hide', tooSlow.length===0);
+  if(tooSlow.length){
+    document.getElementById('slowMsg').textContent =
+      tooSlow.map(function(k){return document.querySelector('[data-drug="'+k+'"] .drug').firstChild.textContent;}).join(', ');
+  }
+
+  /* 프로포폴 CRI 는 개·고양이 모두에서 적혈구 산화 손상이 보고되어 축종을 가리지 않는다 */
+  document.getElementById('catFlag').classList.toggle('hide',
+    !(parseFloat(document.getElementById('d_cpropofol').value)>0));
+}
+
+document.getElementById('species').addEventListener('change',function(){ resetCur(); buildModes(); compute(); });
+['ibw'].forEach(function(id){ document.getElementById(id).addEventListener('input',compute); });
+Array.prototype.forEach.call(document.querySelectorAll('table.dg input'),function(i){
+  i.addEventListener('input',compute);
+});
+document.getElementById('printBtn').addEventListener('click',function(){window.print();});
+document.getElementById('resetBtn').addEventListener('click',function(){
+  document.getElementById('ibw').value=''; document.getElementById('pname').value='';
+  document.getElementById('species').value='dog'; MODE='std'; resetCur();
+  buildModes(); compute();
+});
+
+resetCur(); buildModes(); compute();
+})();
+</script>
+</body>
+</html>

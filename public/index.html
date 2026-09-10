@@ -449,6 +449,27 @@ footer{border-top:1px solid var(--line);padding:44px 0 54px;background:var(--bg)
 }
 .vetonly p{font-size:.9rem;color:var(--ink-2);margin:0}
 
+/* 계산기 카드 */
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+@media(max-width:820px){.tools{grid-template-columns:1fr}}
+.tool{
+  display:block;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);
+  padding:24px 24px 20px;transition:.22s;position:relative;overflow:hidden;
+}
+.tool::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--brand);
+  transform:scaleX(0);transform-origin:left;transition:transform .28s cubic-bezier(.2,.7,.3,1)}
+.tool:hover{transform:translateY(-3px);box-shadow:var(--shadow);
+  border-color:color-mix(in srgb,var(--brand) 34%,var(--line))}
+.tool:hover::before{transform:scaleX(1)}
+.tk{
+  display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.09em;
+  color:var(--brand);background:color-mix(in srgb,var(--brand) 12%,transparent);
+  padding:3px 9px;border-radius:5px;margin-bottom:12px;
+}
+.tool h3{font-size:1.02rem;margin-bottom:8px;letter-spacing:-.03em}
+.tool p{font-size:.87rem;color:var(--ink-2);line-height:1.7;margin-bottom:14px}
+.tgo{font-size:.83rem;font-weight:700;color:var(--brand)}
+
 /* notes */
 .notes-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:44px;align-items:start}
 @media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:28px}}
@@ -1186,9 +1207,22 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
       <div class="vetonly">
         <div>
           <strong>수의사 전용</strong>
-          <p>혈액투석 처방 계산기 — 시간대별 처방 입력, Kt/V·Qeff·청소율·여과분율 산출, IRIS 권장치 대조</p>
+          <p>진료하며 쓰려고 만든 계산기를 공개합니다. 병원 환경에 맞게 자유롭게 쓰셔도 됩니다.</p>
         </div>
-        <a class="btn btn-primary" href="/calculator">Signature AMC HD Calculator 열기</a>
+      </div>
+      <div class="tools">
+        <a class="tool" href="/calculator">
+          <div class="tk">혈액투석</div>
+          <h3>Signature AMC HD Calculator</h3>
+          <p>시간대별 처방 입력, Kt/V·Qeff·청소율·여과분율 산출, IRIS 권장치 대조와 BUN 예측</p>
+          <span class="tgo">열기 →</span>
+        </a>
+        <a class="tool" href="/ventilator">
+          <div class="tk">기계환기</div>
+          <h3>Signature AMC Ventilator Calculator</h3>
+          <p>P-A/C 모드 초기 세팅과 목표 일회환기량, 인덕션·CRI 약물 용량을 예측 체중 기준으로 계산</p>
+          <span class="tgo">열기 →</span>
+        </a>
       </div>
     </div>
   </section>
@@ -1312,6 +1346,7 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
         <a href="#notes">글과 기록</a>
         <a href="#contact">진료·전원</a>
         <a class="ext" href="/calculator">투석 계산기 ↗</a>
+        <a class="ext" href="/ventilator">환기기 계산기 ↗</a>
         <a class="ext" href="https://signatureamc.co.kr" target="_blank" rel="noopener">병원 홈페이지 ↗</a>
         <a class="ext" href="https://blog.naver.com/signatureamc" target="_blank" rel="noopener">병원 블로그 ↗</a>
       </nav>
