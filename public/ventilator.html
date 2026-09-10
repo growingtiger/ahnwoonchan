@@ -255,14 +255,37 @@ table.hx td.out.alarm{background:color-mix(in srgb,var(--warn) 22%,var(--bg));co
 footer{border-top:1px solid var(--line);padding:26px 0 40px;font-size:.79rem;color:var(--ink-3)}
 footer a{color:var(--brand);font-weight:600}
 /* ── 인쇄 / PDF ─────────────────────────────────────────────
-   가로 A4 1~2장에 전체 세팅이 들어가도록 축소한다.
+   가로 A4에 세팅을 몰아 찍는다. 현재 실측 4쪽 — 목표는 1~2장이며 아직 못 줄였다.
    화면용 여백·설명문·조작 버튼은 빼고 값만 남긴다.            */
 @page{ size:A4 landscape; margin:7mm; }
 @media print{
+  /* 화면 테마와 무관하게 인쇄는 항상 라이트 팔레트로 — 다크로 두면 흰 종이에 밝은 글씨가 찍힌다 */
+  :root, :root[data-theme="dark"], :root[data-theme="light"]{
+    color-scheme:light;
+    --bg:#ffffff; --bg-soft:#f7f7f7; --bg-sunk:#eeeeee;
+    --ink:#000000; --ink-2:#2b2b2b; --ink-3:#555555; --line:#c2c2c2;
+    --brand:#0b5049; --brand-2:#0b5049; --accent:#7a3b1c;
+    --inp:#eef3fa; --inp-line:#b9c9dd; --inp-ink:#123a6b;
+    --calc:#fbf1ea; --calc-line:#dcc6b5; --calc-ink:#6d3512;
+    --sel:#eef6ef; --sel-line:#c4d8c6; --sel-ink:#1f4a28;
+    --warn:#7a3b1c; --ok:#0b5049; --s1:#1a4f96; --s2:#8a3c15;
+    --shadow:none;
+  }
+  body{background:#fff!important;color:#000!important}
+  /* 브랜드·경고 배경 위 글자는 인쇄에서도 흰색 — 다크 테마의 #06201d 되돌리기.
+     .rl 헤더 셀은 배경이 흰색이라 제외해야 흰 글씨가 되지 않는다 */
+  .chip.hi .k,.chip.hi .v,
+  table.hx thead th:not(.rl),
+  table.vt thead th,
+  table.vt tr.derived td.v,
+  .mb.on,
+  .flag .wi{color:#fff!important}
+  #hint b,.hint.keepprint b,.flag b,.note strong{color:#7a3b1c!important}
+
   html{font-size:8pt}
   body{background:#fff;line-height:1.42;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   header,.btnrow,.theme-btn,footer,.legend,.hint,.sub2,.phead .eyebrow,.phead .sub{display:none!important}
-  .hint.keepprint{display:block!important;font-size:.64rem;margin-top:4px;color:#444}
+  .hint.keepprint:not([hidden]){display:block!important;font-size:.64rem;margin-top:4px;color:#444}
 
   .wrap{max-width:none;padding:0}
   main{padding:0}
@@ -321,6 +344,9 @@ footer a{color:var(--brand);font-weight:600}
   table.hx tr.sec td{padding:2px 6px;font-size:.62rem}
   table.hx td.rl,table.hx th.rl{min-width:150px;padding:0 8px}
   .og{gap:4px}
+  /* 인쇄에서 5pt 아래로 내려가던 단위·섹션 라벨 보정 */
+  .chip .v small,.o .v small{font-size:.72em}
+  table.hx tr.sec td{font-size:.7rem}
 }
 
 /* ── 환기기 계산기 전용 ── */
@@ -632,8 +658,8 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
       <span class="wi">확인</span>
       <div>표에 적힌 <b>원액 농도</b>는 조제 계산의 출발점입니다. 다른 농도의 제품을 쓰신다면
         아래 <b>펌프 속도(mL/h)와 뽑을 원액량을 그대로 쓰면 안 됩니다</b>.
-        부토파놀처럼 0.5 · 1 · 2 · 10 mg/mL 제품이 함께 유통되는 약물은 특히 확인이 필요하고,
-        오차가 주입 시간 내내 누적됩니다.</div>
+        부토파놀처럼 0.5 · 1 · 2 · 10 mg/mL 등 여러 농도의 제품이 존재하는 약물은 특히 확인이 필요하고,
+        오차가 주입 시간 내내 누적됩니다. 이 표는 <b>부토파놀 1 mg/mL</b> 기준입니다.</div>
     </div>
     <div class="modebar" id="cribar">
       <button type="button" class="mb on" data-cm="rate">속도 계산<small>목표 용량 → 펌프 속도</small></button>
@@ -1013,7 +1039,8 @@ Array.prototype.forEach.call(document.querySelectorAll('#cribar .mb'),function(b
   });
 });
 ['syrV','pumpR'].forEach(function(id){
-  var e=document.getElementById(id); if(e) e.addEventListener('input',compute), e.addEventListener('change',compute);
+  var e=document.getElementById(id); if(!e) return;
+  e.addEventListener(e.tagName==='SELECT'?'change':'input',compute);
 });
 document.getElementById('printBtn').addEventListener('click',function(){window.print();});
 document.getElementById('resetBtn').addEventListener('click',function(){
