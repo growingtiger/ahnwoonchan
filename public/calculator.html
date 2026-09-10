@@ -252,7 +252,78 @@ table.hx td.out.alarm{background:color-mix(in srgb,var(--warn) 22%,var(--bg));co
 @media(max-width:860px){.two{grid-template-columns:1fr}}
 footer{border-top:1px solid var(--line);padding:26px 0 40px;font-size:.79rem;color:var(--ink-3)}
 footer a{color:var(--brand);font-weight:600}
-@media print{header,.btnrow,footer .noprint{display:none}body{background:#fff}.card{box-shadow:none;break-inside:avoid}}
+/* ── 인쇄 / PDF ─────────────────────────────────────────────
+   가로 A4 1~2장에 전체 세팅이 들어가도록 축소한다.
+   화면용 여백·설명문·조작 버튼은 빼고 값만 남긴다.            */
+@page{ size:A4 landscape; margin:7mm; }
+@media print{
+  html{font-size:8pt}
+  body{background:#fff;line-height:1.42;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  header,.btnrow,.theme-btn,footer,.legend,.hint,.sub2,.phead .eyebrow,.phead .sub{display:none!important}
+
+  .wrap{max-width:none;padding:0}
+  main{padding:0}
+  .phead{padding:0 0 5px;margin-bottom:7px;border-bottom:1px solid #b9b9b9}
+  .phead h1{font-size:1.2rem}
+
+  .card{padding:6px 8px;margin-bottom:5px;box-shadow:none;border-color:#c2c2c2;break-inside:avoid}
+  .chead{margin-bottom:4px;gap:6px}
+  .chead h2{font-size:.78rem}
+  .ptag{font-size:.62rem;padding:1px 6px;margin-left:5px}
+
+  /* 입력값은 테두리를 지우고 글자만 남긴다 */
+  .setgrid,.pgrid{gap:4px 7px}
+  .f{gap:2px}
+  .f label{font-size:.7rem}
+  .f input,.f select{padding:2px 4px;font-size:.85rem;border-color:#c9c9c9;background:#fff}
+
+  .chips{gap:4px;margin-top:7px;padding-top:7px}
+  .chip{padding:3px 5px;border-color:#c2c2c2}
+  .chip .k{font-size:.66rem;line-height:1.2}
+  .chip .v{font-size:.92rem;margin-top:1px}
+
+  .scroller{overflow:visible;border-color:#c2c2c2}
+  table.vt th,table.vt td,table.hx th,table.hx td{padding:2px 5px;font-size:.74rem}
+  table.vt td.v.vin{padding:1px 3px}
+  table.vt td.v.vin input,table.vt td.v.vin select{padding:1px 3px;font-size:.76rem;max-width:none;border-color:#c9c9c9;background:#fff}
+  table.dg{min-width:0}
+  table.dg th,table.dg td{padding:2px 4px;font-size:.71rem}
+  table.dg td.inp{padding:1px 3px}
+  table.dg td.inp input{padding:1px 3px;font-size:.74rem;max-width:none;border-color:#c9c9c9;background:#fff}
+  table.dg td.drug small,table.dg td.memo,table.dg td.range{font-size:.64rem}
+  table.hx td.cell input{padding:2px 3px;font-size:.72rem}
+
+  /* 선택한 모드만 남겨 설정값처럼 읽히게 */
+  .modebar .mb:not(.on){display:none}
+  .modebar{margin:0 0 5px}
+  .mb{padding:2px 8px;font-size:.7rem}
+  .mb small{display:none}
+  .mixset{padding:5px 7px;margin:5px 0 2px;gap:8px}
+  .mixset .mixnote{font-size:.66rem}
+
+  .vsplit,.charts,.two{gap:7px}
+  .flag{padding:4px 7px;font-size:.67rem;margin-top:5px;gap:6px}
+  .flag .wi{font-size:.6rem;padding:1px 5px}
+  .rules li{font-size:.7rem;padding:0 0 4px 26px;line-height:1.5}
+  .rules li::before{width:17px;height:17px;font-size:.62rem}
+  .note{font-size:.66rem;padding:5px 8px;line-height:1.5}
+  .yr-h p,.yr-n{font-size:.64rem}
+
+  /* 2장 안에 들어가도록 추가 압축 */
+  .chips{grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:3px;margin-top:5px;padding-top:5px}
+  .chart svg{width:auto;height:150px;display:block;margin:0 auto}
+  .charts{grid-template-columns:1fr 1fr}
+  table.hx th,table.hx td{padding:1px 4px;font-size:.7rem}
+  table.hx td.cell input{padding:1px 2px;font-size:.7rem}
+  table.hx tr.sec td{padding:2px 6px;font-size:.62rem}
+  table.hx td.rl,table.hx th.rl{min-width:150px;padding:0 8px}
+  .og{gap:4px}
+
+  /* 참고용 섹션은 인쇄에서 제외 — 처방 세팅만 남긴다 */
+  .refonly{display:none!important}
+  .chart svg{max-height:150px}
+  .ct{font-size:.7rem;margin-bottom:3px}
+}
 </style>
 <script>document.documentElement.classList.add('js');</script>
 </head>
@@ -386,7 +457,7 @@ footer a{color:var(--brand);font-weight:600}
   </div>
 
   <!-- ④ Method 1 / 2 예시 -->
-  <div class="card">
+  <div class="card refonly">
     <div class="chead">
       <h2>⑤ 시간 배분 방식 예시 — Method 1 / 2</h2>
       <div class="btnrow">
@@ -454,7 +525,7 @@ footer a{color:var(--brand);font-weight:600}
 
 
   <!-- ⑧ IRIS 참고치 -->
-  <div class="card">
+  <div class="card refonly">
     <div class="chead"><h2>⑧ IRIS consensus reference (권장 URR 참고치)</h2></div>
     <p class="sub2">
       IRIS best practice consensus guidelines for intermittent hemodialysis in dogs and cats
@@ -558,6 +629,9 @@ var SR_RATIO=3;
 function num(id){var v=parseFloat(document.getElementById(id).value);return isFinite(v)?v:0;}
 function str(id){return document.getElementById(id).value;}
 var BLANK=false;
+/* 자릿수를 채우지 않고 뒤 0을 떨어뜨린다 : 1.5000 → 1.5, 3.000 → 3 */
+function fmtT(n,d){ if(BLANK||!isFinite(n)) return '—';
+  return Number(n.toFixed(d)).toLocaleString('ko-KR',{maximumFractionDigits:d}); }
 function fmt(n,d){ if(BLANK) return '—';
   if(!isFinite(n))return '—';
   return n.toLocaleString('ko-KR',{minimumFractionDigits:d,maximumFractionDigits:d}); }
@@ -636,7 +710,7 @@ function compute(){
   var ktNeed=ektv*vd0, khrNeed=ktNeed/HRS;
 
   setV('c_vd',fmt(vd0,0),'ml');
-  setV('c_ektv',fmt(ektv,2),'');
+  setV('c_ektv',fmtT(ektv,2),'');
   setV('c_kt',fmt(ktNeed,0),'ml');
   setV('c_khr',fmt(khrNeed,0),'ml/h');
 
@@ -645,7 +719,7 @@ function compute(){
   var fnameNow=str('filter'), fsetNow=null;
   FILTERS.forEach(function(f){if(f[0]===fnameNow)fsetNow=f;});
   var ecvNow=(fsetNow?fsetNow[1]+fsetNow[2]:0)+num('addv');
-  setV('c_iris', iris.uns? '—' : fmt(iris.lo,1)+'–'+fmt(iris.hi,1), '%/h');
+  setV('c_iris', iris.uns? '—' : fmtT(iris.lo,1)+'–'+fmtT(iris.hi,1), '%/h');
 
   var C=bun0, V=vd0, bunArr=[bun0], kArr=[], ktvSum=0, ufSum=0, worstFF=0, lowRatio=false, ffOver=false, urrOver=false;
 
@@ -681,20 +755,20 @@ function compute(){
     ktvSum+=ktvH; ufSum+=qpfr;
 
     var tt=qb>0? ecvNow/qb*60 : NaN;                     // 회로 통과 시간 sec
-    setV('o_qdmin'+h,fmt(qdMin,1));
+    setV('o_qdmin'+h,fmtT(qdMin,1));
     setV('o_qeff'+h,fmt(qeff,0));
-    setV('o_qbqd'+h,fmt(qbqd,1));
-    setV('o_sr'+h,fmt(sr*100,1));
+    setV('o_qbqd'+h,fmtT(qbqd,1));
+    setV('o_sr'+h,fmtT(sr*100,1));
     setV('o_kh'+h,fmt(K,0));
-    setV('o_kmin'+h,fmt(K/60,1));
-    setV('o_ff'+h,fmt(ff,1));
+    setV('o_kmin'+h,fmtT(K/60,1));
+    setV('o_ff'+h,fmtT(ff,1));
     setV('o_tt'+h,fmt(tt,0));
-    setV('o_pfr'+h,bw>0?fmt(qpfr/bw,1):'—');
+    setV('o_pfr'+h,bw>0?fmtT(qpfr/bw,1):'—');
     setV('o_vd'+h,fmt(V1,0));
-    setV('o_ktv'+h,fmt(ktvH,3));
-    setV('o_bun'+h,fmt(C1,1));
-    setV('o_hurr'+h,fmt(hurr,1));
-    setV('o_ourr'+h,fmt(ourr,1));
+    setV('o_ktv'+h,fmtT(ktvH,3));
+    setV('o_bun'+h,fmtT(C1,1));
+    setV('o_hurr'+h,fmtT(hurr,1));
+    setV('o_ourr'+h,fmtT(ourr,1));
 
     var ffCell=document.getElementById('o_ff'+h);
     if(ffCell){ ffCell.classList.toggle('bad', isFinite(ff)&&ff>=FF_CAUTION&&ff<FF_LIMIT);
@@ -712,10 +786,10 @@ function compute(){
   }
 
   var achieved=bun0>0?(1-C/bun0)*100:0;
-  setV('c_bunEnd',fmt(C,1),'mg/dL');
-  setV('c_urrEnd',fmt(achieved,1),'%');
-  setV('c_ktvDel',fmt(ktvSum,2),'');
-  setV('c_ufr',bw>0?fmt(ufSum/HRS/bw,1):'—','ml/kg/h');
+  setV('c_bunEnd',fmtT(C,1),'mg/dL');
+  setV('c_urrEnd',fmtT(achieved,1),'%');
+  setV('c_ktvDel',fmtT(ktvSum,2),'');
+  setV('c_ufr',bw>0?fmtT(ufSum/HRS/bw,1):'—','ml/kg/h');
   document.getElementById('chipKtv').classList.toggle('warn', isFinite(ektv)&&ktvSum<ektv*0.9);
   document.getElementById('chipUf').classList.toggle('warn', bw>0 && (ufSum/HRS/bw)>ufLimit);
 
@@ -729,9 +803,9 @@ function compute(){
 
   /* 항응고 */
   var hc=num('dil')>0?num('hep')/num('dil'):NaN;
-  setV('c_hconc',fmt(hc,1),'IU/ml');
-  setV('c_bolusv',fmt(num('bolus')*bw/hc,2),'ml');
-  setV('c_criv',fmt(num('cri')*bw/hc,2),'ml/hr');
+  setV('c_hconc',fmtT(hc,1),'IU/ml');
+  setV('c_bolusv',fmtT(num('bolus')*bw/hc,2),'ml');
+  setV('c_criv',fmtT(num('cri')*bw/hc,2),'ml/hr');
   setV('c_hepTot',fmt(num('bolus')*bw+num('cri')*bw*HRS,0),'IU');
 
   /* 안내 */
@@ -739,7 +813,7 @@ function compute(){
   if(lowRatio) msgs.push('<b>Qb/Qd &lt; 3</b>인 시간대가 있습니다. 이 구간에서는 투석액이 완전히 포화되지 않아 Saturation ratio를 100% 미만으로 낮춰 잡는 것이 현실적입니다.');
   if(ffOver) msgs.push('<b>Filtration fraction &gt; 25%</b> — IRIS 권장 상한을 넘었습니다. 필터 응고 위험이 큽니다. Qb를 올리거나 희석액을 전희석으로 돌리세요.');
   else if(worstFF>=FF_CAUTION) msgs.push('<b>Filtration fraction 20% 이상</b>인 시간대가 있습니다. 20% 아래로 유지하면 필터 수명이 길어집니다.');
-  if(urrOver) msgs.push('<b>시간당 URR이 IRIS 권장치를 초과</b>합니다 (' + (parseInt(str('txno'),10)||1) + '회차 · BUN ' + fmt(num('bun'),0) + ' → 권장 ' + fmt(iris.lo,1) + '–' + fmt(iris.hi,1) + '%/h). 불균형증후군 위험이 올라갑니다. 치료 시간을 늘리거나 Qd를 낮추세요.');
+  if(urrOver) msgs.push('<b>시간당 URR이 IRIS 권장치를 초과</b>합니다 (' + (parseInt(str('txno'),10)||1) + '회차 · BUN ' + fmt(num('bun'),0) + ' → 권장 ' + fmtT(iris.lo,1) + '–' + fmtT(iris.hi,1) + '%/h). 불균형증후군 위험이 올라갑니다. 치료 시간을 늘리거나 Qd를 낮추세요.');
   if(isFinite(ektv)&&ktvSum<ektv*0.9) msgs.push('전달 Kt/V가 목표에 <b>미달</b>합니다. Qd를 올리거나 치료 시간을 늘리세요.');
   if(isFinite(ektv)&&ktvSum>ektv*1.15) msgs.push('전달 Kt/V가 목표를 <b>초과</b>합니다. 첫 투석이라면 불균형증후군에 유의하세요.');
   document.getElementById('hint').innerHTML = BLANK
@@ -766,11 +840,11 @@ function flatPanel(vd0,ektv,bun0,urr,bw,hct,ecv){
 
   setV('f_qeff',fmt(qeff,0),'ml/h');
   setV('f_qd',fmt(qd,0),'ml/h');
-  setV('f_qb',fmt(qbMin,1),'ml/min');
+  setV('f_qb',fmtT(qbMin,1),'ml/min');
   setV('f_quf',fmt(quf,0),'ml/h');
-  setV('f_k',fmt(khr/60,1),'ml/min');
-  setV('f_ktv',fmt(ektv/HRS,3),'');
-  setV('f_ff',fmt(ff,1),'%');
+  setV('f_k',fmtT(khr/60,1),'ml/min');
+  setV('f_ktv',fmtT(ektv/HRS,3),'');
+  setV('f_ff',fmtT(ff,1),'%');
   setV('f_tt',fmt(tt,0),'sec');
   flat={qd:Math.round(qd),qb:Math.round(qbMin),quf:Math.round(quf)};
 }

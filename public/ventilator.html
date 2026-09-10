@@ -217,6 +217,8 @@ table.hx td.out.alarm{background:color-mix(in srgb,var(--warn) 22%,var(--bg));co
 .hint{font-size:.8rem;color:var(--ink-3);margin-top:11px;line-height:1.6}
 .hint b{color:var(--warn)}
 
+
+
 /* ── 차트 ── */
 .charts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:980px){.charts{grid-template-columns:1fr}}
@@ -252,7 +254,74 @@ table.hx td.out.alarm{background:color-mix(in srgb,var(--warn) 22%,var(--bg));co
 @media(max-width:860px){.two{grid-template-columns:1fr}}
 footer{border-top:1px solid var(--line);padding:26px 0 40px;font-size:.79rem;color:var(--ink-3)}
 footer a{color:var(--brand);font-weight:600}
-@media print{header,.btnrow,footer .noprint{display:none}body{background:#fff}.card{box-shadow:none;break-inside:avoid}}
+/* ── 인쇄 / PDF ─────────────────────────────────────────────
+   가로 A4 1~2장에 전체 세팅이 들어가도록 축소한다.
+   화면용 여백·설명문·조작 버튼은 빼고 값만 남긴다.            */
+@page{ size:A4 landscape; margin:7mm; }
+@media print{
+  html{font-size:8pt}
+  body{background:#fff;line-height:1.42;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  header,.btnrow,.theme-btn,footer,.legend,.hint,.sub2,.phead .eyebrow,.phead .sub{display:none!important}
+  .hint.keepprint{display:block!important;font-size:.64rem;margin-top:4px;color:#444}
+
+  .wrap{max-width:none;padding:0}
+  main{padding:0}
+  .phead{padding:0 0 5px;margin-bottom:7px;border-bottom:1px solid #b9b9b9}
+  .phead h1{font-size:1.2rem}
+
+  .card{padding:6px 8px;margin-bottom:5px;box-shadow:none;border-color:#c2c2c2;break-inside:avoid}
+  .chead{margin-bottom:4px;gap:6px}
+  .chead h2{font-size:.78rem}
+  .ptag{font-size:.62rem;padding:1px 6px;margin-left:5px}
+
+  /* 입력값은 테두리를 지우고 글자만 남긴다 */
+  .setgrid,.pgrid{gap:4px 7px}
+  .f{gap:2px}
+  .f label{font-size:.7rem}
+  .f input,.f select{padding:2px 4px;font-size:.85rem;border-color:#c9c9c9;background:#fff}
+
+  .chips{gap:4px;margin-top:7px;padding-top:7px}
+  .chip{padding:3px 5px;border-color:#c2c2c2}
+  .chip .k{font-size:.66rem;line-height:1.2}
+  .chip .v{font-size:.92rem;margin-top:1px}
+
+  .scroller{overflow:visible;border-color:#c2c2c2}
+  table.vt th,table.vt td,table.hx th,table.hx td{padding:2px 5px;font-size:.74rem}
+  table.vt td.v.vin{padding:1px 3px}
+  table.vt td.v.vin input,table.vt td.v.vin select{padding:1px 3px;font-size:.76rem;max-width:none;border-color:#c9c9c9;background:#fff}
+  table.dg{min-width:0}
+  table.dg th,table.dg td{padding:2px 4px;font-size:.71rem}
+  table.dg td.inp{padding:1px 3px}
+  table.dg td.inp input{padding:1px 3px;font-size:.74rem;max-width:none;border-color:#c9c9c9;background:#fff}
+  table.dg td.drug small,table.dg td.memo,table.dg td.range{font-size:.64rem}
+  table.hx td.cell input{padding:2px 3px;font-size:.72rem}
+
+  /* 선택한 모드만 남겨 설정값처럼 읽히게 */
+  .modebar .mb:not(.on){display:none}
+  .modebar{margin:0 0 5px}
+  .mb{padding:2px 8px;font-size:.7rem}
+  .mb small{display:none}
+  .mixset{padding:5px 7px;margin:5px 0 2px;gap:8px}
+  .mixset .mixnote{font-size:.66rem}
+
+  .vsplit,.charts,.two{gap:7px}
+  .flag{padding:4px 7px;font-size:.67rem;margin-top:5px;gap:6px}
+  .flag .wi{font-size:.6rem;padding:1px 5px}
+  .rules li{font-size:.7rem;padding:0 0 4px 26px;line-height:1.5}
+  .rules li::before{width:17px;height:17px;font-size:.62rem}
+  .note{font-size:.66rem;padding:5px 8px;line-height:1.5}
+  .yr-h p,.yr-n{font-size:.64rem}
+
+  /* 2장 안에 들어가도록 추가 압축 */
+  .chips{grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:3px;margin-top:5px;padding-top:5px}
+  .chart svg{width:auto;height:150px;display:block;margin:0 auto}
+  .charts{grid-template-columns:1fr 1fr}
+  table.hx th,table.hx td{padding:1px 4px;font-size:.7rem}
+  table.hx td.cell input{padding:1px 2px;font-size:.7rem}
+  table.hx tr.sec td{padding:2px 6px;font-size:.62rem}
+  table.hx td.rl,table.hx th.rl{min-width:150px;padding:0 8px}
+  .og{gap:4px}
+}
 
 /* ── 환기기 계산기 전용 ── */
 .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
@@ -326,6 +395,16 @@ table.dg td.out.big{font-weight:700;font-size:1.02rem;color:var(--ink);
 table.dg td.out.bad{color:var(--warn);font-weight:700}
 table.dg td.memo{text-align:left;color:var(--ink-3);font-size:.79rem;line-height:1.55;min-width:200px}
 table.dg tr.off{opacity:.42}
+
+.mixset{
+  display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;
+  background:var(--bg-soft);border:1px solid var(--line);border-radius:11px;
+  padding:16px 18px;margin:14px 0 4px;
+}
+.mixset .f{min-width:130px}
+.mixset .mixnote{flex:1;min-width:240px;font-size:.83rem;color:var(--ink-3);line-height:1.6;margin:0}
+.mixset .mixnote b{color:var(--brand);font-weight:700}
+#cribar{margin-bottom:4px}
 
 .rules{list-style:none;counter-reset:r}
 .rules li{
@@ -466,6 +545,12 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
         <span class="lg"><span class="sw c"></span>자동 계산</span>
       </div>
     </div>
+    <div class="flag" style="margin:0 0 14px;background:color-mix(in srgb,var(--warn) 8%,transparent)">
+      <span class="wi">확인</span>
+      <div>약물명 아래 적힌 <b>원액 농도</b>가 병원에서 쓰는 바이알과 같은지 먼저 확인하세요.
+        같은 성분이라도 제품에 따라 농도가 다릅니다. 농도가 어긋나면 mg 용량은 맞아도
+        <b>한 번에 밀어 넣는 mL이 그만큼 틀어집니다</b>.</div>
+    </div>
     <div class="scroller">
       <table class="dg">
         <thead><tr>
@@ -514,7 +599,7 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
           <td class="memo">단독 사용보다 병용 시 유용</td>
         </tr>
         <tr data-drug="butor">
-          <td class="drug">부토파놀<small>Butophan · 10 mg/mL</small></td>
+          <td class="drug">부토파놀<small>Butorphanol · 1 mg/mL</small></td>
           <td class="range">0.1 ~ 0.2 mg/kg</td>
           <td class="inp"><input type="number" step="0.005" min="0" id="d_butor" value="0.1" data-lo="0.1" data-hi="0.2"></td>
           <td class="out" id="mg_butor">—</td>
@@ -532,7 +617,7 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
         </tbody>
       </table>
     </div>
-    <p class="hint" style="margin-top:12px">
+    <p class="hint keepprint" style="margin-top:12px">
       추천 범위를 벗어난 용량은 주황색으로 표시됩니다.
       용량은 일반적인 범위이며 알팍살론·케타민·메데토미딘은 개와 고양이 허가 용량이 다르므로 축종에 맞게 확인하세요.
     </p>
@@ -543,74 +628,44 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
     <div class="chead">
       <h2>④ 지속 정밀 주입 약물 <span class="ptag">CRI · Syringe pump</span></h2>
     </div>
-    <div class="scroller">
-      <table class="dg">
-        <thead><tr>
-          <th>약물</th><th>표준 CRI 범위</th><th style="text-align:right">목표 속도<br>(mg/kg/h)</th>
-          <th style="text-align:right">희석<br>(배)</th><th style="text-align:right">시간당 약물량<br>(mg/h)</th>
-          <th style="text-align:right">펌프 속도<br>(mL/h)</th><th style="text-align:left">적응증 · 주의</th>
-        </tr></thead>
-        <tbody>
-        <tr data-drug="cpropofol">
-          <td class="drug">프로포폴 CRI<small>Propofol 10 mg/mL</small></td>
-          <td class="range">3.0 ~ 24.0 mg/kg/h</td>
-          <td class="inp"><input type="number" step="0.0005" min="0" id="d_cpropofol" value="6" data-lo="3.0" data-hi="24.0"></td>
-          <td class="inp"><input type="number" step="1" min="1" id="x_cpropofol" value="1"></td><td class="out" id="mg_cpropofol">—</td>
-          <td class="out big" id="ml_cpropofol">—</td>
-          <td class="memo">자발호흡 억제와 진정 유지. 고양이 장기 사용 주의</td>
-        </tr>
-        <tr data-drug="cfent">
-          <td class="drug">펜타닐 CRI<small>Fentanyl 0.05 mg/mL</small></td>
-          <td class="range">0.002 ~ 0.008 mg/kg/h (2~8 mcg/kg/h)</td>
-          <td class="inp"><input type="number" step="0.0005" min="0" id="d_cfent" value="0.005" data-lo="0.002" data-hi="0.008"></td>
-          <td class="inp"><input type="number" step="1" min="1" id="x_cfent" value="1"></td><td class="out" id="mg_cfent">—</td>
-          <td class="out big" id="ml_cfent">—</td>
-          <td class="memo">강력한 진통. 기계 충돌(asynchrony) 방지</td>
-        </tr>
-        <tr data-drug="cmidaz">
-          <td class="drug">미다졸람 CRI<small>Midazolam 5 mg/mL</small></td>
-          <td class="range">0.1 ~ 0.5 mg/kg/h</td>
-          <td class="inp"><input type="number" step="0.0005" min="0" id="d_cmidaz" value="0.2" data-lo="0.1" data-hi="0.5"></td>
-          <td class="inp"><input type="number" step="1" min="1" id="x_cmidaz" value="1"></td><td class="out" id="mg_cmidaz">—</td>
-          <td class="out big" id="ml_cmidaz">—</td>
-          <td class="memo">근이완과 보조 진정. 수액관 흡착 없음</td>
-        </tr>
-        <tr data-drug="cdex">
-          <td class="drug">덱스메데토미딘 CRI<small>Dexmedetomidine 0.5 mg/mL</small></td>
-          <td class="range">0.0005 ~ 0.003 mg/kg/h (0.5~3 mcg/kg/h)</td>
-          <td class="inp"><input type="number" step="0.0005" min="0" id="d_cdex" value="0.001" data-lo="0.0005" data-hi="0.003"></td>
-          <td class="inp"><input type="number" step="1" min="1" id="x_cdex" value="1"></td><td class="out" id="mg_cdex">—</td>
-          <td class="out big" id="ml_cdex">—</td>
-          <td class="memo">서맥과 혈관수축 유의. 심부전 환자 금기</td>
-        </tr>
-        <tr data-drug="cketam">
-          <td class="drug">케타민 CRI<small>Ketamine 50 mg/mL</small></td>
-          <td class="range">0.1 ~ 0.6 mg/kg/h</td>
-          <td class="inp"><input type="number" step="0.0005" min="0" id="d_cketam" value="0.3" data-lo="0.1" data-hi="0.6"></td>
-          <td class="inp"><input type="number" step="1" min="1" id="x_cketam" value="1"></td><td class="out" id="mg_cketam">—</td>
-          <td class="out big" id="ml_cketam">—</td>
-          <td class="memo">NMDA 길항 진통, 마취제 절감</td>
-        </tr>
-        <tr data-drug="cbutor">
-          <td class="drug">부토파놀 CRI<small>Butophan 10 mg/mL</small></td>
-          <td class="range">0.1 ~ 0.4 mg/kg/h</td>
-          <td class="inp"><input type="number" step="0.0005" min="0" id="d_cbutor" value="0.1" data-lo="0.1" data-hi="0.4"></td>
-          <td class="inp"><input type="number" step="1" min="1" id="x_cbutor" value="1"></td><td class="out" id="mg_cbutor">—</td>
-          <td class="out big" id="ml_cbutor">—</td>
-          <td class="memo">진해·진정 보조</td>
-        </tr>
-        </tbody>
-      </table>
+    <div class="flag" style="margin:0 0 14px;background:color-mix(in srgb,var(--warn) 8%,transparent)">
+      <span class="wi">확인</span>
+      <div>표에 적힌 <b>원액 농도</b>는 조제 계산의 출발점입니다. 다른 농도의 제품을 쓰신다면
+        아래 <b>펌프 속도(mL/h)와 뽑을 원액량을 그대로 쓰면 안 됩니다</b>.
+        부토파놀처럼 0.5 · 1 · 2 · 10 mg/mL 제품이 함께 유통되는 약물은 특히 확인이 필요하고,
+        오차가 주입 시간 내내 누적됩니다.</div>
     </div>
-    <p class="hint" style="margin-top:12px">
+    <div class="modebar" id="cribar">
+      <button type="button" class="mb on" data-cm="rate">속도 계산<small>목표 용량 → 펌프 속도</small></button>
+      <button type="button" class="mb" data-cm="mix">시린지 조제<small>시린지·펌프 세팅 → 약물·희석액 양</small></button>
+    </div>
+
+    <div class="mixset" id="mixset" hidden>
+      <div class="f">
+        <label for="syrV">시린지 용량 <span class="un">mL</span></label>
+        <select id="syrV"><option>5</option><option>10</option><option>20</option><option selected>50</option></select>
+      </div>
+      <div class="f">
+        <label for="pumpR">펌프 속도 <span class="un">mL/h</span></label>
+        <input id="pumpR" type="number" step="0.1" min="0.1" value="1">
+      </div>
+      <p class="mixnote">
+        정한 시린지 용량과 펌프 속도에 맞춰, 각 약물을 얼마나 뽑고 희석액을 얼마나 더할지 계산합니다. 희석액 종류는 약물마다 다르므로 첨부문서를 확인하세요.
+        <b id="syrLast"></b>
+      </p>
+    </div>
+
+    <div class="scroller">
+      <table class="dg"><thead id="criHead"></thead><tbody id="criBody"></tbody></table>
+    </div>
+
+    <p class="hint keepprint" id="dilNote" style="margin-top:12px">
       <b>희석 배수</b>는 최종 부피 기준입니다. 20배라면 원액 1 mL에 희석액 19 mL를 더해 총 20 mL로 만든다는 뜻입니다.
       고농도 약물은 원액 그대로면 펌프가 낼 수 없는 속도가 나오므로 희석해서 씁니다.
     </p>
 
     <div class="flag hide" id="slowFlag">
-      <span class="wi">주의</span><div><b>펌프 최소 속도 미만</b> — <span id="slowMsg"></span>의 주입 속도가
-        0.1 mL/h를 밑돕니다. 대부분의 시린지 펌프가 이 영역에서는 속도를 정확히 내지 못합니다.
-        희석 배수를 올려 실제로 맞출 수 있는 속도로 만드세요.</div>
+      <span class="wi">주의</span><div><b style="color:var(--ink-2)">CRI 조제</b> — <span id="slowBody"></span></div>
     </div>
 
     <div class="flag hide" id="catFlag">
@@ -660,13 +715,20 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
 (function(){
 'use strict';
 var VENT={"dog": {"label": "개 (Dog)", "pipMax": 25, "modes": [["std", "표준 / 마취유지", {"fio2": 100, "peep": 5, "pinsp": 10, "f": 18, "assist": "ON (1.5)", "vtMin": 6, "vtMax": 8}], ["ards", "중증 폐렴 / ARDS", {"fio2": 100, "peep": 8, "pinsp": 10, "f": 20, "assist": "ON (1.5)", "vtMin": 6, "vtMax": 8}], ["obs", "폐쇄성 기도질환", {"fio2": 100, "peep": 3, "pinsp": 12, "f": 14, "assist": "ON (1.5)", "vtMin": 8, "vtMax": 10, "ie": 3}], ["res", "제한성 흉막질환", {"fio2": 100, "peep": 5, "pinsp": 10, "f": 22, "assist": "ON (1.5)", "vtMin": 5, "vtMax": 7}]], "notes": {"fio2": "100%로 시작하고 SpO2가 안정되면 12~24시간 안에 50~60% 이하로 감량", "peep": "폐포 허탈(atelectrauma) 방지를 위해 최소 3~5는 유지. 폐쇄성 기도질환에서는 더 낮게 잡습니다", "pinsp": "최종 PIP = PEEP + P insp. 25 cmH2O 이하로 유지", "f": "CO2 배출 조절. 개 표준 15~20 bpm이며 폐쇄성 기도질환은 호기시간 확보를 위해 낮춥니다", "ie": "역비율 환기 금지 — 공기 가둠과 저혈압을 유발합니다. 폐쇄성 기도질환은 호기시간을 더 길게 잡습니다", "assist": "Flow trigger를 켜 자발호흡과 동기화", "vt": "예측 체중 기준 목표 환기량 범위"}}, "cat": {"label": "고양이 (Cat)", "pipMax": 20, "modes": [["std", "표준 / 마취유지", {"fio2": 100, "peep": 4, "pinsp": 8, "f": 25, "assist": "ON (1.0)", "vtMin": 6, "vtMax": 8}], ["ards", "중증 폐렴 / ARDS", {"fio2": 100, "peep": 8, "pinsp": 10, "f": 30, "assist": "ON (1.0)", "vtMin": 6, "vtMax": 8}], ["obs", "폐쇄성 기도질환", {"fio2": 100, "peep": 2, "pinsp": 10, "f": 20, "assist": "ON (1.0)", "vtMin": 7, "vtMax": 9, "ie": 3}], ["res", "제한성 흉막질환", {"fio2": 100, "peep": 4, "pinsp": 8, "f": 30, "assist": "ON (1.0)", "vtMin": 5, "vtMax": 7}]], "notes": {"fio2": "100%로 시작하고 SpO2가 안정되면 12~24시간 안에 50~60% 이하로 감량", "peep": "고양이 호흡생리를 고려해 기본 3~4 적용. 폐쇄성 기도질환에서는 더 낮게 잡습니다", "pinsp": "최종 PIP가 20 cmH2O를 넘지 않도록 주의", "f": "고양이 표준 호흡수 20~30 bpm이며 폐쇄성 기도질환은 호기시간 확보를 위해 낮춥니다", "ie": "역비율 환기 금지 — 공기 가둠과 저혈압을 유발합니다. 유연한 기도를 고려해 비율을 정밀하게 유지하고, 폐쇄성 기도질환은 호기시간을 더 길게 잡습니다", "assist": "미세 유량 감지 (flow trigger 1.0 L/min)", "vt": "예측 체중 기준 목표 환기량 범위"}}};
-var CONC={"propofol": 10, "alfax": 10, "etomi": 2, "ketam": 50, "midaz": 5, "butor": 10, "medet": 1, "cpropofol": 10, "cfent": 0.05, "cmidaz": 5, "cdex": 0.5, "cketam": 50, "cbutor": 10};
+var CONC={"propofol": 10, "alfax": 10, "etomi": 2, "ketam": 50, "midaz": 5, "butor": 1, "medet": 1, "cpropofol": 10, "cfent": 0.05, "cmidaz": 5, "cdex": 0.5, "cketam": 50, "cbutor": 1};
+var CRID=[{"k": "cpropofol", "ko": "프로포폴 CRI", "form": "Propofol 10 mg/mL", "rng": "3.0 ~ 24.0 mg/kg/h", "d": 6.0, "lo": 3.0, "hi": 24.0, "memo": "자발호흡 억제와 진정 유지. 고양이 장기 사용 주의", "minConc": 2, "diluent": "5% 포도당", "maxH": 12}, {"k": "cfent", "ko": "펜타닐 CRI", "form": "Fentanyl 0.05 mg/mL", "rng": "0.002 ~ 0.008 mg/kg/h (2~8 mcg/kg/h)", "d": 0.005, "lo": 0.002, "hi": 0.008, "memo": "강력한 진통. 기계 충돌(asynchrony) 방지"}, {"k": "cmidaz", "ko": "미다졸람 CRI", "form": "Midazolam 5 mg/mL", "rng": "0.1 ~ 0.5 mg/kg/h", "d": 0.2, "lo": 0.1, "hi": 0.5, "memo": "근이완과 보조 진정. 수액관 흡착 없음"}, {"k": "cdex", "ko": "덱스메데토미딘 CRI", "form": "Dexmedetomidine 0.5 mg/mL", "rng": "0.0005 ~ 0.003 mg/kg/h (0.5~3 mcg/kg/h)", "d": 0.001, "lo": 0.0005, "hi": 0.003, "memo": "서맥과 혈관수축 유의. 심부전 환자 금기"}, {"k": "cketam", "ko": "케타민 CRI", "form": "Ketamine 50 mg/mL", "rng": "0.1 ~ 0.6 mg/kg/h", "d": 0.3, "lo": 0.1, "hi": 0.6, "memo": "NMDA 길항 진통, 마취제 절감"}, {"k": "cbutor", "ko": "부토파놀 CRI", "form": "Butorphanol 1 mg/mL", "rng": "0.1 ~ 0.4 mg/kg/h", "d": 0.1, "lo": 0.1, "hi": 0.4, "memo": "진해·진정 보조"}];
+var CRIMODE='rate';
 var MODE='std', cur=null;
 /* 시린지 펌프가 신뢰성 있게 낼 수 있는 최소 속도 (mL/h) */
 var MIN_RATE=0.1;
+/* 1 mL 주사기로 정확히 잴 수 있는 최소 부피 (Cambruzzi 2023: 0.19 mL 초과 권장) */
+var MIN_DRAW=0.2;
 
 function num(id){var v=parseFloat(document.getElementById(id).value);return isFinite(v)?v:0;}
 function sp(){return document.getElementById('species').value;}
+/* 자릿수를 채우지 않고 뒤 0을 떨어뜨린다 : 1.5000 → 1.5, 3.000 → 3 */
+function fmtT(n,d){ if(!isFinite(n)) return '—';
+  return Number(n.toFixed(d)).toLocaleString('ko-KR',{maximumFractionDigits:d}); }
 function fmt(n,d){ if(!isFinite(n)) return '—';
   return n.toLocaleString('ko-KR',{minimumFractionDigits:d,maximumFractionDigits:d}); }
 function setV(id,v,u){var e=document.getElementById(id);
@@ -675,7 +737,7 @@ function setV(id,v,u){var e=document.getElementById(id);
 /* T insp 메모 — 현재 I:E 와 장비 입력 단위를 함께 안내 */
 function tiNote(ti){
   var txt='현재 I:E 1:'+cur.ie+'에 맞춰 자동 계산 (호흡주기 ÷ '+(1+cur.ie)+')';
-  if(isFinite(ti)) txt += ' · 장비 입력 단위 0.05초 → <b>'+fmt(Math.round(ti/0.05)*0.05,2)+'초</b>로 설정';
+  if(isFinite(ti)) txt += ' · 장비 입력 단위 0.05초 → <b>'+fmtT(Math.round(ti/0.05)*0.05,2)+'초</b>로 설정';
   return txt;
 }
 
@@ -697,7 +759,7 @@ function buildModes(){
   });
   bar.innerHTML=h;
   Array.prototype.forEach.call(bar.querySelectorAll('.mb'),function(btn){
-    btn.addEventListener('click',function(){ MODE=btn.dataset.m; resetCur(); buildModes(); compute(); });
+    btn.addEventListener('click',function(){ MODE=btn.dataset.m; resetCur(); buildModes(); buildCri(); compute(); });
   });
 }
 
@@ -714,14 +776,14 @@ function redraw(){
   var tb=document.getElementById('ventBody');
   var dr=tb.querySelectorAll('tr.derived');
   if(dr[0]){
-    dr[0].cells[1].textContent = isFinite(ti)?fmt(ti,2):'—';
+    dr[0].cells[1].textContent = isFinite(ti)?fmtT(ti,2):'—';
     dr[0].cells[3].innerHTML = tiNote(ti);
   }
   setV('v_pip',fmt(pip,0),'cmH2O');
-  setV('v_ti', isFinite(ti)?fmt(ti,2):'—','초');
-  setV('v_te', isFinite(te)?fmt(te,2):'—','초');
-  setV('v_mv', blank?'—':fmt(mvMin,2)+'~'+fmt(mvMax,2),'L/min');
-  setV('v_cyc',isFinite(cycle)?fmt(cycle,2):'—','초');
+  setV('v_ti', isFinite(ti)?fmtT(ti,2):'—','초');
+  setV('v_te', isFinite(te)?fmtT(te,2):'—','초');
+  setV('v_mv', blank?'—':fmtT(mvMin,2)+'~'+fmtT(mvMax,2),'L/min');
+  setV('v_cyc',isFinite(cycle)?fmtT(cycle,2):'—','초');
   var over=pip>S.pipMax;
   document.getElementById('pipFlag').classList.toggle('hide',!over);
   if(over) document.getElementById('pipMsg').textContent =
@@ -729,6 +791,128 @@ function redraw(){
   var t=document.getElementById('v_pip').parentNode;
   t.style.background = over?'color-mix(in srgb,var(--warn) 20%,var(--bg))':'';
   t.style.borderColor = over?'var(--warn)':'';
+}
+
+/* ── CRI 표 : 두 방식 ─────────────────────────────────────
+   rate — 목표 용량과 희석 배수를 넣으면 펌프 속도가 나온다
+   mix  — 시린지 용량과 펌프 속도를 정하면 뽑을 약물량과 희석액량이 나온다  */
+function buildCri(){
+  var h=document.getElementById('criHead'), b=document.getElementById('criBody');
+  var keep={};
+  Array.prototype.forEach.call(b.querySelectorAll('input'),function(i){keep[i.id]=i.value;});
+
+  if(CRIMODE==='rate'){
+    h.innerHTML='<tr><th>약물</th><th>표준 CRI 범위</th><th style="text-align:right">목표 속도<br>(mg/kg/h)</th>'+
+      '<th style="text-align:right">희석<br>(배)</th><th style="text-align:right">시간당 약물량<br>(mg/h)</th>'+
+      '<th style="text-align:right">펌프 속도<br>(mL/h)</th><th style="text-align:left">적응증 · 주의</th></tr>';
+  }else{
+    h.innerHTML='<tr><th>약물</th><th>표준 CRI 범위</th><th style="text-align:right">목표 속도<br>(mg/kg/h)</th>'+
+      '<th style="text-align:right">필요 농도<br>(mg/mL)</th><th style="text-align:right">뽑을 약물<br>(mL)</th>'+
+      '<th style="text-align:right">희석액<br>(mL)</th><th style="text-align:left">적응증 · 주의</th></tr>';
+  }
+
+  var html='';
+  CRID.forEach(function(d){
+    var dv = keep['d_'+d.k]!==undefined ? keep['d_'+d.k] : d.d;
+    html+='<tr data-drug="'+d.k+'">'+
+      '<td class="drug">'+d.ko+'<small>'+d.form+'</small></td>'+
+      '<td class="range">'+d.rng+'</td>'+
+      '<td class="inp"><input type="number" step="0.0005" min="0" id="d_'+d.k+'" value="'+dv+'" data-lo="'+d.lo+'" data-hi="'+d.hi+'"></td>';
+    if(CRIMODE==='rate'){
+      var xv = keep['x_'+d.k]!==undefined ? keep['x_'+d.k] : 1;
+      html+='<td class="inp"><input type="number" step="1" min="1" id="x_'+d.k+'" value="'+xv+'"></td>'+
+            '<td class="out" id="mg_'+d.k+'">—</td><td class="out big" id="ml_'+d.k+'">—</td>';
+    }else{
+      html+='<td class="out" id="need_'+d.k+'">—</td>'+
+            '<td class="out big" id="drw_'+d.k+'">—</td><td class="out" id="dil_'+d.k+'">—</td>';
+    }
+    html+='<td class="memo">'+d.memo+'</td></tr>';
+  });
+  b.innerHTML=html;
+  Array.prototype.forEach.call(b.querySelectorAll('input'),function(i){
+    i.addEventListener('input',compute);
+  });
+}
+
+/* 경고 문구용 짧은 약물명 (' CRI' 꼬리 제거) */
+function shortKo(d){ return d.ko.replace(/\s*CRI\s*$/,''); }
+
+function computeCri(ibw, blank){
+  var tooSlow=[], tooBig=[], tooSmall=[], tooDilute=[];
+  var V=parseFloat((document.getElementById('syrV')||{}).value)||50;
+  var R=parseFloat((document.getElementById('pumpR')||{}).value)||0;
+  if(R<0) R=0;
+
+  CRID.forEach(function(d){
+    var k=d.k, inp=document.getElementById('d_'+k); if(!inp) return;
+    var dose=parseFloat(inp.value); if(!isFinite(dose)) dose=0;
+    var mgh = dose*ibw;                                   /* 시간당 필요 약물량 mg/h */
+    var lo=d.lo, hi=d.hi, bad = dose>0 && (dose<lo || dose>hi);
+
+    if(CRIMODE==='rate'){
+      var dilEl=document.getElementById('x_'+k);
+      var dil=dilEl?(parseFloat(dilEl.value)||1):1; if(dil<1) dil=1;
+      var conc=CONC[k]/dil;
+      var ml = conc>0 ? mgh/conc : NaN;
+      if(dose>0 && d.minConc && conc<d.minConc) tooDilute.push(d);
+      setV('mg_'+k, blank||!dose?'—':fmtT(mgh,3)+' mg/h');
+      setV('ml_'+k, blank||!dose?'—':fmtT(ml,3)+' mL/h');
+      var c1=document.getElementById('ml_'+k);
+      var slow = dose>0 && ibw>0 && isFinite(ml) && ml<MIN_RATE;
+      c1.classList.toggle('bad',bad); c1.classList.toggle('slow',slow);
+      if(slow) tooSlow.push(shortKo(d));
+    }else{
+      /* 시린지 안 농도가 이만큼이어야 정해진 펌프 속도로 목표 용량이 들어간다 */
+      var need = R>0 ? mgh/R : NaN;                        /* mg/mL */
+      var draw = (isFinite(need)&&CONC[k]>0) ? need*V/CONC[k] : NaN;  /* 뽑을 원액 mL */
+      var dilv = isFinite(draw) ? V-draw : NaN;            /* 더할 희석액 mL */
+      setV('need_'+k, blank||!dose?'—':fmtT(need,4));
+      setV('drw_'+k, blank||!dose?'—':fmtT(draw,2)+' mL');
+      setV('dil_'+k, blank||!dose?'—':(dilv>=-1e-6?fmtT(Math.max(dilv,0),2)+' mL':'—'));
+      var c2=document.getElementById('drw_'+k), c3=document.getElementById('dil_'+k);
+      var over = dose>0 && isFinite(draw) && draw>V+1e-6;   /* 이 속도로는 원액으로도 못 맞춤 */
+      var tiny = dose>0 && isFinite(draw) && draw>0 && draw<MIN_DRAW;  /* 정확히 못 뽑음 */
+      /* 라벨상 하한 농도 미만으로 희석되는 경우 (프로포폴 2 mg/mL) */
+      var thin = dose>0 && d.minConc && isFinite(need) && need>0 && need<d.minConc;
+      if(thin) tooDilute.push(d);
+      c2.classList.toggle('bad',bad);
+      c2.classList.toggle('slow',over||tiny);
+      c3.classList.toggle('bad',thin);
+      c3.classList.toggle('slow',over);
+      if(over) tooBig.push(shortKo(d));
+      if(tiny && !thin) tooSmall.push(shortKo(d));
+    }
+    inp.closest('tr').classList.toggle('off', !dose);
+  });
+
+  /* 시린지 지속 시간 */
+  var last=document.getElementById('syrLast');
+  if(last){
+    if(R>0){
+      var hrs=V/R;
+      var lim=null, limKo='';
+      CRID.forEach(function(d){ if(d.maxH && (lim===null||d.maxH<lim)){lim=d.maxH; limKo=shortKo(d);} });
+      last.innerHTML = '이 설정이면 시린지 하나가 '+fmtT(hrs,1)+'시간 갑니다.' +
+        (lim && hrs>lim ? ' 다만 <b>'+limKo+'처럼 개봉 후 '+lim+'시간 안에 라인째 교체해야 하는 약물</b>이 있습니다.' : '');
+    } else last.textContent='';
+  }
+
+  /* 경고 */
+  var sf=document.getElementById('slowFlag'), msgs=[];
+  if(CRIMODE==='mix' && !(R>0)) msgs.push('<b>펌프 속도</b> — 0보다 큰 값을 넣어야 조제량이 계산됩니다.');
+  if(R>0 && R<MIN_RATE) msgs.push('<b>펌프 속도 '+fmtT(R,2)+' mL/h</b> — 0.1 mL/h를 밑돕니다. 대부분의 시린지 펌프가 이 영역에서는 유량을 고르게 내지 못합니다.');
+  if(tooSlow.length) msgs.push('<b>'+tooSlow.join(', ')+'</b> — 주입 속도가 0.1 mL/h를 밑돕니다. 대부분의 시린지 펌프가 이 영역에서는 속도를 정확히 내지 못하므로 희석 배수를 올리세요.');
+  if(tooBig.length)  msgs.push('<b>'+tooBig.join(', ')+'</b> — 원액을 그대로 채워도 이 속도로는 목표 용량에 못 미칩니다. 펌프 속도를 올리거나 목표 용량을 낮추세요. 시린지를 키워도 해결되지 않습니다.');
+  if(tooSmall.length)msgs.push('<b>'+tooSmall.join(', ')+'</b> — 뽑을 양이 '+MIN_DRAW+' mL 미만이라 주사기로 정확히 재기 어렵습니다. 시린지를 키우거나 미리 희석해 두고 쓰세요.');
+  if(tooDilute.length){
+    var rules=tooDilute.map(function(o){
+      return shortKo(o)+' : '+o.minConc+' mg/mL 이상, '+o.diluent+'으로만 희석';
+    }).join(' / ');
+    msgs.push('<b>'+tooDilute.map(shortKo).join(', ')+'</b> — 라벨상 허용된 하한 농도보다 묽게 조제됩니다. ' + rules + '. ' +
+      (CRIMODE==='mix' ? '펌프 속도를 낮추면 농도가 올라갑니다.' : '희석 배수를 낮추세요.'));
+  }
+  sf.classList.toggle('hide', msgs.length===0);
+  document.getElementById('slowBody').innerHTML = msgs.join('<br>');
 }
 
 function compute(){
@@ -759,7 +943,7 @@ function compute(){
           '<td class="v vin"><input type="number" step="'+r[4]+'" min="'+r[5]+'" id="p_'+r[0]+'" value="'+cur[r[0]]+'"></td>'+
           '<td class="u">'+r[2]+'</td><td class="n">'+r[3]+'</td></tr>';
   });
-  html+='<tr class="derived"><td class="p">T insp (흡기시간)</td><td class="v">'+(isFinite(ti)?fmt(ti,2):'—')+
+  html+='<tr class="derived"><td class="p">T insp (흡기시간)</td><td class="v">'+(isFinite(ti)?fmtT(ti,2):'—')+
         '</td><td class="u">초</td><td class="n" id="tiNote">'+tiNote(ti)+'</td></tr>';
   html+='<tr><td class="p">I:E 비율</td><td class="v vin"><select id="p_ie">'+
         [2,2.5,3,4].map(function(x){return '<option value="'+x+'"'+(cur.ie==x?' selected':'')+'>1 : '+x+'</option>';}).join('')+
@@ -772,10 +956,10 @@ function compute(){
 
   setV('v_pip', fmt(pip,0), 'cmH2O');
   setV('v_vt', blank?'—':fmt(vtMin,0)+'~'+fmt(vtMax,0), 'mL');
-  setV('v_ti', isFinite(ti)?fmt(ti,2):'—', '초');
-  setV('v_te', isFinite(te)?fmt(te,2):'—', '초');
-  setV('v_mv', blank?'—':fmt(mvMin,2)+'~'+fmt(mvMax,2), 'L/min');
-  setV('v_cyc', isFinite(cycle)?fmt(cycle,2):'—', '초');
+  setV('v_ti', isFinite(ti)?fmtT(ti,2):'—', '초');
+  setV('v_te', isFinite(te)?fmtT(te,2):'—', '초');
+  setV('v_mv', blank?'—':fmtT(mvMin,2)+'~'+fmtT(mvMax,2), 'L/min');
+  setV('v_cyc', isFinite(cycle)?fmtT(cycle,2):'—', '초');
 
   /* PIP 경고 */
   var over = pip > S.pipMax;
@@ -786,29 +970,7 @@ function compute(){
   pipTile.style.background = over ? 'color-mix(in srgb,var(--warn) 20%,var(--bg))' : '';
   pipTile.style.borderColor = over ? 'var(--warn)' : '';
 
-  /* 약물 */
-  var tooSlow=[];
-  Object.keys(CONC).forEach(function(k){
-    var inp=document.getElementById('d_'+k); if(!inp) return;
-    var dose=parseFloat(inp.value); if(!isFinite(dose)) dose=0;
-    var isCri = k.charAt(0)==='c';
-    var dilEl = document.getElementById('x_'+k);
-    var dil = dilEl ? (parseFloat(dilEl.value)||1) : 1;
-    if(dil<1) dil=1;
-    var conc = CONC[k]/dil;                       /* 희석 후 농도 mg/mL */
-    var mg = dose*ibw, ml = conc>0 ? mg/conc : NaN;
-    setV('mg_'+k, blank||!dose?'—':fmt(mg,3)+(isCri?' mg/h':' mg'));
-    setV('ml_'+k, blank||!dose?'—':fmt(ml,isCri?2:3)+(isCri?' mL/h':' mL'));
-    var lo=parseFloat(inp.dataset.lo), hi=parseFloat(inp.dataset.hi);
-    var bad = dose>0 && (dose<lo || dose>hi);
-    var slow = isCri && dose>0 && ibw>0 && isFinite(ml) && ml<MIN_RATE;
-    var cell=document.getElementById('ml_'+k);
-    cell.classList.toggle('bad', bad);
-    cell.classList.toggle('slow', slow);
-    if(slow) tooSlow.push(k);
-    inp.closest('tr').classList.toggle('off', !dose);
-  });
-
+  /* 환기 파라미터 입력 — 표를 다시 그린 뒤이므로 매번 다시 연결한다 */
   Array.prototype.forEach.call(document.querySelectorAll('.vin input, .vin select'),function(inp){
     inp.addEventListener(inp.tagName==='SELECT'?'change':'input',function(){
       var k=inp.id.slice(2), v=parseFloat(inp.value);
@@ -817,23 +979,41 @@ function compute(){
     });
   });
 
-  /* 시린지 펌프 최소 주입속도 미만 경고 */
-  var sf=document.getElementById('slowFlag');
-  sf.classList.toggle('hide', tooSlow.length===0);
-  if(tooSlow.length){
-    document.getElementById('slowMsg').textContent =
-      tooSlow.map(function(k){return document.querySelector('[data-drug="'+k+'"] .drug').firstChild.textContent;}).join(', ');
-  }
+  /* 인덕션 약물 */
+  ['propofol','alfax','etomi','ketam','midaz','butor','medet'].forEach(function(k){
+    var inp=document.getElementById('d_'+k); if(!inp) return;
+    var dose=parseFloat(inp.value); if(!isFinite(dose)) dose=0;
+    var mg=dose*ibw, ml=CONC[k]>0?mg/CONC[k]:NaN;
+    setV('mg_'+k, blank||!dose?'—':fmtT(mg,3)+' mg');
+    setV('ml_'+k, blank||!dose?'—':fmtT(ml,3)+' mL');
+    var lo=parseFloat(inp.dataset.lo), hi=parseFloat(inp.dataset.hi);
+    document.getElementById('ml_'+k).classList.toggle('bad', dose>0&&(dose<lo||dose>hi));
+    inp.closest('tr').classList.toggle('off', !dose);
+  });
 
-  /* 프로포폴 CRI 는 개·고양이 모두에서 적혈구 산화 손상이 보고되어 축종을 가리지 않는다 */
+  /* CRI 약물 — 선택한 방식에 따라 */
+  computeCri(ibw, blank);
+
   document.getElementById('catFlag').classList.toggle('hide',
     !(parseFloat(document.getElementById('d_cpropofol').value)>0));
 }
 
-document.getElementById('species').addEventListener('change',function(){ resetCur(); buildModes(); compute(); });
+document.getElementById('species').addEventListener('change',function(){ resetCur(); buildModes(); buildCri(); compute(); });
 ['ibw'].forEach(function(id){ document.getElementById(id).addEventListener('input',compute); });
 Array.prototype.forEach.call(document.querySelectorAll('table.dg input'),function(i){
   i.addEventListener('input',compute);
+});
+Array.prototype.forEach.call(document.querySelectorAll('#cribar .mb'),function(btn){
+  btn.addEventListener('click',function(){
+    CRIMODE=btn.dataset.cm;
+    Array.prototype.forEach.call(document.querySelectorAll('#cribar .mb'),function(b){b.classList.toggle('on',b===btn);});
+    document.getElementById('mixset').hidden = (CRIMODE!=='mix');
+    document.getElementById('dilNote').hidden = (CRIMODE!=='rate');
+    buildCri(); compute();
+  });
+});
+['syrV','pumpR'].forEach(function(id){
+  var e=document.getElementById(id); if(e) e.addEventListener('input',compute), e.addEventListener('change',compute);
 });
 document.getElementById('printBtn').addEventListener('click',function(){window.print();});
 document.getElementById('resetBtn').addEventListener('click',function(){
@@ -842,7 +1022,7 @@ document.getElementById('resetBtn').addEventListener('click',function(){
   buildModes(); compute();
 });
 
-resetCur(); buildModes(); compute();
+resetCur(); buildModes(); buildCri(); compute();
 })();
 </script>
 </body>
