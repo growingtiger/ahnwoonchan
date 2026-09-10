@@ -102,6 +102,25 @@ header{
 .nav a.link{color:var(--ink-2);font-size:.88rem;font-weight:500;padding:7px 11px;border-radius:8px}
 .nav a.link:hover{color:var(--ink);background:var(--bg-sunk)}
 @media(max-width:760px){.nav a.link{display:none}}
+
+/* 계산기 바로가기 */
+.navsep{width:1px;height:20px;background:var(--line);margin:0 4px;flex:none}
+@media(max-width:760px){.navsep{display:none}}
+.calcnav{display:flex;gap:6px;flex:none}
+.calcnav a{
+  font-size:.82rem;font-weight:600;color:var(--brand);white-space:nowrap;
+  border:1px solid color-mix(in srgb,var(--brand) 30%,transparent);
+  background:color-mix(in srgb,var(--brand) 7%,transparent);
+  padding:7px 13px;border-radius:100px;transition:.16s;
+}
+.calcnav a b{font-weight:700}
+.calcnav a.cur{background:var(--brand);border-color:var(--brand);color:#fff}
+.calcnav a:hover{background:var(--brand);border-color:var(--brand);color:#fff}
+:root[data-theme="dark"] .calcnav a.cur,:root[data-theme="dark"] .calcnav a:hover{color:#06201d}
+@media (prefers-color-scheme: dark){.calcnav a.cur,.calcnav a:hover{color:#06201d}}
+:root[data-theme="light"] .calcnav a.cur,:root[data-theme="light"] .calcnav a:hover{color:#fff}
+@media(max-width:560px){.calcnav a{font-size:.78rem;padding:6px 11px}.brand small{display:none}}
+@media(max-width:430px){.calcnav a .cw{display:none}}
 .theme-btn{border:1px solid var(--line);background:transparent;color:var(--ink-2);width:33px;height:33px;
   border-radius:9px;cursor:pointer;display:grid;place-items:center;flex:none}
 
@@ -353,8 +372,12 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
   <div class="wrap nav">
     <a href="/" class="brand"><span class="dot"></span>안운찬 <small>수의사 · Woonchan Ahn, DVM</small></a>
     <a class="link" href="/">홈으로</a>
-    <a class="link" href="/calculator">투석 계산기</a>
     <a class="link" href="/#contact">진료 문의</a>
+    <span class="navsep" aria-hidden="true"></span>
+    <nav class="calcnav" aria-label="계산기">
+      <a href="/calculator"><b>투석</b><span class="cw"> 계산기</span></a>
+      <a href="/ventilator" class="cur"><b>환기</b><span class="cw"> 계산기</span></a>
+    </nav>
     <button class="theme-btn" id="themeBtn" aria-label="화면 테마 전환">◐</button>
   </div>
 </header>
