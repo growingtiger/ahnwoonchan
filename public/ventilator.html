@@ -74,7 +74,7 @@ p,li,.lede,.sub2,.hint,.disclaimer,.chip .k,.o .k,.stat .lbl,.stat .note{
   text-wrap:pretty;           /* 마지막 줄에 한 단어만 남는 것 방지 */
 }
 /* 영문·URL·DOI 등 긴 라틴 문자열은 기존 규칙 유지 */
-.pub li b,.pub li span,.pub li a,code,.tip,.o .v,table.hx td,.linkrow a{
+.pub li b,.pub li span,.pub li a,code,.tip,.o .v,.linkrow a{
   word-break:normal;
   overflow-wrap:anywhere;
 }
@@ -183,37 +183,6 @@ main{padding-bottom:64px}
 
 /* ── 시간대별 표 ── */
 .scroller{overflow-x:auto;border:1px solid var(--line);border-radius:11px;background:var(--bg)}
-table.hx{border-collapse:separate;border-spacing:0;width:100%;min-width:820px;font-variant-numeric:tabular-nums}
-table.hx th,table.hx td{border-bottom:1px solid var(--line);padding:0;text-align:center}
-table.hx thead th{
-  background:var(--brand);color:#fff;font-size:.8rem;font-weight:700;padding:9px 6px;
-  position:sticky;top:0;z-index:3;
-}
-:root[data-theme="dark"] table.hx thead th{color:#06201d}
-@media (prefers-color-scheme: dark){table.hx thead th{color:#06201d}}
-:root[data-theme="light"] table.hx thead th{color:#fff}
-table.hx thead th:first-child{text-align:left;padding-left:14px;position:sticky;left:0;z-index:4;min-width:200px}
-table.hx td.rl,table.hx th.rl{
-  text-align:left;padding:0 12px;font-size:.82rem;font-weight:600;color:var(--ink-2);
-  position:sticky;left:0;background:var(--bg);z-index:2;min-width:200px;white-space:nowrap;
-}
-table.hx tr.sec td{background:var(--bg-sunk);font-size:.71rem;font-weight:700;letter-spacing:.11em;
-  text-transform:uppercase;color:var(--ink-3);padding:7px 12px;text-align:left;position:sticky;left:0}
-table.hx tr.in td.rl{background:var(--inp);color:var(--inp-ink)}
-table.hx tr.ca td.rl{background:var(--calc);color:var(--calc-ink)}
-table.hx td.cell{min-width:74px}
-table.hx td.cell input{
-  width:100%;border:none;background:var(--inp);color:var(--inp-ink);
-  font-size:.86rem;font-weight:700;text-align:center;padding:9px 4px;
-  border-left:1px solid var(--line);
-}
-table.hx td.cell input:focus{outline:2px solid var(--brand);outline-offset:-2px;position:relative;z-index:1}
-table.hx td.out{font-size:.84rem;font-weight:600;color:var(--ink-2);padding:9px 6px;border-left:1px solid var(--line);background:var(--bg)}
-table.hx tr.ca td.out{background:color-mix(in srgb,var(--calc) 38%,var(--bg));color:var(--calc-ink);font-weight:700}
-table.hx tr.key td.out{font-size:.92rem;font-weight:700;color:var(--ink)}
-table.hx td.out.bad{color:var(--warn);font-weight:700}
-table.hx td.out.alarm{background:color-mix(in srgb,var(--warn) 22%,var(--bg));color:var(--warn);font-weight:700;
-  box-shadow:inset 0 0 0 1.5px var(--warn)}
 .hint{font-size:.8rem;color:var(--ink-3);margin-top:11px;line-height:1.6}
 .hint b{color:var(--warn)}
 
@@ -255,9 +224,9 @@ table.hx td.out.alarm{background:color-mix(in srgb,var(--warn) 22%,var(--bg));co
 footer{border-top:1px solid var(--line);padding:26px 0 40px;font-size:.79rem;color:var(--ink-3)}
 footer a{color:var(--brand);font-weight:600}
 /* ── 인쇄 / PDF ─────────────────────────────────────────────
-   가로 A4에 세팅을 몰아 찍는다. 현재 실측 4쪽 — 목표는 1~2장이며 아직 못 줄였다.
+   가로 A4에 세팅을 몰아 찍는다. 현재 실측 3쪽. 값이 고정된 참고표는 .refonly 로 인쇄에서 뺐다.
    화면용 여백·설명문·조작 버튼은 빼고 값만 남긴다.            */
-@page{ size:A4 landscape; margin:7mm; }
+@page{ size:A4 landscape; margin:5mm; }
 @media print{
   /* 화면 테마와 무관하게 인쇄는 항상 라이트 팔레트로 — 다크로 두면 흰 종이에 밝은 글씨가 찍힌다 */
   :root, :root[data-theme="dark"], :root[data-theme="light"]{
@@ -272,10 +241,8 @@ footer a{color:var(--brand);font-weight:600}
     --shadow:none;
   }
   body{background:#fff!important;color:#000!important}
-  /* 브랜드·경고 배경 위 글자는 인쇄에서도 흰색 — 다크 테마의 #06201d 되돌리기.
-     .rl 헤더 셀은 배경이 흰색이라 제외해야 흰 글씨가 되지 않는다 */
+  /* 브랜드·경고 배경 위 글자는 인쇄에서도 흰색 — 다크 테마의 #06201d 되돌리기 */
   .chip.hi .k,.chip.hi .v,
-  table.hx thead th:not(.rl),
   table.vt thead th,
   table.vt tr.derived td.v,
   .mb.on,
@@ -285,15 +252,18 @@ footer a{color:var(--brand);font-weight:600}
   html{font-size:8pt}
   body{background:#fff;line-height:1.42;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   header,.btnrow,.theme-btn,footer,.legend,.hint,.sub2,.phead .eyebrow,.phead .sub{display:none!important}
-  .hint.keepprint:not([hidden]){display:block!important;font-size:.64rem;margin-top:4px;color:#444}
+  .hint.keepprint:not([hidden]){display:block!important;font-size:.64rem;margin-top:3px;color:#444;line-height:1.35}
 
   .wrap{max-width:none;padding:0}
   main{padding:0}
-  .phead{padding:0 0 5px;margin-bottom:7px;border-bottom:1px solid #b9b9b9}
+  .phead{padding:0 0 4px;margin-bottom:5px;border-bottom:1px solid #b9b9b9}
   .phead h1{font-size:1.2rem}
 
-  .card{padding:6px 8px;margin-bottom:5px;box-shadow:none;border-color:#c2c2c2;break-inside:avoid}
-  .chead{margin-bottom:4px;gap:6px}
+  /* 카드 단위로 페이지를 끊으면 빈 면이 크게 남는다 — 행·항목 단위로만 끊는다 */
+  .card{padding:5px 7px;margin-bottom:4px;box-shadow:none;border-color:#c2c2c2;break-inside:auto}
+  tr,.chip,.flag,.rules li,.note{break-inside:avoid}
+  .chead{break-after:avoid}
+  .chead{margin-bottom:3px;gap:6px}
   .chead h2{font-size:.78rem}
   .ptag{font-size:.62rem;padding:1px 6px;margin-left:5px}
 
@@ -301,23 +271,27 @@ footer a{color:var(--brand);font-weight:600}
   .setgrid,.pgrid{gap:4px 7px}
   .f{gap:2px}
   .f label{font-size:.7rem}
-  .f input,.f select{padding:2px 4px;font-size:.85rem;border-color:#c9c9c9;background:#fff}
+  .f input,.f select{padding:1px 4px;font-size:.82rem;border-color:#c9c9c9;background:#fff}
 
-  .chips{gap:4px;margin-top:7px;padding-top:7px}
-  .chip{padding:3px 5px;border-color:#c2c2c2}
+  .chips{gap:4px;margin-top:4px;padding-top:4px}
+  .chip{padding:2px 5px;border-color:#c2c2c2}
   .chip .k{font-size:.66rem;line-height:1.2}
-  .chip .v{font-size:.92rem;margin-top:1px}
+  .chip .v{font-size:.88rem;margin-top:0}
 
   .scroller{overflow:visible;border-color:#c2c2c2}
-  table.vt th,table.vt td,table.hx th,table.hx td{padding:2px 5px;font-size:.74rem}
-  table.vt td.v.vin{padding:1px 3px}
-  table.vt td.v.vin input,table.vt td.v.vin select{padding:1px 3px;font-size:.76rem;max-width:none;border-color:#c9c9c9;background:#fff}
+  table.vt th,table.vt td{padding:0 5px;font-size:.74rem;line-height:1.35}
+  /* .v/.u/.n 은 명시도(0,2,2)로 위 규칙을 이겨 제 크기를 유지한다 — 함께 내려준다 */
+  table.vt td.v{font-size:.8rem}
+  table.vt td.u,table.vt td.n{font-size:.72rem;line-height:1.35}
+  /* 아래첨자는 기본 0.58em이라 본문을 줄이면 5pt 밑으로 내려간다 — 인쇄에서는 눕혀서 본문 크기로 찍는다 */
+  sub,sup{font-size:1em;vertical-align:baseline}
+  table.vt td.v.vin{padding:0 3px}
+  table.vt td.v.vin input,table.vt td.v.vin select{padding:0 3px;font-size:.76rem;max-width:none;border-color:#c9c9c9;background:#fff}
   table.dg{min-width:0}
-  table.dg th,table.dg td{padding:2px 4px;font-size:.71rem}
-  table.dg td.inp{padding:1px 3px}
-  table.dg td.inp input{padding:1px 3px;font-size:.74rem;max-width:none;border-color:#c9c9c9;background:#fff}
+  table.dg th,table.dg td{padding:0 4px;font-size:.71rem;line-height:1.3}
+  table.dg td.inp{padding:0 3px}
+  table.dg td.inp input{padding:0 3px;font-size:.74rem;max-width:none;border-color:#c9c9c9;background:#fff;line-height:1.4}
   table.dg td.drug small,table.dg td.memo,table.dg td.range{font-size:.64rem}
-  table.hx td.cell input{padding:2px 3px;font-size:.72rem}
 
   /* 선택한 모드만 남겨 설정값처럼 읽히게 */
   .modebar .mb:not(.on){display:none}
@@ -328,25 +302,22 @@ footer a{color:var(--brand);font-weight:600}
   .mixset .mixnote{font-size:.66rem}
 
   .vsplit,.charts,.two{gap:7px}
-  .flag{padding:4px 7px;font-size:.67rem;margin-top:5px;gap:6px}
+  .flag{padding:2px 7px;font-size:.67rem;margin:3px 0!important;gap:6px;line-height:1.35}
   .flag .wi{font-size:.6rem;padding:1px 5px}
-  .rules li{font-size:.7rem;padding:0 0 4px 26px;line-height:1.5}
+  .rules li{font-size:.7rem;padding:0 0 1px 24px;line-height:1.3}
   .rules li::before{width:17px;height:17px;font-size:.62rem}
-  .note{font-size:.66rem;padding:5px 8px;line-height:1.5}
+  .note{font-size:.66rem;padding:2px 7px;line-height:1.35;margin-top:3px}
   .yr-h p,.yr-n{font-size:.64rem}
 
   /* 2장 안에 들어가도록 추가 압축 */
   .chips{grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:3px;margin-top:5px;padding-top:5px}
   .chart svg{width:auto;height:150px;display:block;margin:0 auto}
   .charts{grid-template-columns:1fr 1fr}
-  table.hx th,table.hx td{padding:1px 4px;font-size:.7rem}
-  table.hx td.cell input{padding:1px 2px;font-size:.7rem}
-  table.hx tr.sec td{padding:2px 6px;font-size:.62rem}
-  table.hx td.rl,table.hx th.rl{min-width:150px;padding:0 8px}
   .og{gap:4px}
   /* 인쇄에서 5pt 아래로 내려가던 단위·섹션 라벨 보정 */
   .chip .v small,.o .v small{font-size:.72em}
-  table.hx tr.sec td{font-size:.7rem}
+  /* 값이 바뀌지 않는 참고표는 인쇄에서 빼고 환자 값만 남긴다 */
+  .refonly{display:none!important}
 }
 
 /* ── 환기기 계산기 전용 ── */
@@ -400,6 +371,16 @@ table.vt tr.derived td.v{background:var(--brand);color:#fff}
 :root[data-theme="light"] table.vt tr.derived td.v{color:#fff}
 table.vt tr.alarm td.v{background:color-mix(in srgb,var(--warn) 22%,var(--bg));color:var(--warn);
   box-shadow:inset 0 0 0 1.5px var(--warn)}
+/* 참고표는 첫 열이 라벨이라 폭을 고정해야 값이 멀리 밀려나지 않는다 */
+table.vt.rf td.p,table.vt.rf th:first-child{width:22%}
+table.vt.rf td.v{width:15%;text-align:center}
+table.vt.rf td.u{width:18%}
+table.vt.rf3 td.p,table.vt.rf3 th:first-child{width:26%}
+table.vt.rf3 td.v{width:26%}
+/* 참고표에서 지금 적용되는 줄 — 색만으로 구분하지 않도록 굵기와 좌측 띠를 함께 쓴다 */
+table.vt tr.key td{background:color-mix(in srgb,var(--brand) 8%,var(--bg));color:var(--ink);font-weight:700}
+table.vt tr.key td.p{box-shadow:inset 3px 0 0 var(--brand)}
+table.vt tr.key td.n,table.vt tr.key td.u{font-weight:500;color:var(--ink-2)}
 
 table.dg{border-collapse:separate;border-spacing:0;width:100%;min-width:780px;font-variant-numeric:tabular-nums}
 table.dg th,table.dg td{border-bottom:1px solid var(--line);padding:9px 10px;font-size:.86rem;text-align:right}
@@ -524,10 +505,94 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
     </p>
   </div>
 
-  <!-- ② 환기기 세팅 -->
+  <!-- ② 산소화 지표 -->
   <div class="card">
     <div class="chead">
-      <h2>② 인공호흡기 초기 세팅 <span class="ptag">P-A/C 모드</span></h2>
+      <h2>② 산소화 지표 · 기계환기 전환 판단 <span class="ptag">ROX · S/F</span></h2>
+    </div>
+    <div class="flag" style="margin:0 0 16px;background:color-mix(in srgb,var(--brand) 7%,transparent);border-color:color-mix(in srgb,var(--brand) 26%,transparent)">
+      <span class="wi" style="background:var(--brand)">전제</span>
+      <div>아직 삽관하지 않고 <b>산소요법 중인 환자</b>를 평가하는 칸입니다. 아래 두 가지는 출처가 다릅니다.
+        <b>HFNOT 실패 컷오프</b>(ROX 3.68 · S/F 143 · S/F 191)는 고유량 비강 산소를 받은 <b>개</b> 코호트에서 나온 값이라,
+        일반 비강 캐뉼라나 산소방에 그대로 적용하면 과대·과소 판정이 생길 수 있고 고양이 자료는 없습니다.
+        반면 <b>ARDS<sub>Vet</sub> 산소화 등급</b>은 개와 고양이를 함께 포함하는 합의 정의입니다.</div>
+    </div>
+
+    <div class="pgrid">
+      <div class="f">
+        <label for="spo2">SpO<sub>2</sub> (산소포화도) <span class="un">%</span></label>
+        <input id="spo2" type="number" step="1" min="50" max="100"></div>
+      <div class="f">
+        <label for="fio2i">FiO<sub>2</sub> (흡입산소분율) <span class="un">%</span></label>
+        <input id="fio2i" type="number" step="1" min="21" max="100"></div>
+      <div class="f">
+        <label for="rr">호흡수 (RR) <span class="un">회/분</span></label>
+        <input id="rr" type="number" step="1" min="1" max="120"></div>
+      <div class="f">
+        <label for="oxyh">평가 시점 <span class="un">(산소요법 시작 후)</span></label>
+        <select id="oxyh">
+          <option value="">—</option>
+          <option value="6">6시간</option>
+          <option value="7">7시간</option>
+          <option value="other">그 외 시점</option>
+        </select></div>
+    </div>
+
+    <div class="chips">
+      <div class="chip"><div class="k">S/F ratio (SpO<sub>2</sub>/FiO<sub>2</sub>)</div><div class="v" id="o_sf">—</div></div>
+      <div class="chip"><div class="k">ROX index (S/F ÷ RR)</div><div class="v" id="o_rox">—</div></div>
+      <div class="chip" id="chipGrade"><div class="k">산소화 중증도 (ARDS<sub>Vet</sub> 축)</div><div class="v" id="o_grade" style="font-size:.95rem">—</div></div>
+      <div class="chip hi" id="chipRisk"><div class="k">HFNOT 실패 · 삽관 위험</div><div class="v" id="o_risk" style="font-size:.95rem">—</div></div>
+    </div>
+
+    <div class="flag hide" id="oxyFlag"><span class="wi">주의</span><div id="oxyMsg"></div></div>
+
+    <p class="hint keepprint" style="margin-top:14px">
+      위 <b>산소화 중증도</b> 칸은 <b>산소화 축 하나만</b> 계산한 값입니다. ARDS 진단이 성립하려면 위험인자, 1주 이내 발생,
+      심인성 폐수종·용적과부하 배제, 흉부영상(또는 POCUS)의 미만성 침윤을 <b>모두</b> 만족해야 합니다.
+      좌심부전 폐수종 환자도 S/F는 똑같이 낮게 나옵니다.
+    </p>
+
+    <p class="sub2 refonly" style="margin:20px 0 10px">앞의 세 줄은 개에서 검증된 컷오프입니다. 표시된 시점에 값이 컷오프 <b>아래로</b> 떨어지면 산소요법만으로 버티기 어렵다는 뜻입니다. 마지막 줄은 사람 기준이며 방향이 반대입니다.</p>
+    <div class="scroller refonly">
+      <table class="vt rf">
+        <thead><tr><th>시점 · 지표</th><th>컷오프</th><th>민감도 / 특이도</th><th>근거</th></tr></thead>
+        <tbody>
+          <tr id="rf_rox6"><td class="p">6시간 ROX</td><td class="v">≤ 3.68</td><td class="u">72% / 92%</td>
+            <td class="n">개 81마리 후향 · AUC 0.85 (Eicher 2024, JVECC)</td></tr>
+          <tr id="rf_sf6"><td class="p">6시간 S/F</td><td class="v">≤ 143</td><td class="u">79% / 93%</td>
+            <td class="n">같은 코호트 · AUC 0.86</td></tr>
+          <tr id="rf_sf7"><td class="p">7시간 S/F</td><td class="v">≤ 191</td><td class="u">83% / 76%</td>
+            <td class="n">개 88마리 전향 · AUC 0.77 (Duble 2024, Front Vet Sci)</td></tr>
+          <tr><td class="p">참고 · 사람 ROX</td><td class="v">≥ 4.88</td><td class="u">—</td>
+            <td class="n">방향이 반대입니다. 이 값 <b>이상</b>이면 삽관 위험이 낮다는 뜻이며 2 · 6 · 12시간에 공통으로 적용됩니다 (Roca 2019, AJRCCM). 개 컷오프보다 높으므로 그대로 옮겨 쓰지 않습니다</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="sub2 refonly" style="margin:20px 0 10px">ARDS<sub>Vet</sub> 2025 산소화 등급 — 비삽관 환자 기준이며 SpO<sub>2</sub>가 97% 이하일 때만 유효합니다.</p>
+    <div class="scroller refonly">
+      <table class="vt rf rf3">
+        <thead><tr><th>등급</th><th>S/F ratio</th><th>PaO<sub>2</sub>/FiO<sub>2</sub></th></tr></thead>
+        <tbody>
+          <tr id="rf_mild"><td class="p">Mild / Moderate</td><td class="v">&gt; 150 ~ ≤ 315</td><td class="u">&gt; 100 ~ ≤ 300 mmHg</td></tr>
+          <tr id="rf_sev"><td class="p">Severe</td><td class="v">≤ 150</td><td class="u">≤ 100 mmHg</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="hint keepprint" style="margin-top:16px">
+      지표는 어디까지나 보조입니다. 기계환기를 시작하는 기준은 여전히 <b>60/60 원칙</b>입니다 —
+      산소를 충분히 주는데도 PaO<sub>2</sub>가 60 mmHg 미만이거나, 치료에도 PaCO<sub>2</sub>가 60 mmHg를 넘거나,
+      호흡일이 과도해 근피로가 임박한 경우입니다. 셋 중 하나만 해당해도 적응증이 됩니다.
+      한 번 잰 값보다 <b>시간에 따른 추세</b>가 더 많은 것을 알려줍니다.
+    </p>
+  </div>
+
+  <!-- ③ 환기기 세팅 -->
+  <div class="card">
+    <div class="chead">
+      <h2>③ 인공호흡기 초기 세팅 <span class="ptag">P-A/C 모드</span></h2>
     </div>
     <div class="flag" style="margin:0 0 16px;background:color-mix(in srgb,var(--brand) 7%,transparent);border-color:color-mix(in srgb,var(--brand) 26%,transparent)">
       <span class="wi" style="background:var(--brand)">전제</span>
@@ -562,10 +627,10 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
     </div>
   </div>
 
-  <!-- ③ 인덕션 -->
+  <!-- ④ 인덕션 -->
   <div class="card">
     <div class="chead">
-      <h2>③ 삽관·마취 유도 약물 <span class="ptag">Induction</span></h2>
+      <h2>④ 삽관·마취 유도 약물 <span class="ptag">Induction</span></h2>
       <div class="legend">
         <span class="lg"><span class="sw i"></span>용량 입력</span>
         <span class="lg"><span class="sw c"></span>자동 계산</span>
@@ -649,10 +714,10 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
     </p>
   </div>
 
-  <!-- ④ CRI -->
+  <!-- ⑤ CRI -->
   <div class="card">
     <div class="chead">
-      <h2>④ 지속 정밀 주입 약물 <span class="ptag">CRI · Syringe pump</span></h2>
+      <h2>⑤ 지속 정밀 주입 약물 <span class="ptag">CRI · Syringe pump</span></h2>
     </div>
     <div class="flag" style="margin:0 0 14px;background:color-mix(in srgb,var(--warn) 8%,transparent)">
       <span class="wi">확인</span>
@@ -699,9 +764,9 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
     </div>
   </div>
 
-  <!-- ⑤ 임상 수칙 -->
+  <!-- ⑥ 임상 수칙 -->
   <div class="card">
-    <div class="chead"><h2>⑤ 중환자 마취·진정 관리 수칙</h2></div>
+    <div class="chead"><h2>⑥ 중환자 마취·진정 관리 수칙</h2></div>
     <ol class="rules">
       <li><b>기관 삽관 인덕션</b> — 프로포폴이나 알팍살론 단독 대신 미다졸람(0.2 mg/kg)과 부토파놀(0.1 mg/kg)을 함께 쓰면 기침 반사를 차단하면서 유도제 용량을 줄일 수 있습니다.</li>
       <li><b>CRI 정밀 주입</b> — 펜타닐과 덱스메데토미딘 같은 고위험 약물은 반드시 시린지 펌프로 mL/h 단위를 맞춰 넣어야 혈압 변동과 서맥을 피할 수 있습니다.</li>
@@ -941,6 +1006,88 @@ function computeCri(ibw, blank){
   document.getElementById('slowBody').innerHTML = msgs.join('<br>');
 }
 
+/* ── 산소화 지표 (S/F · ROX) ──────────────────────────────
+   컷오프 출처 — 개: Eicher 2024 JVECC 34:252 (6h ROX≤3.68 / SF≤143),
+   Duble 2024 Front Vet Sci 11:1404195 (7h SF≤191). 사람: Roca 2019 AJRCCM 199:1368.
+   등급: ARDSVet 2025 JVECC 35:327 (비삽관, SpO2≤97%에서만 유효).      */
+var ROX6=3.68, SF6=143, SF7=191;
+
+function computeOxy(){
+  var s=num('spo2'), f=num('fio2i'), r=num('rr');
+  var t=document.getElementById('oxyh').value;
+  var sf  = (s>0 && f>0) ? s/(f/100) : NaN;
+  var rox = (isFinite(sf) && r>0) ? sf/r : NaN;
+
+  setV('o_sf',  isFinite(sf)?fmtT(sf,0):'—');
+  setV('o_rox', isFinite(rox)?fmtT(rox,2):'—');
+
+  /* 산소해리곡선이 평탄해지는 구간에서는 S/F가 정보를 담지 못한다 */
+  var flat = s>97;
+  var grade='—', gwarn=false;
+  if(isFinite(sf)){
+    if(flat) grade='판정 불가';
+    else if(sf>315) grade='해당 없음';
+    else if(sf>150){ grade='Mild / Moderate'; }
+    else { grade='Severe'; gwarn=true; }
+  }
+  setV('o_grade',grade);
+  document.getElementById('chipGrade').classList.toggle('warn',gwarn);
+
+  /* 컷오프를 살짝 웃도는 값을 '낮음'으로만 읽으면 위험하다 — 10% 이내면 경계로 표시한다 */
+  function near(v,c){ return isFinite(v) && v>c && v<=c*1.1; }
+  var risk='—', rwarn=false, why='', close=false;
+  if(flat && isFinite(sf)){ risk='판정 불가'; }
+  else if(t==='6' && (isFinite(rox)||isFinite(sf))){
+    /* 두 컷오프는 각각 단독 지표로 검증된 값이다 — 묶어서 하나로 말하지 않는다 */
+    var hitRox=isFinite(rox)&&rox<=ROX6, hitSf=isFinite(sf)&&sf<=SF6, hit6=hitRox||hitSf;
+    close=!hit6 && (near(rox,ROX6)||near(sf,SF6));
+    risk = hit6?'높음':(close?'경계':'낮음'); rwarn=hit6;
+    if(hitRox&&hitSf) why='ROX ≤ 3.68 과 S/F ≤ 143 에 모두 걸립니다.';
+    else if(hitRox)   why='ROX가 6시간 컷오프 3.68 이하입니다 (S/F는 143 위).';
+    else if(hitSf)    why='S/F가 6시간 컷오프 143 이하입니다 (ROX는 3.68 위).';
+    if(hitRox!==hitSf && isFinite(rox) && isFinite(sf))
+      why += ' 두 지표는 따로 검증된 값이라, 한쪽만 걸렸을 때는 표의 민감도·특이도가 그대로 적용되지 않습니다.';
+  }
+  else if(t==='7' && isFinite(sf)){
+    var hit7=sf<=SF7; close=!hit7 && near(sf,SF7);
+    risk=hit7?'높음':(close?'경계':'낮음'); rwarn=hit7;
+    why = hit7 ? '7시간 컷오프(S/F ≤ 191)에 걸립니다. 다만 이 컷오프는 특이도가 76%로 6시간(92~93%)보다 낮아, 실제로는 악화되지 않을 환자 넷 중 하나도 \'높음\'으로 잡힙니다.' : '';
+  }
+  else if(t==='other' && (isFinite(rox)||isFinite(sf))){
+    risk='시점 기준 없음';
+  }
+  setV('o_risk',risk);
+  /* 높음=경고색, 경계=중립(안심시키는 브랜드색을 쓰지 않는다), 그 외=브랜드색 */
+  document.getElementById('chipRisk').classList.toggle('warn',rwarn);
+  var confident = (risk==='낮음');
+  document.getElementById('chipRisk').classList.toggle('hi',confident);
+
+  /* 참고표에서 지금 적용된 줄을 짚어준다 */
+  ['rf_rox6','rf_sf6','rf_sf7','rf_mild','rf_sev'].forEach(function(id){
+    document.getElementById(id).classList.remove('key');
+  });
+  if(t==='6'){ document.getElementById('rf_rox6').classList.add('key');
+               document.getElementById('rf_sf6').classList.add('key'); }
+  if(t==='7'){ document.getElementById('rf_sf7').classList.add('key'); }
+  if(!flat && isFinite(sf) && sf<=315) document.getElementById(sf>150?'rf_mild':'rf_sev').classList.add('key');
+
+  /* 값은 나오지만 해석할 수 없는 상태를 숫자 옆에서도 알린다 */
+  document.getElementById('o_sf').closest('.chip').classList.toggle('warn',flat&&isFinite(sf));
+  document.getElementById('o_rox').closest('.chip').classList.toggle('warn',flat&&isFinite(rox));
+
+  var msgs=[];
+  if(flat) msgs.push('SpO<sub>2</sub>가 97%를 넘습니다. 이 구간에서는 산소해리곡선이 평탄해져 S/F와 ROX가 산소화 상태를 반영하지 못합니다. FiO<sub>2</sub>를 낮춰 SpO<sub>2</sub> 97% 이하에서 다시 재거나 동맥혈가스로 판단하세요.');
+  if(why) msgs.push(why+' 삽관과 기계환기를 준비하고, 미루는 만큼 예후가 나빠진다는 점을 감안하세요.');
+  if(close) msgs.push('컷오프를 겨우 넘긴 값입니다. 안심할 자리가 아니라 한두 시간 뒤 다시 재서 추세를 봐야 하는 자리입니다.');
+  if(t==='other' && !flat && (isFinite(rox)||isFinite(sf))) msgs.push('6시간·7시간 말고는 개에서 검증된 컷오프가 없습니다. 값 하나로 끊지 말고 이전 측정과 비교한 추세로 판단하세요.');
+  if(!t && (isFinite(rox)||isFinite(sf))) msgs.push('평가 시점을 고르면 그 시점에 맞는 컷오프로 판정합니다.');
+  if(!flat && isFinite(sf) && sf<=150) msgs.push('S/F ≤ 150 — ARDS<sub>Vet</sub> 기준 <b>Severe</b>에 해당합니다.');
+  if(sp()==='cat' && (isFinite(sf)||isFinite(rox))) msgs.push('고양이입니다. HFNOT 실패 컷오프는 모두 개 코호트에서 나온 값이라 고양이에 적용할 근거가 없습니다. ARDS<sub>Vet</sub> 등급은 고양이도 포함하는 정의지만, 고양이에서 S/F와 PaO<sub>2</sub>/FiO<sub>2</sub>의 상관은 아직 임상 연구로 확인되지 않았습니다.');
+  if(f>0 && f<21) msgs.push('FiO<sub>2</sub>는 실내 공기가 21%입니다. 그보다 낮은 값은 입력 오류로 보입니다.');
+  document.getElementById('oxyMsg').innerHTML=msgs.join('<br>');
+  document.getElementById('oxyFlag').classList.toggle('hide',!msgs.length);
+}
+
 function compute(){
   var ibw=num('ibw'), S=VENT[sp()], m=modeOf(), c=m[2], N=S.notes;
   var blank = !(ibw>0);
@@ -1022,10 +1169,16 @@ function compute(){
 
   document.getElementById('catFlag').classList.toggle('hide',
     !(parseFloat(document.getElementById('d_cpropofol').value)>0));
+
+  computeOxy();
 }
 
 document.getElementById('species').addEventListener('change',function(){ resetCur(); buildModes(); buildCri(); compute(); });
 ['ibw'].forEach(function(id){ document.getElementById(id).addEventListener('input',compute); });
+['spo2','fio2i','rr','oxyh'].forEach(function(id){
+  var e=document.getElementById(id); if(!e) return;
+  e.addEventListener(e.tagName==='SELECT'?'change':'input',compute);
+});
 Array.prototype.forEach.call(document.querySelectorAll('table.dg input'),function(i){
   i.addEventListener('input',compute);
 });
@@ -1045,6 +1198,7 @@ Array.prototype.forEach.call(document.querySelectorAll('#cribar .mb'),function(b
 document.getElementById('printBtn').addEventListener('click',function(){window.print();});
 document.getElementById('resetBtn').addEventListener('click',function(){
   document.getElementById('ibw').value=''; document.getElementById('pname').value='';
+  ['spo2','fio2i','rr','oxyh'].forEach(function(id){ document.getElementById(id).value=''; });
   document.getElementById('species').value='dog'; MODE='std'; resetCur();
   buildModes(); compute();
 });

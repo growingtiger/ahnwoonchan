@@ -257,9 +257,9 @@ table.hx td.out.alarm{background:color-mix(in srgb,var(--warn) 22%,var(--bg));co
 footer{border-top:1px solid var(--line);padding:26px 0 40px;font-size:.79rem;color:var(--ink-3)}
 footer a{color:var(--brand);font-weight:600}
 /* ── 인쇄 / PDF ─────────────────────────────────────────────
-   가로 A4에 세팅을 몰아 찍는다. 현재 실측 3쪽 — 목표는 1~2장이며 아직 못 줄였다.
+   가로 A4에 세팅을 몰아 찍는다. 현재 실측 2쪽. 값이 고정된 참고 섹션은 .refonly 로 인쇄에서 뺐다.
    화면용 여백·설명문·조작 버튼은 빼고 값만 남긴다.            */
-@page{ size:A4 landscape; margin:7mm; }
+@page{ size:A4 landscape; margin:5mm; }
 @media print{
   /* 화면 테마와 무관하게 인쇄는 항상 라이트 팔레트로 — 다크로 두면 흰 종이에 밝은 글씨가 찍힌다 */
   :root, :root[data-theme="dark"], :root[data-theme="light"]{
@@ -284,19 +284,21 @@ footer a{color:var(--brand);font-weight:600}
   .flag .wi{color:#fff!important}
   #hint b,.hint.keepprint b,.flag b,.note strong{color:#7a3b1c!important}
 
-  html{font-size:8pt}
+  html{font-size:10pt}
   body{background:#fff;line-height:1.42;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   header,.btnrow,.theme-btn,footer,.legend,.hint,.sub2,.phead .eyebrow,.phead .sub{display:none!important}
   /* 실시간 임상 경고는 인쇄물에 반드시 남긴다 */
   #hint{display:block!important;font-size:.66rem;margin-top:4px;color:#7a3b1c}
+  /* 항응고 모니터링처럼 인쇄물에서 빠지면 안 되는 안내도 남긴다 */
+  .hint.keepprint:not([hidden]){display:block!important;font-size:.64rem;margin-top:4px;color:#444;line-height:1.4}
 
   .wrap{max-width:none;padding:0}
   main{padding:0}
-  .phead{padding:0 0 5px;margin-bottom:7px;border-bottom:1px solid #b9b9b9}
+  .phead{padding:0 0 4px;margin-bottom:5px;border-bottom:1px solid #b9b9b9}
   .phead h1{font-size:1.2rem}
 
-  .card{padding:6px 8px;margin-bottom:5px;box-shadow:none;border-color:#c2c2c2;break-inside:avoid}
-  .chead{margin-bottom:4px;gap:6px}
+  .card{padding:5px 7px;margin-bottom:4px;box-shadow:none;border-color:#c2c2c2;break-inside:avoid}
+  .chead{margin-bottom:3px;gap:6px}
   .chead h2{font-size:.78rem}
   .ptag{font-size:.62rem;padding:1px 6px;margin-left:5px}
 
@@ -335,29 +337,34 @@ footer a{color:var(--brand);font-weight:600}
   .flag .wi{font-size:.6rem;padding:1px 5px}
   .rules li{font-size:.7rem;padding:0 0 4px 26px;line-height:1.5}
   .rules li::before{width:17px;height:17px;font-size:.62rem}
-  .note{font-size:.66rem;padding:5px 8px;line-height:1.5}
+  .note{font-size:.66rem;padding:3px 7px;line-height:1.35;margin-top:4px}
   .yr-h p,.yr-n{font-size:.64rem}
 
-  /* 2장 안에 들어가도록 추가 압축 */
-  .chips{grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:3px;margin-top:5px;padding-top:5px}
+  /* 2장 안에 들어가도록 추가 압축 — 실측으로 맞춘 값이라 임의로 키우면 3장이 된다 */
+  .chips{grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:3px;margin-top:4px;padding-top:4px}
   .chart svg{width:auto;height:150px;display:block;margin:0 auto}
-  .charts{grid-template-columns:1fr 1fr}
-  table.hx th,table.hx td{padding:1px 4px;font-size:.7rem}
-  table.hx td.cell input{padding:1px 2px;font-size:.7rem}
-  table.hx tr.sec td{padding:2px 6px;font-size:.62rem}
+  .charts{grid-template-columns:1fr 1fr;gap:6px}
+  /* td.out은 화면용 9px 상하 패딩이 명시도(0,2,2)로 이겨서 줄 높이를 잡아먹는다 — 같이 눌러준다 */
+  table.hx th,table.hx td,table.hx td.out{padding:1px 4px;font-size:.7rem;line-height:1.3}
+  table.hx tr.key td.out{font-size:.74rem}
+  table.hx td.cell input{padding:1px 2px;font-size:.7rem;line-height:1.3}
+  table.hx tr.sec td{padding:1px 6px;font-size:.62rem}
   table.hx td.rl,table.hx th.rl{min-width:150px;padding:0 8px}
+  table.hx thead th{padding:2px 4px}
   .og{gap:4px}
 
   /* 참고용 섹션은 인쇄에서 제외 — 처방 세팅만 남긴다 */
   .refonly{display:none!important}
   .chart svg{max-height:150px}
-  .ct{font-size:.7rem;margin-bottom:3px}
+  .ct{font-size:.7rem;margin-bottom:2px}
   /* 인쇄에서 5pt 아래로 내려가던 단위·섹션 라벨 보정 */
   .chip .v small,.o .v small{font-size:.72em}
   table.hx tr.sec td{font-size:.7rem}
   /* SVG 안 px 글꼴은 html font-size 축소를 안 받으므로 인쇄에서 따로 키운다 */
   .tick{font-size:17px}
-  .alab,.tgtx,.dlab{font-size:16px}
+  .tgtx,.dlab{font-size:16px}
+  /* 축 제목은 글꼴을 키운 만큼 눈금 숫자와 붙어버린다 — 인쇄에서만 아래로 민다 */
+  .alab{font-size:16px;transform:translateY(9px)}
 }
 </style>
 <script>document.documentElement.classList.add('js');</script>
@@ -401,21 +408,21 @@ footer a{color:var(--brand);font-weight:600}
       <div class="f"><label for="species">Species</label>
         <select id="species"><option value="">—</option><option>Canine</option><option>Feline</option></select></div>
       <div class="f"><label for="bw">Body weight <span class="un">kg</span></label>
-        <input id="bw" type="number" step="0.1" min="0.1" placeholder="13.4"></div>
+        <input id="bw" type="number" step="0.1" min="0.1"></div>
       <div class="f"><label for="hyd">Hydration <span class="un">%</span></label>
         <select id="hyd"><option value="">—</option><option value="-10">-10</option><option value="-5">-5</option>
           <option value="0">0</option><option value="5">+5</option>
           <option value="10">+10</option><option value="15">+15</option></select></div>
       <div class="f"><label for="bun">Starting BUN <span class="un">mg/dL</span></label>
-        <input id="bun" type="number" step="1" min="1" placeholder="126"></div>
+        <input id="bun" type="number" step="1" min="1"></div>
       <div class="f"><label for="hct">HCT <span class="un">%</span></label>
-        <input id="hct" type="number" step="1" min="1" max="80" placeholder="35"></div>
+        <input id="hct" type="number" step="1" min="1" max="80"></div>
       <div class="f"><label for="urr">Target URR <span class="un">%</span></label>
-        <input id="urr" type="number" step="1" min="1" max="95" placeholder="50"></div>
+        <input id="urr" type="number" step="1" min="1" max="95"></div>
       <div class="f"><label for="hrs">Treatment time <span class="un">hr</span></label>
-        <input id="hrs" type="number" step="1" min="1" max="12" placeholder="5"></div>
+        <input id="hrs" type="number" step="1" min="1" max="12"></div>
       <div class="f"><label for="ufTot">UF target <span class="un">(제거 목표) ml</span></label>
-        <input id="ufTot" type="number" step="10" min="0" placeholder="1340"></div>
+        <input id="ufTot" type="number" step="10" min="0"></div>
       <div class="f"><label for="txno">Treatment No. <span class="un">(투석 회차)</span></label>
         <select id="txno"><option value="">—</option><option value="1">1st</option><option value="2">2nd</option><option value="3">3rd +</option></select></div>
     </div>
@@ -440,7 +447,7 @@ footer a{color:var(--brand);font-weight:600}
       <div class="setgrid">
         <div class="f"><label for="filter">Filter set</label><select id="filter"></select></div>
         <div class="f"><label for="addv">Additional line <span class="un">ml</span></label>
-          <input id="addv" type="number" step="1" min="0" placeholder="0"></div>
+          <input id="addv" type="number" step="1" min="0"></div>
       </div>
       <div class="chips">
         <div class="chip"><div class="k">Extracorporeal volume</div><div class="v" id="c_ecv">—<small>ml</small></div></div>
@@ -454,13 +461,13 @@ footer a{color:var(--brand);font-weight:600}
       <div class="chead"><h2>③ 항응고</h2></div>
       <div class="setgrid">
         <div class="f"><label for="dil">Dilution N/S <span class="un">ml</span></label>
-          <input id="dil" type="number" step="10" min="1" placeholder="100"></div>
+          <input id="dil" type="number" step="10" min="1" value="100"></div>
         <div class="f"><label for="hep">Heparin <span class="un">IU</span></label>
-          <input id="hep" type="number" step="100" min="1" placeholder="5000"></div>
+          <input id="hep" type="number" step="100" min="1" value="5000"></div>
         <div class="f"><label for="bolus">Bolus <span class="un">IU/kg</span></label>
-          <input id="bolus" type="number" step="5" min="0" placeholder="25"></div>
+          <input id="bolus" type="number" step="5" min="0" value="25"></div>
         <div class="f"><label for="cri">CRI <span class="un">IU/kg/hr</span></label>
-          <input id="cri" type="number" step="5" min="0" placeholder="25"></div>
+          <input id="cri" type="number" step="5" min="0" value="25"></div>
       </div>
       <div class="chips">
         <div class="chip"><div class="k">Conc. of heparin</div><div class="v" id="c_hconc">—<small>IU/ml</small></div></div>
@@ -468,6 +475,11 @@ footer a{color:var(--brand);font-weight:600}
         <div class="chip"><div class="k">CRI volume</div><div class="v" id="c_criv">—<small>ml/hr</small></div></div>
         <div class="chip"><div class="k">총 헤파린</div><div class="v" id="c_hepTot">—<small>IU</small></div></div>
       </div>
+      <p class="hint keepprint">
+        희석과 용량은 <b>시작값</b>으로 채워져 있습니다. 체중만 넣으면 볼루스·CRI 투여량이 바로 나옵니다.
+        헤파린은 용량표가 아니라 응고 모니터링과 한 쌍입니다. 투여 후 <b>30~60분마다 ACT를 재어 기저치의 약 2배</b>를
+        목표로 조정하고, 회로 응고나 출혈 징후가 보이면 그때그때 바꾸십시오.
+      </p>
     </div>
   </div>
 
@@ -628,11 +640,11 @@ FILTERS.forEach(function(f){var o=document.createElement('option');o.value=f[0];
 
 /* 시간대별 처방 행 정의 : key, 라벨, 단위, 기본값 */
 var RX=[
-  {k:'qb',    lab:'Qb — Blood flow (혈류 속도)',        u:'mL/min', d:null, ph:'150', step:5},
-  {k:'qd',    lab:'Qd — Dialysate flow (투석액 속도)',   u:'mL/h',   d:null, ph:'1200',step:50},
-  {k:'qrPre', lab:'Qrep pre — Pre-dilution (전희석)',    u:'mL/h',   d:null, ph:'0',  step:10},
-  {k:'qrPost',lab:'Qrep post — Post-dilution (후희석)',  u:'mL/h',   d:null, ph:'0',  step:10},
-  {k:'qpfr',  lab:'Qpfr — Patient fluid removal (환자 제거량)', u:'mL/h', d:null, ph:'268', step:10}
+  {k:'qb',    lab:'Qb — Blood flow (혈류 속도)',        u:'mL/min', d:null, step:5},
+  {k:'qd',    lab:'Qd — Dialysate flow (투석액 속도)',   u:'mL/h',   d:null, step:50},
+  {k:'qrPre', lab:'Qrep pre — Pre-dilution (전희석)',    u:'mL/h',   d:null, step:10},
+  {k:'qrPost',lab:'Qrep post — Post-dilution (후희석)',  u:'mL/h',   d:null, step:10},
+  {k:'qpfr',  lab:'Qpfr — Patient fluid removal (환자 제거량)', u:'mL/h', d:null, step:10}
 ];
 var HRS=5, rx=[];
 
@@ -678,9 +690,14 @@ function seedRows(){
   while(rx.length<HRS){ rx.push(rx.length? Object.assign({},rx[rx.length-1]) : blankRow()); }
   rx.length=HRS;
 }
+/* 헤파린 처방은 거의 고정이라 기본값으로 되돌린다 — 체중만 넣으면 최종 용량이 바로 나온다 */
+var HEP_DEFAULT={dil:'100',hep:'5000',bolus:'25',cri:'25'};
 function clearAll(){
-  ['bw','bun','hct','urr','ufTot','addv','dil','hep','bolus','cri','species','hyd','txno'].forEach(function(id){
+  ['bw','bun','hct','urr','ufTot','addv','species','hyd','txno'].forEach(function(id){
     var e=document.getElementById(id); if(e) e.value='';
+  });
+  Object.keys(HEP_DEFAULT).forEach(function(id){
+    var e=document.getElementById(id); if(e) e.value=HEP_DEFAULT[id];
   });
   document.getElementById('hrs').value='';
   HRS=5; rx=[]; seedRows();
@@ -697,7 +714,7 @@ function buildTable(){
     html+='<tr class="in"><td class="rl">'+r.lab+' <span style="opacity:.7;font-weight:500">('+r.u+')</span></td>';
     for(var h=0;h<HRS;h++){
       var val=rx[h][r.k]; val=(val===null||val===undefined)?'':val;
-      html+='<td class="cell"><input type="number" step="'+r.step+'" min="0" placeholder="'+(r.ph||'')+'" data-k="'+r.k+'" data-h="'+h+'" value="'+val+'"></td>';
+      html+='<td class="cell"><input type="number" step="'+r.step+'" min="0" data-k="'+r.k+'" data-h="'+h+'" value="'+val+'"></td>';
     }
     html+='</tr>';
   });
@@ -841,7 +858,9 @@ function compute(){
   setV('c_hconc',fmtT(hc,1),'IU/ml');
   setV('c_bolusv',fmtT(num('bolus')*bw/hc,2),'ml');
   setV('c_criv',fmtT(num('cri')*bw/hc,2),'ml/hr');
-  setV('c_hepTot',fmt(num('bolus')*bw+num('cri')*bw*HRS,0),'IU');
+  /* 총량은 치료시간에 비례한다 — 시간을 아직 안 넣었으면 HRS 기본값 5로 계산해 보여주지 않는다 */
+  var hrsIn=num('hrs');
+  setV('c_hepTot', hrsIn>0 ? fmt(num('bolus')*bw+num('cri')*bw*hrsIn,0) : '—','IU');
 
   /* 안내 */
   var msgs=[];
