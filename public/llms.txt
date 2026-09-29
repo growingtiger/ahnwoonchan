@@ -1,0 +1,19 @@
+# 안운찬 수의사 (Woonchan Ahn, DVM)
+> 시그니처 동물의료센터(서울 강남구 도산대로 213, 02-549-0275, 365일 24시간) 내과원장, 혈액투석·신장비뇨기센터 및 응급중환자센터장. 개·고양이 혈액투석(IHD·CRRT)·혈액관류·신장질환·중환자.
+
+## 페이지
+- [소개·연구·강의](https://www.ahnwoonchan.com/)
+- [개·고양이 혈액투석 안내](https://www.ahnwoonchan.com/hemodialysis): 2017~2024년 신대체요법 136마리(개 67·고양이 69) 퇴원 생존 AKI 70%·ACKD 53%(단기 생존 차이 log-rank p=0.089), IHD·CRRT·혈액관류의 차이, 보호자 FAQ
+- [고양이 신부전과 투석](https://www.ahnwoonchan.com/cat-kidney): 고양이 69마리 퇴원 생존 AKI 74%·ACKD 57%
+- [중독과 혈액관류](https://www.ahnwoonchan.com/poisoning): 이부프로펜·도토리·미녹시딜 중독 증례, 혈액관류와 혈액투석의 선택
+- [투석 계산기](https://www.ahnwoonchan.com/calculator), [환기기 계산기](https://www.ahnwoonchan.com/ventilator)
+
+## 논문 (제1저자)
+- Front Vet Sci 2026;13:1857111 — 국내 동물병원 최초의 신대체요법 코호트 논문(PubMed 기준). doi:10.3389/fvets.2026.1857111
+- J Vet Med Sci 2026;88(3):505-508 — 2.15 kg 토이푸들 이부프로펜 중독 혈액관류. doi:10.1292/jvms.25-0083
+- Vet Sci 2024;11(10):487 — 고양이 미녹시딜 중독 혈액투석. doi:10.3390/vetsci11100487
+
+## 함께 진료하는 수의사
+- [이태호 — 대표원장, 내과·심장·종양](https://leetaeho.vercel.app/)
+- [송우진 — 내과, 한국수의내과전문의](https://songwoojin.vercel.app/)
+- [시그니처 동물의료센터](https://signatureamc.co.kr/)
