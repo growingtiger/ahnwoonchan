@@ -236,12 +236,13 @@
   --bg-sunk:#eceff1;
   --ink:#12211f;
   --ink-2:#41544f;
-  --ink-3:#6d7f7a;
+  --ink-3:#60706b;   /* 흰색 5.21 · bg-soft 4.85 · bg-sunk 4.51 — 종전 #6d7f7a 는 4.2 대로 AA 미달 */
   --line:#dde3e2;
   --brand:#0f6b62;
   --brand-2:#12857a;
   --brand-ink:#0a4f48;
   --accent:#c4643c;
+  --accent-ink:#af5935;   /* 악센트를 글자에 쓸 때 — #c4643c 는 흰 배경에서 4.01 로 AA 미달 */
   --shadow:0 1px 2px rgba(16,40,36,.05),0 8px 24px -12px rgba(16,40,36,.18);
   --radius:14px;
   --max:1080px;
@@ -259,19 +260,20 @@
     --brand-2:#6fd4c3;
     --brand-ink:#a9e6db;
     --accent:#e08b62;
+    --accent-ink:#e08b62;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
   }
 }
 :root[data-theme="dark"]{
   --bg:#0d1413; --bg-soft:#121b19; --bg-sunk:#182422;
   --ink:#e8efed; --ink-2:#b0c1bc; --ink-3:#849792; --line:#233330;
-  --brand:#4dbfae; --brand-2:#6fd4c3; --brand-ink:#a9e6db; --accent:#e08b62;
+  --brand:#4dbfae; --brand-2:#6fd4c3; --brand-ink:#a9e6db; --accent:#e08b62; --accent-ink:#e08b62;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.7);
 }
 :root[data-theme="light"]{
   --bg:#ffffff; --bg-soft:#f5f7f8; --bg-sunk:#eceff1;
-  --ink:#12211f; --ink-2:#41544f; --ink-3:#6d7f7a; --line:#dde3e2;
-  --brand:#0f6b62; --brand-2:#12857a; --brand-ink:#0a4f48; --accent:#c4643c;
+  --ink:#12211f; --ink-2:#41544f; --ink-3:#60706b; --line:#dde3e2;
+  --brand:#0f6b62; --brand-2:#12857a; --brand-ink:#0a4f48; --accent:#c4643c; --accent-ink:#af5935;
   --shadow:0 1px 2px rgba(16,40,36,.05),0 8px 24px -12px rgba(16,40,36,.18);
 }
 
@@ -494,6 +496,9 @@ header.stuck{border-bottom-color:var(--line)}
   font-size:.9rem;color:var(--ink-2);
 }
 .callout strong{color:var(--ink)}
+/* 세 가지 치료를 나눠 설명하는 단락 — 소제목이 앞 문단에 붙지 않게 띄운다 */
+#modality h3+p{margin-bottom:0}
+#modality p+h3{margin-top:30px}
 
 /* ---------- system band (고정 다크 액센트) ---------- */
 .sys{background:#0c3a35;color:#dff0ec;border-top:1px solid var(--line)}
@@ -575,7 +580,7 @@ header.stuck{border-bottom-color:var(--line)}
   background:var(--bg);border:1px solid var(--line);border-left:3px solid var(--accent);
   border-radius:11px;padding:26px 26px;
 }
-.emergency h3{color:var(--accent)}
+.emergency h3{color:var(--accent-ink)}
 .emergency p{font-size:.9rem;color:var(--ink-2)}
 .emergency ol{margin:14px 0 0 18px;font-size:.88rem;color:var(--ink-2)}
 .emergency li{margin-bottom:7px;padding-left:4px}
@@ -969,7 +974,7 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
     </div>
   </section>
 
-  <section id="modality" class="sys" style="background:var(--bg-sunk);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <section id="modality" style="background:var(--bg-sunk);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
     <div class="wrap">
       <div class="sec-head">
         <div class="eyebrow">Modality</div>

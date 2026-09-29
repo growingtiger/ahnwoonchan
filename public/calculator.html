@@ -17,12 +17,12 @@
 <style>
 :root{
   --bg:#ffffff; --bg-soft:#f5f7f8; --bg-sunk:#eceff1;
-  --ink:#12211f; --ink-2:#41544f; --ink-3:#6d7f7a; --line:#dde3e2;
+  --ink:#12211f; --ink-2:#41544f; --ink-3:#60706b; --line:#dde3e2;
   --brand:#0f6b62; --brand-2:#12857a; --accent:#c4643c;
   --inp:#e8f0fb; --inp-line:#b9d2f0; --inp-ink:#1b4f8f;   /* 파랑 = 시간대별 입력 */
   --calc:#fdece2; --calc-line:#f5cfb6; --calc-ink:#8d4a23; /* 주황 = 자동 계산 */
   --sel:#e2f4e4; --sel-line:#bfe3c4; --sel-ink:#2b6136;   /* 초록 = 선택 */
-  --warn:#c4643c; --ok:#0f6b62;
+  --warn:#af5935; --ok:#0f6b62;   /* 굵은 강조에 쓰이므로 흰 배경 4.5 를 넘겨야 한다 — 종전 #c4643c 는 4.01 */
   --s1:#2a78d6; --s2:#eb6834;
   --shadow:0 1px 2px rgba(16,40,36,.05),0 8px 24px -12px rgba(16,40,36,.18);
   --radius:14px; --max:1300px;
@@ -52,12 +52,12 @@
 }
 :root[data-theme="light"]{
   --bg:#ffffff; --bg-soft:#f5f7f8; --bg-sunk:#eceff1;
-  --ink:#12211f; --ink-2:#41544f; --ink-3:#6d7f7a; --line:#dde3e2;
+  --ink:#12211f; --ink-2:#41544f; --ink-3:#60706b; --line:#dde3e2;
   --brand:#0f6b62; --brand-2:#12857a; --accent:#c4643c;
   --inp:#e8f0fb; --inp-line:#b9d2f0; --inp-ink:#1b4f8f;
   --calc:#fdece2; --calc-line:#f5cfb6; --calc-ink:#8d4a23;
   --sel:#e2f4e4; --sel-line:#bfe3c4; --sel-ink:#2b6136;
-  --warn:#c4643c; --ok:#0f6b62; --s1:#2a78d6; --s2:#eb6834;
+  --warn:#af5935; --ok:#0f6b62; --s1:#2a78d6; --s2:#eb6834;
   --shadow:0 1px 2px rgba(16,40,36,.05),0 8px 24px -12px rgba(16,40,36,.18);
 }
 
@@ -134,7 +134,8 @@ main{padding-bottom:64px}
 .chead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
 .sub2{font-size:.85rem;color:var(--ink-3);line-height:1.65;max-width:96ch}
 .sub2 b{color:var(--ink-2)}
-.sub2 em{font-style:normal;color:var(--accent);font-weight:700}
+/* --accent 는 흰 배경에서 4.01 이라 글자에는 --warn(보정값)을 쓴다 */
+.sub2 em{font-style:normal;color:var(--warn);font-weight:700}
 .chead h2{font-size:.75rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--brand);margin-right:auto}
 .legend{display:flex;flex-wrap:wrap;gap:7px}
 .lg{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:600;color:var(--ink-3)}
@@ -218,6 +219,12 @@ table.hx tr.key td.out{font-size:.92rem;font-weight:700;color:var(--ink)}
 table.hx td.out.bad{color:var(--warn);font-weight:700}
 table.hx td.out.alarm{background:color-mix(in srgb,var(--warn) 22%,var(--bg));color:var(--warn);font-weight:700;
   box-shadow:inset 0 0 0 1.5px var(--warn)}
+/* 지금 환자에 해당하는 IRIS 참고칸 — 다크에서 민트 배경에 흰 글씨가 되지 않도록 테마별로 뒤집는다 */
+/* tr.ca/tr.key 규칙이 (0,3,3)이라 td 하나만으로는 못 이긴다 — tr 을 끼워 명시도를 맞춘다 */
+table.hx tr td.out.hit{background:var(--brand);font-weight:700;color:#fff}
+:root[data-theme="dark"] table.hx tr td.out.hit{color:#06201d}
+@media (prefers-color-scheme: dark){table.hx tr td.out.hit{color:#06201d}}
+:root[data-theme="light"] table.hx tr td.out.hit{color:#fff}
 .hint{font-size:.8rem;color:var(--ink-3);margin-top:11px;line-height:1.6}
 .hint b{color:var(--warn)}
 
@@ -277,6 +284,7 @@ footer a{color:var(--brand);font-weight:600}
   /* 브랜드·경고 배경 위 글자는 인쇄에서도 흰색 — 다크 테마의 #06201d 되돌리기.
      .rl 헤더 셀은 배경이 흰색이라 제외해야 흰 글씨가 되지 않는다 */
   .chip.hi .k,.chip.hi .v,
+  table.hx tr td.out.hit,
   table.hx thead th:not(.rl),
   table.vt thead th,
   table.vt tr.derived td.v,
@@ -1091,7 +1099,7 @@ function renderIris(){
     html+='<tr class="'+(i===hit?'ca key':'')+'"><td class="rl">'+r[0]+'</td>';
     for(var c=1;c<=3;c++){
       var on=(i===hit && c===tx);
-      html+='<td class="out"'+(on?' style="background:var(--brand);color:#fff;font-weight:700"':'')+'>'+r[c]+'</td>';
+      html+='<td class="out'+(on?' hit':'')+'">'+r[c]+'</td>';
     }
     html+='</tr>';
   });
