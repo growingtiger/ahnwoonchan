@@ -263,6 +263,7 @@ table.hx tr td.out.hit{background:var(--brand);font-weight:700;color:#fff}
 @media(max-width:860px){.two{grid-template-columns:1fr}}
 footer{border-top:1px solid var(--line);padding:26px 0 40px;font-size:.79rem;color:var(--ink-3)}
 footer a{color:var(--brand);font-weight:600}
+footer .footlinks{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
 /* ── 인쇄 / PDF ─────────────────────────────────────────────
    가로 A4에 세팅을 몰아 찍는다. 현재 실측 2쪽. 값이 고정된 참고 섹션은 .refonly 로 인쇄에서 뺐다.
    화면용 여백·설명문·조작 버튼은 빼고 값만 남긴다.            */
@@ -616,6 +617,13 @@ footer a{color:var(--brand);font-weight:600}
 
 <footer>
   <div class="wrap">
+    <nav class="footlinks" aria-label="진료 안내">
+      <a href="/hemodialysis">개와 고양이 혈액투석</a>
+      <a href="/cat-kidney">고양이 신부전과 투석</a>
+      <a href="/poisoning">중독과 혈액관류</a>
+      <a href="/calculator">투석 계산기</a>
+      <a href="/ventilator">환기기 계산기</a>
+    </nav>
     © AHN, Woonchan — Signature Animal Medical Center.<br>
     문의는 <a href="/#contact">진료 문의</a> 또는 02-549-0275.
   </div>
