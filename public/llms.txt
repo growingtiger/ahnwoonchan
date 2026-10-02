@@ -14,6 +14,6 @@
 - Vet Sci 2024;11(10):487 — 고양이 미녹시딜 중독 혈액투석. doi:10.3390/vetsci11100487
 
 ## 함께 진료하는 수의사
-- [이태호 — 대표원장, 내과·심장·종양](https://leetaeho.vercel.app/)
+- [이태호 — 대표원장, 내과·심장·종양](https://leetaeho.co.kr/)
 - [송우진 — 내과, 한국수의내과전문의](https://songwoojin.co.kr/)
 - [시그니처 동물의료센터](https://signatureamc.co.kr/)
