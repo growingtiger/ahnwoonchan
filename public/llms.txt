@@ -6,7 +6,7 @@
 - [개·고양이 혈액투석 안내](https://www.ahnwoonchan.com/hemodialysis): 2017~2024년 신대체요법 136마리(개 67·고양이 69) 퇴원 생존 AKI 70%·ACKD 53%(단기 생존 차이 log-rank p=0.089), IHD·CRRT·혈액관류의 차이, 보호자 FAQ
 - [강아지·고양이 CRRT(지속적 신대체요법)](https://www.ahnwoonchan.com/crrt): CRRT의 적응, 한 번 치료 시간과 횟수(개 CRRT 연구 중앙 21·24시간, 136마리 4~8시간·중앙 2~3회), 치료 중 모니터링(회로 응고 13%, 항응고, 고양이 빈혈), IRIS 2026 CRRT 합의 지침
 - [고양이 신부전과 투석](https://www.ahnwoonchan.com/cat-kidney): 고양이 69마리 퇴원 생존 AKI 74%·ACKD 57%
-- [중독과 혈액관류](https://www.ahnwoonchan.com/poisoning): 이부프로펜·도토리·미녹시딜 중독 증례, 혈액관류와 혈액투석의 선택
+- [중독과 혈액관류](https://www.ahnwoonchan.com/poisoning): 강아지가 사람 약을 먹었을 때 먼저 할 일, 이부프로펜·도토리·미녹시딜 중독 증례, 혈액관류와 혈액투석의 선택
 - [투석 계산기](https://www.ahnwoonchan.com/calculator), [환기기 계산기](https://www.ahnwoonchan.com/ventilator)
 
 ## 논문 (제1저자)
