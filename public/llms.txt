@@ -8,6 +8,7 @@
 - [강아지 신부전과 투석](https://www.ahnwoonchan.com/dog-kidney): 개 67마리 퇴원 생존 AKI 67%·ACKD 48%(합계 58%), 만성 급성 악화 개의 퇴원 후 중앙 생존 33일, 개 ACKD 분류 기준, 투석 시작 기준, 렙토스피라·포도·도토리 원인, 혈액투석 비용을 정하는 항목
 - [고양이 신부전과 투석](https://www.ahnwoonchan.com/cat-kidney): 고양이 69마리 퇴원 생존 AKI 74%·ACKD 57%
 - [중독과 혈액관류](https://www.ahnwoonchan.com/poisoning): 강아지가 사람 약을 먹었을 때 먼저 할 일, 이부프로펜·도토리·미녹시딜 중독 증례, 혈액관류와 혈액투석의 선택
+- [소변을 못 보는 개·고양이](https://www.ahnwoonchan.com/urinary-emergency): 수컷 고양이 요도폐색·고양이 요관폐색·강아지 요도결석 응급, 바로 전화해야 하는 증상, 고양이 168마리 심혈관 이상 61.9%, 요도폐색 82마리 사망 8.5%·재발 6개월 22%, 601마리 질소혈증 48시간 내 해소 70.1%, 요관결석 163마리
 - [투석 계산기](https://www.ahnwoonchan.com/calculator), [환기기 계산기](https://www.ahnwoonchan.com/ventilator)
 
 ## 논문 (제1저자)
