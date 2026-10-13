@@ -417,11 +417,6 @@ footer .footlinks{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:16px;pa
 /* ---------- mobile hamburger menu ---------- */
 .nav{position:relative}
 .menu-btn{display:none}
-@media(max-width:760px){
-  .menu-btn{display:grid}
-  .nav .navgrp{display:none}
-  .mnav{display:block}
-}
 .mnav{
   display:none;position:absolute;left:0;right:0;top:100%;z-index:70;
   background:var(--bg,#fff);border-bottom:1px solid var(--line);box-shadow:var(--shadow);
@@ -435,6 +430,11 @@ footer .footlinks{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:16px;pa
 .mnav a:hover{color:var(--ink)}
 .mnav a[aria-current="page"]{color:var(--brand);font-weight:600}
 .mnav .mgrp{font-size:.72rem;letter-spacing:.14em;color:var(--ink-3);padding:14px 4px 2px}
+@media(max-width:760px){
+  .menu-btn{display:grid}
+  .nav .navgrp{display:none}
+  .mnav{display:block}
+}
 </style>
 </head>
 <body>

@@ -725,11 +725,6 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
 /* ---------- mobile hamburger menu ---------- */
 .nav{position:relative}
 .menu-btn{display:none}
-@media(max-width:880px){
-  .menu-btn{display:grid}
-  .nav .navgrp{display:none}
-  .mnav{display:block}
-}
 .mnav{
   display:none;position:absolute;left:0;right:0;top:100%;z-index:70;
   background:var(--bg,#fff);border-bottom:1px solid var(--line);box-shadow:var(--shadow);
@@ -743,6 +738,11 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
 .mnav a:hover{color:var(--ink)}
 .mnav a[aria-current="page"]{color:var(--brand);font-weight:600}
 .mnav .mgrp{font-size:.72rem;letter-spacing:.14em;color:var(--ink-3);padding:14px 4px 2px}
+@media(max-width:880px){
+  .menu-btn{display:grid}
+  .nav .navgrp{display:none}
+  .mnav{display:block}
+}
 </style>
 </head>
 <body>
