@@ -902,6 +902,30 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
 .vb-links span{color:var(--vb-ink3)}
 .vb-links a{color:var(--vb-acc);text-decoration:underline;text-underline-offset:3px}
 </style>
+
+<style id="mnav-css">
+/* ---------- mobile hamburger menu ---------- */
+.nav{position:relative}
+.menu-btn{display:none}
+@media(max-width:880px){
+  .menu-btn{display:grid}
+  .nav .navgrp{display:none}
+  .mnav{display:block}
+}
+.mnav{
+  display:none;position:absolute;left:0;right:0;top:100%;z-index:70;
+  background:var(--bg,#fff);border-bottom:1px solid var(--line);box-shadow:var(--shadow);
+  padding:6px 24px 14px;max-height:calc(100vh - 80px);overflow-y:auto;
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+  transition:opacity .2s,transform .2s,visibility .2s;
+}
+.mnav.open{opacity:1;visibility:visible;transform:none}
+.mnav a{display:block;padding:12px 4px;border-bottom:1px solid var(--line);color:var(--ink-2);font-size:.95rem}
+.mnav a:last-child{border-bottom:0}
+.mnav a:hover{color:var(--ink)}
+.mnav a[aria-current="page"]{color:var(--brand);font-weight:600}
+.mnav .mgrp{font-size:.72rem;letter-spacing:.14em;color:var(--ink-3);padding:14px 4px 2px}
+</style>
 </head>
 <body>
 <header id="hdr">
@@ -929,6 +953,23 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
       <a href="/ventilator"><b>환기</b><span class="cw"> 계산기</span></a>
     </nav>
     <button class="theme-btn" id="themeBtn" aria-label="화면 테마 전환">◐</button>
+    <button class="theme-btn menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mnav">☰</button>
+    <nav class="mnav" id="mnav" aria-label="모바일 메뉴">
+      <a href="/#about">소개</a>
+      <a href="/#care">진료 분야</a>
+      <a href="/#dialysis">투석 안내</a>
+      <a href="/hemodialysis">혈액투석 상세</a>
+      <a href="/crrt">CRRT</a>
+      <a href="/dog-kidney">강아지 신장병</a>
+      <a href="/cat-kidney" aria-current="page">고양이 신장병</a>
+      <a href="/poisoning">중독·혈액관류</a>
+      <a href="/#research">연구·활동</a>
+      <a href="/#notes">글과 기록</a>
+      <a href="#contact">진료·전원</a>
+      <div class="mgrp">계산기</div>
+      <a href="/calculator">투석 계산기</a>
+      <a href="/ventilator">환기 계산기</a>
+    </nav>
   </div>
 </header>
 
@@ -1296,6 +1337,22 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
   document.addEventListener('click',function(e){ if(g.open && !g.contains(e.target)) g.open=false; });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape') g.open=false; });
   g.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){g.open=false;});});
+})();
+</script>
+
+<script>
+(function(){
+  var mb=document.getElementById('menuBtn'), mn=document.getElementById('mnav');
+  if(!mb||!mn) return;
+  function set(open){
+    mn.classList.toggle('open',open);
+    mb.setAttribute('aria-expanded',open);
+    mb.setAttribute('aria-label',open?'메뉴 닫기':'메뉴 열기');
+    mb.textContent=open?'\u2715':'\u2630';
+  }
+  mb.addEventListener('click',function(){ set(!mn.classList.contains('open')); });
+  mn.addEventListener('click',function(e){ if(e.target.closest('a')) set(false); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&mn.classList.contains('open')) set(false); });
 })();
 </script>
 </body>

@@ -487,6 +487,30 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
 .vb-links span{color:var(--vb-ink3)}
 .vb-links a{color:var(--vb-acc);text-decoration:underline;text-underline-offset:3px}
 </style>
+
+<style id="mnav-css">
+/* ---------- mobile hamburger menu ---------- */
+.nav{position:relative}
+.menu-btn{display:none}
+@media(max-width:760px){
+  .menu-btn{display:grid}
+  .nav .navgrp{display:none}
+  .mnav{display:block}
+}
+.mnav{
+  display:none;position:absolute;left:0;right:0;top:100%;z-index:70;
+  background:var(--bg,#fff);border-bottom:1px solid var(--line);box-shadow:var(--shadow);
+  padding:6px 24px 14px;max-height:calc(100vh - 80px);overflow-y:auto;
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+  transition:opacity .2s,transform .2s,visibility .2s;
+}
+.mnav.open{opacity:1;visibility:visible;transform:none}
+.mnav a{display:block;padding:12px 4px;border-bottom:1px solid var(--line);color:var(--ink-2);font-size:.95rem}
+.mnav a:last-child{border-bottom:0}
+.mnav a:hover{color:var(--ink)}
+.mnav a[aria-current="page"]{color:var(--brand);font-weight:600}
+.mnav .mgrp{font-size:.72rem;letter-spacing:.14em;color:var(--ink-3);padding:14px 4px 2px}
+</style>
 </head>
 <body>
 
@@ -501,6 +525,14 @@ table.dg td.out.slow{color:var(--warn);font-weight:700;
       <a href="/ventilator" class="cur"><b>환기</b><span class="cw"> 계산기</span></a>
     </nav>
     <button class="theme-btn" id="themeBtn" aria-label="화면 테마 전환">◐</button>
+    <button class="theme-btn menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mnav">☰</button>
+    <nav class="mnav" id="mnav" aria-label="모바일 메뉴">
+      <a href="/">홈으로</a>
+      <a href="/#contact">진료 문의</a>
+      <div class="mgrp">계산기</div>
+      <a href="/calculator">투석 계산기</a>
+      <a href="/ventilator">환기 계산기</a>
+    </nav>
   </div>
 </header>
 
@@ -1304,5 +1336,21 @@ resetCur(); buildModes(); buildCri(); compute();
 })();
 </script>
 <script src="/v.js" defer></script><!-- click-beacon -->
+
+<script>
+(function(){
+  var mb=document.getElementById('menuBtn'), mn=document.getElementById('mnav');
+  if(!mb||!mn) return;
+  function set(open){
+    mn.classList.toggle('open',open);
+    mb.setAttribute('aria-expanded',open);
+    mb.setAttribute('aria-label',open?'메뉴 닫기':'메뉴 열기');
+    mb.textContent=open?'\u2715':'\u2630';
+  }
+  mb.addEventListener('click',function(){ set(!mn.classList.contains('open')); });
+  mn.addEventListener('click',function(e){ if(e.target.closest('a')) set(false); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&mn.classList.contains('open')) set(false); });
+})();
+</script>
 </body>
 </html>
