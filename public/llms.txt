@@ -9,6 +9,7 @@
 - [고양이 신부전과 투석](https://www.ahnwoonchan.com/cat-kidney): 고양이 69마리 퇴원 생존 AKI 74%·ACKD 57%
 - [중독과 혈액관류](https://www.ahnwoonchan.com/poisoning): 강아지가 사람 약을 먹었을 때 먼저 할 일, 이부프로펜·도토리·미녹시딜 중독 증례, 혈액관류와 혈액투석의 선택
 - [소변을 못 보는 개·고양이](https://www.ahnwoonchan.com/urinary-emergency): 수컷 고양이 요도폐색·고양이 요관폐색·강아지 요도결석 응급, 바로 전화해야 하는 증상, 고양이 168마리 심혈관 이상 61.9%, 요도폐색 82마리 사망 8.5%·재발 6개월 22%, 601마리 질소혈증 48시간 내 해소 70.1%, 요관결석 163마리
+- [강아지 구토·설사, 언제 바로 병원에 와야 하나](https://www.ahnwoonchan.com/vomiting-diarrhea-emergency): 강아지 구토 설사 응급, 바로 전화해야 하는 증상, 급성 출혈성 설사 증후군 108마리(체중 중앙값 9.8kg, 48시간 내 호전), 경증·중등증 급성 설사에 항생제 효과 없음(ENOVAT), 위장관 이물 208례 회복 91%·선형 이물 80%, 위확장-염전 137마리 사망 18%, 파보 장염 입원 생존 90%
 - [투석 계산기](https://www.ahnwoonchan.com/calculator), [환기기 계산기](https://www.ahnwoonchan.com/ventilator)
 
 ## 논문 (제1저자)
