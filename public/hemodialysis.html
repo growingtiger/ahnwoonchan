@@ -313,11 +313,42 @@ header.stuck{border-bottom-color:var(--line)}
 .navgrp[open]>summary::after{transform:rotate(-135deg);margin-top:2px}
 .navgrp>summary:hover,.navgrp[open]>summary{color:var(--ink);background:var(--bg-sunk)}
 .navgrp.here>summary{color:var(--brand);font-weight:600}
+/* 페이지가 20개 가까이 늘어 한 줄짜리 목록으로는 못 읽는다.
+   왼쪽에서 갈래를 고르면 그 갈래만 오른쪽에 펼친다 (2026-11-11). */
 .navmenu{
   position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);
-  min-width:186px;padding:6px;z-index:60;
-  background:var(--bg);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);
+  width:max-content;max-width:min(560px,calc(100vw - 28px));
+  padding:8px;z-index:60;display:grid;grid-template-columns:auto 1fr;gap:0;
+  background:var(--bg);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
 }
+.navtabs{display:flex;flex-direction:column;gap:2px;padding-right:8px;border-right:1px solid var(--line)}
+.navtab{
+  appearance:none;border:0;background:none;font:inherit;cursor:pointer;text-align:left;
+  white-space:nowrap;padding:9px 12px;border-radius:9px;
+  font-size:.86rem;font-weight:500;color:var(--ink-2);transition:.15s;
+}
+.navtab:hover{color:var(--ink);background:var(--bg-sunk)}
+.navtab.on{color:var(--brand);font-weight:700;background:color-mix(in srgb,var(--brand) 9%,var(--bg))}
+.navtab.on::after{content:"";display:inline-block;width:4px;height:4px;margin-left:7px;vertical-align:2px;
+  border-right:1.4px solid currentColor;border-top:1.4px solid currentColor;transform:rotate(45deg)}
+.navpanes{padding-left:8px;min-width:168px}
+.navpane{display:none}
+.navpane.on{display:block}
+.nav .navmenu a.link{display:block;padding:8px 12px;border-radius:8px}
+.nav .navmenu a.link[aria-current="page"]{color:var(--brand);font-weight:600;background:var(--bg-sunk)}
+/* 모바일 메뉴는 갈래를 접어 둔다 — 스물다섯 줄을 한 번에 펴지 않는다 */
+.mnav .macc{border-bottom:1px solid var(--line)}
+.mnav .macc>summary{
+  list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  padding:13px 4px;font-size:.95rem;font-weight:600;color:var(--ink);
+}
+.mnav .macc>summary::-webkit-details-marker{display:none}
+.mnav .macc>summary::after{content:"";width:6px;height:6px;margin-right:6px;flex:none;
+  border-right:1.6px solid var(--ink-3);border-bottom:1.6px solid var(--ink-3);
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .18s}
+.mnav .macc[open]>summary::after{transform:rotate(-135deg)}
+.mnav .macc a{padding-left:14px;font-size:.92rem;border-bottom:0}
+.mnav .macc a:last-child{padding-bottom:13px}
 .nav .navmenu a.link{display:block;padding:8px 12px;border-radius:8px}
 .nav .navmenu a.link[aria-current="page"]{color:var(--brand);font-weight:600;background:var(--bg-sunk)}
 @media(max-width:880px){.navgrp{display:block}}
@@ -936,26 +967,42 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
     <a class="link" href="/#about">소개</a>
     <a class="link" href="/#care">진료 분야</a>
     <details class="navgrp here">
-      <summary>질환<span class="gl">·치료</span> 안내</summary>
+      <summary>진료 안내</summary>
       <div class="navmenu">
-        <a class="link" href="/#dialysis">투석 안내</a>
-        <a class="link" href="/hemodialysis" aria-current="page">혈액투석 상세</a>
-        <a class="link" href="/crrt">CRRT</a>
-        <a class="link" href="/dog-kidney">강아지 신장병</a>
-        <a class="link" href="/cat-kidney">고양이 신장병</a>
-        <a class="link" href="/proteinuria">단백뇨</a>
-        <a class="link" href="/potassium">칼륨 수치</a>
-        <a class="link" href="/phosphorus">인 수치</a>
-        <a class="link" href="/kidney-values">신장 수치</a>
-        <a class="link" href="/drinking-a-lot">물 많이 마심</a>
-        <a class="link" href="/cat-not-eating">밥 안 먹는 고양이</a>
-        <a class="link" href="/urinary-emergency">소변 못 봄 응급</a>
-        <a class="link" href="/ureteral-obstruction">고양이 요관폐색</a>
-        <a class="link" href="/vomiting-diarrhea-emergency">구토·설사 응급</a>
-        <a class="link" href="/night-emergency">밤 응급 내원</a>
-        <a class="link" href="/poisoning">중독·혈액관류</a>
-        <a class="link" href="/grape">포도 먹었을 때</a>
-        <a class="link" href="/leptospirosis">렙토스피라</a>
+        <div class="navtabs" role="tablist" aria-label="진료 안내 갈래">
+          <button type="button" class="navtab" role="tab" aria-selected="false" aria-controls="np0" data-g="0">증상으로 찾기</button>
+          <button type="button" class="navtab" role="tab" aria-selected="false" aria-controls="np1" data-g="1">검사 수치로 찾기</button>
+          <button type="button" class="navtab" role="tab" aria-selected="false" aria-controls="np2" data-g="2">질환·중독</button>
+          <button type="button" class="navtab on" role="tab" aria-selected="true" aria-controls="np3" data-g="3">투석·혈액정화</button>
+        </div>
+        <div class="navpanes">
+          <div class="navpane" id="np0" role="tabpanel" data-g="0" aria-label="증상으로 찾기">
+            <a class="link" href="/drinking-a-lot">물 많이 마심</a>
+            <a class="link" href="/cat-not-eating">밥 안 먹는 고양이</a>
+            <a class="link" href="/vomiting-diarrhea-emergency">구토·설사</a>
+            <a class="link" href="/urinary-emergency">소변 못 봄</a>
+            <a class="link" href="/night-emergency">밤 응급 내원</a>
+          </div>
+          <div class="navpane" id="np1" role="tabpanel" data-g="1" aria-label="검사 수치로 찾기">
+            <a class="link" href="/kidney-values">신장 수치</a>
+            <a class="link" href="/proteinuria">단백뇨</a>
+            <a class="link" href="/potassium">칼륨 수치</a>
+            <a class="link" href="/phosphorus">인 수치</a>
+          </div>
+          <div class="navpane" id="np2" role="tabpanel" data-g="2" aria-label="질환·중독">
+            <a class="link" href="/dog-kidney">강아지 신장병</a>
+            <a class="link" href="/cat-kidney">고양이 신장병</a>
+            <a class="link" href="/ureteral-obstruction">고양이 요관폐색</a>
+            <a class="link" href="/leptospirosis">렙토스피라</a>
+            <a class="link" href="/grape">포도 먹었을 때</a>
+          </div>
+          <div class="navpane on" id="np3" role="tabpanel" data-g="3" aria-label="투석·혈액정화">
+            <a class="link" href="/#dialysis">투석 안내</a>
+            <a class="link" href="/hemodialysis" aria-current="page">혈액투석 상세</a>
+            <a class="link" href="/crrt">CRRT</a>
+            <a class="link" href="/poisoning">중독·혈액관류</a>
+          </div>
+        </div>
       </div>
     </details>
     <a class="link" href="/#research">연구·활동</a>
@@ -971,24 +1018,32 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
     <nav class="mnav" id="mnav" aria-label="모바일 메뉴">
       <a href="/#about">소개</a>
       <a href="/#care">진료 분야</a>
-      <a href="/#dialysis">투석 안내</a>
-      <a href="/hemodialysis" aria-current="page">혈액투석 상세</a>
-      <a href="/crrt">CRRT</a>
-      <a href="/dog-kidney">강아지 신장병</a>
-      <a href="/cat-kidney">고양이 신장병</a>
-      <a href="/proteinuria">단백뇨</a>
-      <a href="/potassium">칼륨 수치</a>
-      <a href="/phosphorus">인 수치</a>
-      <a href="/kidney-values">신장 수치</a>
-      <a href="/drinking-a-lot">물 많이 마심</a>
-      <a href="/cat-not-eating">밥 안 먹는 고양이</a>
-      <a href="/urinary-emergency">소변 못 봄 응급</a>
-      <a href="/ureteral-obstruction">고양이 요관폐색</a>
-      <a href="/vomiting-diarrhea-emergency">구토·설사 응급</a>
-      <a href="/night-emergency">밤 응급 내원</a>
-      <a href="/poisoning">중독·혈액관류</a>
-      <a href="/grape">포도 먹었을 때</a>
-      <a href="/leptospirosis">렙토스피라</a>
+      <details class="macc"><summary>증상으로 찾기</summary>
+        <a href="/drinking-a-lot">물 많이 마심</a>
+        <a href="/cat-not-eating">밥 안 먹는 고양이</a>
+        <a href="/vomiting-diarrhea-emergency">구토·설사</a>
+        <a href="/urinary-emergency">소변 못 봄</a>
+        <a href="/night-emergency">밤 응급 내원</a>
+      </details>
+      <details class="macc"><summary>검사 수치로 찾기</summary>
+        <a href="/kidney-values">신장 수치</a>
+        <a href="/proteinuria">단백뇨</a>
+        <a href="/potassium">칼륨 수치</a>
+        <a href="/phosphorus">인 수치</a>
+      </details>
+      <details class="macc"><summary>질환·중독</summary>
+        <a href="/dog-kidney">강아지 신장병</a>
+        <a href="/cat-kidney">고양이 신장병</a>
+        <a href="/ureteral-obstruction">고양이 요관폐색</a>
+        <a href="/leptospirosis">렙토스피라</a>
+        <a href="/grape">포도 먹었을 때</a>
+      </details>
+      <details class="macc" open><summary>투석·혈액정화</summary>
+        <a href="/#dialysis">투석 안내</a>
+        <a href="/hemodialysis" aria-current="page">혈액투석 상세</a>
+        <a href="/crrt">CRRT</a>
+        <a href="/poisoning">중독·혈액관류</a>
+      </details>
       <a href="/#research">연구·활동</a>
       <a href="/#notes">글과 기록</a>
       <a href="#contact">진료·전원</a>
@@ -1390,6 +1445,20 @@ h2{font-size:clamp(1.72rem,3.6vw,2.3rem);line-height:1.22}
   mb.addEventListener('click',function(){ set(!mn.classList.contains('open')); });
   mn.addEventListener('click',function(e){ if(e.target.closest('a')) set(false); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&mn.classList.contains('open')) set(false); });
+})();
+</script>
+<script>
+/* 상단 진료 안내 — 왼쪽 갈래를 누르면 그 갈래만 보여 준다 */
+(function(){
+  var menu=document.querySelector('.navmenu'); if(!menu) return;
+  menu.addEventListener('click',function(e){
+    var t=e.target.closest('.navtab'); if(!t) return;
+    e.preventDefault();
+    menu.querySelectorAll('.navtab').forEach(function(b){
+      var on=(b===t); b.classList.toggle('on',on); b.setAttribute('aria-selected',on?'true':'false');});
+    menu.querySelectorAll('.navpane').forEach(function(p){
+      p.classList.toggle('on', p.dataset.g===t.dataset.g);});
+  });
 })();
 </script>
 </body>
